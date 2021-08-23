@@ -56,7 +56,6 @@ public class Game extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
-                map.openDoor();
                 refresh();
                 break;
             case DOWN:

@@ -28,6 +28,12 @@ public class GameMap {
 
     public void openDoor() {
         this.exit = CellType.OPEN_DOOR;
+        for (Cell[] value : cells) {
+            for (Cell cell : value) {
+                if (cell.getType() == CellType.CLOSED_DOOR)
+                    cell.setType(CellType.OPEN_DOOR);
+            }
+        }
     }
 
     public Cell getCell(int x, int y) {
