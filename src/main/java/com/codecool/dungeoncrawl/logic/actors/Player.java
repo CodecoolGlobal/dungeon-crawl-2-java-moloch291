@@ -11,9 +11,21 @@ public class Player extends Actor {
         super(cell);
     }
 
-    private final Map<Integer, Item> inventory = new HashMap<>();
+    private Map<Item, Integer> inventory = new HashMap<>();
+
+    public void setInventory(Item item, Integer quantity) {
+        inventory.put(item, quantity);
+    }
+
+    public boolean isKeyPickedUp() {
+        return false;
+    }
 
     public String getTileName() {
         return "player";
+    }
+
+    public Map<Item, Integer> getInventory() {
+        return inventory;
     }
 }
