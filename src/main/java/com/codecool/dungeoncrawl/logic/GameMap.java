@@ -8,16 +8,26 @@ public class GameMap {
     private Cell[][] cells;
 
     private Player player;
+    private CellType exit;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
         this.height = height;
+        this.exit = CellType.CLOSED_DOOR;
         cells = new Cell[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 cells[x][y] = new Cell(this, x, y, defaultCellType);
             }
         }
+    }
+
+    public CellType getExit() {
+        return exit;
+    }
+
+    public void openDoor() {
+        this.exit = CellType.OPEN_DOOR;
     }
 
     public Cell getCell(int x, int y) {

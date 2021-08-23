@@ -40,10 +40,7 @@ public class MapLoader {
                             map.setPlayer(new Player(cell));
                             break;
                         case 'd':
-                            cell.setType(CellType.CLOSED_DOOR);
-                            break;
-                        case 'o':
-                            cell.setType(CellType.OPEN_DOOR);
+                            cell.setType(map.getExit());
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
