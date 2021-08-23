@@ -6,7 +6,7 @@ public class Util {
 
     public static void waitOneSec() {
         try {
-            TimeUnit.SECONDS.sleep(1);
+            Thread.sleep(1000);
         } catch (Exception e) {
             System.out.println("Can not wait for some reason, Mr. Developer");
         }
