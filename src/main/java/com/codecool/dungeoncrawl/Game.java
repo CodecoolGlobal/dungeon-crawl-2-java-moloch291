@@ -56,26 +56,24 @@ public class Game extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
-                lookForDoor();
-                refresh();
+                movement(0, -1);
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
-                lookForDoor();
-                refresh();
+                movement(0, 1);
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
-                lookForDoor();
-                refresh();
+                movement(-1, 0);
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
-                lookForDoor();
-                refresh();
+                movement(1, 0);
                 break;
         }
+    }
+
+    private void movement(int moveInRow, int moveInColumn) {
+        map.getPlayer().move(moveInRow, moveInColumn);
+        lookForDoor();
+        refresh();
     }
 
     private void lookForDoor() {
