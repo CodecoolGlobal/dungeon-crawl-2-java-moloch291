@@ -11,7 +11,7 @@ public class Player extends Actor {
         super(cell);
     }
 
-    private final Map<Integer, Item> inventory = new HashMap<>();
+    private final Map<Item, Integer> inventory = new HashMap<>();
 
     public String getTileName() {
         return "player";
