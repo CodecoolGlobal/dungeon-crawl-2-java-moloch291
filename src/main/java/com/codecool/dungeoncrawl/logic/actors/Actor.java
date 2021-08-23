@@ -7,6 +7,8 @@ import com.codecool.dungeoncrawl.logic.Drawable;
 public abstract class Actor implements Drawable {
     private Cell cell;
     private int health = 10;
+    private int attack = 3;
+    private int defense = 0;
 
     public Actor(Cell cell) {
         this.cell = cell;
