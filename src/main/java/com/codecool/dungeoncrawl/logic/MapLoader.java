@@ -39,6 +39,17 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
                             break;
+                        case '/':
+                            cell.setType(CellType.BRICK_WALL);
+                            break;
+                        case '~':
+                            cell.setType(CellType.WATER);
+                            break;
+                        case '^':
+                            cell.setType(CellType.HOUSE);
+                            break;
+                        case '«':
+                            cell.setType(CellType.DOOR);
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
