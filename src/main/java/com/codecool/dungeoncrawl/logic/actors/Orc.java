@@ -11,11 +11,7 @@ public class Orc extends Actor{
     }
 
     @Override
-    public String getTileName() {
-        return "Orc";
-    }
-
-    public void orcMove(){
+    public void monsterMove(Cell playerCell) {
         if (direction == Direction.NORTH){
             direction = Direction.WEST;
         }
@@ -28,9 +24,16 @@ public class Orc extends Actor{
         else if (direction == Direction.EAST){
             direction = Direction.NORTH;
         }
-        int newX = getX() + direction.getX();
-        int newY = getY() + direction.getY();
+        int newX = direction.getX();
+        int newY = direction.getY();
 
+        System.out.println(newX);
+        System.out.println(newY);
         move(newX,newY);
+    }
+
+    @Override
+    public String getTileName() {
+        return "orc";
     }
 }

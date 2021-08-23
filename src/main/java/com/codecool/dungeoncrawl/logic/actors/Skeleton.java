@@ -7,7 +7,8 @@ public class Skeleton extends Actor {
         super(cell);
     }
 
-    public void skeletonMove(Cell playerCell) {
+    @Override
+    public void monsterMove(Cell playerCell) {
         setXCoordinate(playerCell);
         setYCoordinate(playerCell);
     }
@@ -15,18 +16,18 @@ public class Skeleton extends Actor {
     public void setXCoordinate(Cell playerCell) {
         int playerX = playerCell.getX();
         if (getX() > playerX) {
-            move(getX() -2, getY());
+            move( -1, 0);
         } else if (getX() < playerX) {
-            move(getX()  + 2, getY());
+            move( 1, 0);
         }
     }
 
     public void setYCoordinate(Cell playerCell) {
         int playerY = playerCell.getY();
         if (getY() > playerY) {
-            move(getX() , getY()-1);
+            move(0 , -1);
         } else if (getY() < playerY) {
-            move(getX() , getY()+1);
+            move(0 , 1);
         }
     }
 

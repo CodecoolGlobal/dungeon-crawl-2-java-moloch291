@@ -9,7 +9,12 @@ public class Undead extends Actor{
     }
 
     @Override
+    public void monsterMove(Cell playerCell) {
+
+    }
+
+    @Override
     public String getTileName() {
-        return "Undead";
+        return "undead";
     }
 }
