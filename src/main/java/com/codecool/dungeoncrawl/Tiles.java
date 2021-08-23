@@ -29,7 +29,7 @@ public class Tiles {
         tileMap.put("player", new Tile(27, 0));
         tileMap.put("skeleton", new Tile(29, 6));
         tileMap.put("closed door", new Tile(9, 11));
-        tileMap.put("open door", new Tile(9, 14));
+        tileMap.put("open door", new Tile(12, 11));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
