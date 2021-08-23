@@ -16,8 +16,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class Game extends Application {
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -57,15 +55,19 @@ public class Game extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 movement(0, -1);
+                refresh();
                 break;
             case DOWN:
                 movement(0, 1);
+                refresh();
                 break;
             case LEFT:
                 movement(-1, 0);
+                refresh();
                 break;
             case RIGHT:
                 movement(1, 0);
+                refresh();
                 break;
         }
     }
@@ -73,7 +75,6 @@ public class Game extends Application {
     private void movement(int moveInRow, int moveInColumn) {
         map.getPlayer().move(moveInRow, moveInColumn);
         lookForDoor();
-        refresh();
     }
 
     private void lookForDoor() {
