@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import javafx.application.Application;
@@ -56,21 +57,41 @@ public class Game extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
+                lookForDoor();
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
+                lookForDoor();
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
+                lookForDoor();
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
+                lookForDoor();
                 refresh();
                 break;
         }
+    }
+
+    private void lookForDoor() {
+        int playerX = map.getPlayer().getCell().getX();
+        int playerY = map.getPlayer().getCell().getY();
+        if (doorNextToPlayer(playerX, playerY) && map.getPlayer().isKeyPickedUp()) {
+            map.openDoor();
+        }
+    }
+
+    private boolean doorNextToPlayer(int playerX, int playerY) {
+        boolean doorToTheLeft = map.getCell(playerX, playerY - 1).getType() == CellType.CLOSED_DOOR;
+        boolean doorToTheRight = map.getCell(playerX, playerY + 1).getType() == CellType.CLOSED_DOOR;
+        boolean doorBelow = map.getCell(playerX + 1, playerY).getType() == CellType.CLOSED_DOOR;
+        boolean doorAbove = map.getCell(playerX - 1, playerY).getType() == CellType.CLOSED_DOOR;
+        return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
     private void refresh() {
