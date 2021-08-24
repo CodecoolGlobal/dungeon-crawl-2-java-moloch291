@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic;
+package com.codecool.dungeoncrawl.logic.util;
 
 import java.util.concurrent.TimeUnit;
 

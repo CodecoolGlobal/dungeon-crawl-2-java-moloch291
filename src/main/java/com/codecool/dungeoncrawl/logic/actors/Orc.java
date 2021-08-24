@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.util.Direction;
 
 public class Orc extends Actor{
 
@@ -8,6 +9,9 @@ public class Orc extends Actor{
 
     public Orc(Cell cell) {
         super(cell);
+        super.setAttack(2);
+        super.setHealth(3);
+        super.setDefense(3);
     }
 
     @Override
