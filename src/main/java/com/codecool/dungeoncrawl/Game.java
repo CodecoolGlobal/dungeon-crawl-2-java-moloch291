@@ -96,21 +96,6 @@ public class Game extends Application {
         pickUpInfo.setText("Pick up items by pressing P while standing on the item.");
         pickUpInfo.setWrapText(true);
         quitLabel.setWrapText(true);
-
-
-        BorderPane borderPane = new BorderPane();
-
-        borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
-
-        Scene scene = new Scene(borderPane);
-        primaryStage.setScene(scene);
-        refresh();
-        scene.setOnKeyPressed(this::onKeyPressed);
-
-        primaryStage.setTitle("Dungeon Crawl");
-        primaryStage.show();
-        ui.add(quitLabel, 0, 3);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -176,7 +161,6 @@ public class Game extends Application {
     private void movement(int moveInRow, int moveInColumn) {
         map.getPlayer().move(moveInRow, moveInColumn);
         lookForDoor();
-        actions.pickUpItem(map);
         checkNearbyMonsters(map.getPlayer());
     }
 

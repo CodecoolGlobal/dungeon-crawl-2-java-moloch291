@@ -22,14 +22,6 @@ public class Actions {
         }
     }
 
-    public void quitGame(KeyEvent keyEvent, Label quitLabel) {
-        quitLabel.setText("Are you sure you want to quit? Y/N");
-        if (keyEvent.getCode() == Y) {
-            System.exit(0);
-        } else if (keyEvent.getCode() == N) {
-            quitLabel.setText("");
-        }
-    }
 
 
     public Actions() {
