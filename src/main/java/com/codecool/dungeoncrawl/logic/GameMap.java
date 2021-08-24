@@ -49,7 +49,7 @@ public class GameMap {
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
         this.height = height;
-        this.booleans = new Booleans(this);
+        this.booleans = new Booleans();
         this.exit = CellType.CLOSED_DOOR;
         cells = new Cell[width][height];
         for (int x = 0; x < width; x++) {

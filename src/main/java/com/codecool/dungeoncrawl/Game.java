@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.util.Booleans;
 import com.codecool.dungeoncrawl.logic.util.Direction;
 import com.codecool.dungeoncrawl.logic.util.Util;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -28,6 +29,7 @@ public class Game extends Application {
 
     GameMap map = MapLoader.loadMap();
     Actions actions = new Actions();
+    Booleans booleans = new Booleans();
 
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -122,10 +124,10 @@ public class Game extends Application {
     }
 
     private boolean doorNextToPlayer(int playerX, int playerY) {
-        boolean doorToTheLeft = map.booleans.checkDoorInDirection(playerX, playerY, Direction.NORTH);
-        boolean doorToTheRight = map.booleans.checkDoorInDirection(playerX, playerY, Direction.SOUTH);
-        boolean doorBelow = map.booleans.checkDoorInDirection(playerX, playerY, Direction.EAST);
-        boolean doorAbove = map.booleans.checkDoorInDirection(playerX, playerY, Direction.WEST);
+        boolean doorToTheLeft = booleans.checkDoorInDirection(playerX, playerY, Direction.NORTH, map);
+        boolean doorToTheRight = booleans.checkDoorInDirection(playerX, playerY, Direction.SOUTH, map);
+        boolean doorBelow = booleans.checkDoorInDirection(playerX, playerY, Direction.EAST, map);
+        boolean doorAbove = booleans.checkDoorInDirection(playerX, playerY, Direction.WEST, map);
         return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
