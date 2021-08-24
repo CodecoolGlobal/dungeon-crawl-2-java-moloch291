@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic.MapAndParts;
+package com.codecool.dungeoncrawl.logic.map;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;

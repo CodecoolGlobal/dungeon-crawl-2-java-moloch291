@@ -1,10 +1,10 @@
 package com.codecool.dungeoncrawl.logic.util;
 
-import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
-import com.codecool.dungeoncrawl.logic.MapAndParts.CellType;
-import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
+import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.map.CellType;
+import com.codecool.dungeoncrawl.logic.map.GameMap;
 
-public class Booleans {
+public class gameConditions {
 
     public boolean checkDoorInDirection(int playerX, int playerY, Direction direction, GameMap map) {
         return map.getCell(playerX + direction.getX(), playerY + direction.getY())

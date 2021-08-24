@@ -1,6 +1,6 @@
 package com.codecool.dungeoncrawl.logic.items;
 
-import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
+import com.codecool.dungeoncrawl.logic.map.Cell;
 
 public class Key extends Item {
 

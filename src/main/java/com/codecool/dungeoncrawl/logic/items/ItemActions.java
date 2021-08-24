@@ -1,6 +1,6 @@
 package com.codecool.dungeoncrawl.logic.items;
 
-import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
+import com.codecool.dungeoncrawl.logic.map.GameMap;
 
 import java.util.Map;
 

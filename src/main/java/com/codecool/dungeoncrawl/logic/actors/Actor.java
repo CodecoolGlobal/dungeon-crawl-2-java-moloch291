@@ -1,8 +1,8 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
-import com.codecool.dungeoncrawl.logic.MapAndParts.Drawable;
-import com.codecool.dungeoncrawl.logic.util.Booleans;
+import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.map.Drawable;
+import com.codecool.dungeoncrawl.logic.util.gameConditions;
 
 public abstract class Actor implements Drawable {
 
@@ -12,7 +12,7 @@ public abstract class Actor implements Drawable {
     private int attack = 3;
     private int defense = 0;
 
-    Booleans booleans = new Booleans();
+    gameConditions gameConditions = new gameConditions();
 
     public void setCell(Cell cell) {
         this.cell = cell;
@@ -29,7 +29,7 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (booleans.checkNextCell(nextCell)) {
+        if (gameConditions.checkNextCell(nextCell)) {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;

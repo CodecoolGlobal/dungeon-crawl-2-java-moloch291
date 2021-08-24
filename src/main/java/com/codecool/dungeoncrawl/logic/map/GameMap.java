@@ -1,10 +1,10 @@
-package com.codecool.dungeoncrawl.logic.MapAndParts;
+package com.codecool.dungeoncrawl.logic.map;
 
 import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.actors.Undead;
-import com.codecool.dungeoncrawl.logic.util.Booleans;
+import com.codecool.dungeoncrawl.logic.util.gameConditions;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class GameMap {
 
     private final int width;
     private final int height;
-    public Booleans booleans;
+    public gameConditions gameConditions;
     private final Cell[][] cells;
     private final ArrayList<Skeleton> skeletons = new ArrayList<>();
     private final ArrayList<Orc> orcs = new ArrayList<>();
@@ -61,7 +61,7 @@ public class GameMap {
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
         this.height = height;
-        this.booleans = new Booleans();
+        this.gameConditions = new gameConditions();
         this.exit = CellType.CLOSED_DOOR;
         cells = new Cell[width][height];
         for (int x = 0; x < width; x++) {

@@ -1,13 +1,12 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.actors.Undead;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.util.Actions;
-import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
-import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
-import com.codecool.dungeoncrawl.logic.MapAndParts.MapLoader;
+import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.map.GameMap;
+import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.util.Booleans;
+import com.codecool.dungeoncrawl.logic.util.gameConditions;
 import com.codecool.dungeoncrawl.logic.util.Direction;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -29,7 +28,7 @@ public class Game extends Application {
     GameMap map;
     Canvas canvas = new Canvas(30 * Tiles.TILE_WIDTH, 20 * Tiles.TILE_WIDTH);
     Actions actions = new Actions();
-    Booleans booleans = new Booleans();
+    gameConditions gameConditions = new gameConditions();
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
@@ -92,7 +91,6 @@ public class Game extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        Actions actions = new Actions();
         ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
@@ -147,11 +145,11 @@ public class Game extends Application {
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         int diffX = (int) (canvas.getWidth() / (2 * Tiles.TILE_WIDTH));
         int diffY = (int) (canvas.getHeight() / (2 * Tiles.TILE_WIDTH));
-        buildingCells(playerX, playerY, diffX, diffY);
+        drawingCells(playerX, playerY, diffX, diffY);
         refreshUi();
     }
 
-    private void buildingCells(int playerX, int playerY, int diffX, int diffY) {
+    private void drawingCells(int playerX, int playerY, int diffX, int diffY) {
         for (int x = 0; x < canvas.getWidth() && Math.max(playerX - diffX, 0) + x < map.getWidth(); x++) {
             for (int y = 0; y < canvas.getHeight() && Math.max(playerY - diffY, 0) + y < map.getHeight(); y++) {
                 Cell cell = map.getCell(Math.max(playerX - diffX, 0) + x, Math.max(playerY - diffY, 0) + y);
@@ -161,7 +159,7 @@ public class Game extends Application {
     }
 
     private void drawingTiles(int x, int y, Cell cell) {
-        if (booleans.isCellOccupied(cell)) {
+        if (gameConditions.isCellOccupied(cell)) {
             Tiles.drawTile(context, cell.getActor(), x, y);
         } else if (cell.getItem() != null) {
             Tiles.drawTile(context, cell.getItem(), x, y);
@@ -175,10 +173,10 @@ public class Game extends Application {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         StringBuilder output = new StringBuilder();
         buildInventory(playerInventory, output);
-        checkIfEmpty(playerInventory, output);
+        checkIfInventoryIsEmpty(playerInventory, output);
     }
 
-    private void checkIfEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
+    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
         if (playerInventory.size() == 0) {
             inventoryLabel.setText("Empty");
         } else {

@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.logic.util;
 
-import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
-import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
+import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
@@ -14,12 +14,12 @@ import java.util.Map;
 
 public class Actions {
 
-    Booleans booleans = new Booleans();
+    gameConditions gameConditions = new gameConditions();
 
     public void pickUpItem(GameMap map) {
         int playerX = map.getPlayer().getX();
         int playerY = map.getPlayer().getY();
-        if (booleans.isItemOnPlayerPosition(playerX, playerY, map)) {
+        if (gameConditions.isItemOnPlayerPosition(playerX, playerY, map)) {
             Item item = map.getCell(playerX, playerY).getItem();
             Item itemInInventory;
             String itemName = item.getName();
@@ -113,10 +113,10 @@ public class Actions {
     }
 
     private boolean doorNextToPlayer(int playerX, int playerY, GameMap map) {
-        boolean doorToTheLeft = booleans.checkDoorInDirection(playerX, playerY, Direction.NORTH, map);
-        boolean doorToTheRight = booleans.checkDoorInDirection(playerX, playerY, Direction.SOUTH, map);
-        boolean doorBelow = booleans.checkDoorInDirection(playerX, playerY, Direction.EAST, map);
-        boolean doorAbove = booleans.checkDoorInDirection(playerX, playerY, Direction.WEST, map);
+        boolean doorToTheLeft = gameConditions.checkDoorInDirection(playerX, playerY, Direction.NORTH, map);
+        boolean doorToTheRight = gameConditions.checkDoorInDirection(playerX, playerY, Direction.SOUTH, map);
+        boolean doorBelow = gameConditions.checkDoorInDirection(playerX, playerY, Direction.EAST, map);
+        boolean doorAbove = gameConditions.checkDoorInDirection(playerX, playerY, Direction.WEST, map);
         return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
@@ -130,72 +130,42 @@ public class Actions {
 
     private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection, Label actionLabel) {
         Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
-        if (booleans.isCellOccupied(nearbyCell)) {
+        if (gameConditions.isCellOccupied(nearbyCell)) {
             fight(nearbyCell, player, actionLabel);
         }
     }
 
     private void fight(Cell nearbyCell, Actor player, Label actionLabel) {
-
         actionLabel.setText("");
-        int playerAttack = player.getAttack();
-        int playerDefense = player.getDefense();
-        int playerHealth = 100;
-        Actor enemy = nearbyCell.getActor();
-        int enemyAttack = enemy.getAttack();
-        int enemyDefense = enemy.getDefense();
-        int enemyHealth = enemy.getHealth();
-
-        fightLoop(
-                nearbyCell,
-                player,
-                actionLabel,
-                playerAttack,
-                playerDefense,
-                playerHealth,
-                enemy,
-                enemyAttack,
-                enemyDefense,
-                enemyHealth
-        );
+        fightLoop(nearbyCell, player, actionLabel, nearbyCell.getActor());
     }
 
-    private void fightLoop(
-            Cell nearbyCell,
-            Actor player,
-            Label actionLabel,
-            int playerAttack,
-            int playerDefense,
-            int playerHealth,
-            Actor enemy,
-            int enemyAttack,
-            int enemyDefense,
-            int enemyHealth
-    ) {
+    private void fightLoop(Cell nearbyCell, Actor player, Label actionLabel, Actor enemy) {
         while (true) {
-            enemyHealth = hit(actionLabel, playerAttack, enemyDefense, enemyHealth, "\nYou hit the enemy for ");
+            int playerHealth = 100;
+            int enemyHealth;
+            enemyHealth = hit(actionLabel, player, enemy, "\nYou hit the enemy for ");
             if (enemyHealth <= 0) {
-                killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy, enemyHealth);
+                killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy, enemy.getHealth());
                 break;
             }
-            playerHealth = hit(actionLabel, enemyAttack, playerDefense, playerHealth, "\nEnemy hit you for ");
+            playerHealth = hit(actionLabel, enemy, player, "\nEnemy hit you for ");
             if (playerHealth <= 0) {
-                die(player, actionLabel, enemy, enemyHealth);
+                die();
             }
         }
     }
 
-    private int hit(Label actionLabel, int attackerAttack, int defenderDefense, int defenderHealth, String message) {
-        int attackerHit = Util.getRandomNumber(attackerAttack + 2, attackerAttack - 1) - (defenderDefense / 2);
-        defenderHealth -= attackerHit;
+    private int hit(Label actionLabel, Actor attacker, Actor defender, String message) {
+        int attackerHit = Util.getRandomNumber(
+                attacker.getAttack() + 2, attacker.getAttack() - 1) - (defender.getDefense() / 2
+        );
+        defender.setHealth(defender.getHealth() - attackerHit);
         actionLabel.setText(actionLabel.getText() + message + attackerHit + " damage!");
-        return defenderHealth;
+        return defender.getHealth();
     }
 
-    private void die(Actor player, Label actionLabel, Actor enemy, int enemyHealth) {
-        player.getCell().setActor(null);
-        actionLabel.setText(actionLabel.getText() + "\nYou died!");
-        enemy.setHealth(enemyHealth);
+    private void die() {
         System.exit(0);
     }
 
