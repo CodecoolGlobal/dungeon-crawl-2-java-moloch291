@@ -23,6 +23,14 @@ public class ItemActions {
         decrementItem(map, itemName);
     }
 
+    public void consumePotion(GameMap map, String itemName) {
+        int playerHealth = map.getPlayer().getHealth();
+        if (searchForItem(map, itemName)) {
+            map.getPlayer().setHealth(playerHealth + 20);
+        }
+        decrementItem(map, itemName);
+    }
+
     private void decrementItem(GameMap map, String itemName) {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         int count;

@@ -95,7 +95,7 @@ public class Game extends Application {
         ui.add(lineBreak, 0, 3);
         ui.add(pickUpInfo, 0, 4, 2, 1);
         ui.add(lineBreak2, 0, 5);
-        pickUpInfo.setText("Pick up items by pressing P while standing on the item.");
+        pickUpInfo.setText("Pick up items by pressing Enter while standing on the item.");
         pickUpInfo.setWrapText(true);
         quitLabel.setWrapText(true);
     }
@@ -128,7 +128,7 @@ public class Game extends Application {
                 quitLabel.setText("Are you sure you want to quit? Y/N");
                 confirmQuit = true;
                 break;
-            case P:
+            case ENTER:
                 actions.pickUpItem(map);
                 break;
             case Y:
@@ -142,6 +142,9 @@ public class Game extends Application {
                 break;
             case F:
                 itemActions.consumeFood(map, "Bread");
+                break;
+            case P:
+                itemActions.consumePotion(map, "Potion");
                 break;
         }
     }
