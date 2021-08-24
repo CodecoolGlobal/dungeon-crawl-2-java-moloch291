@@ -1,6 +1,5 @@
 package com.codecool.dungeoncrawl.logic.map;
 
-import com.codecool.dungeoncrawl.logic.map.Drawable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -10,8 +9,8 @@ import java.util.Map;
 public class Tiles {
     public static int TILE_WIDTH = 32;
 
-    private static Image tileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
-    private static Map<String, Tile> tileMap = new HashMap<>();
+    private static final Image tileset = new Image("/tiles.png", 543 * 2, 543 * 2, true, false);
+    private static final Map<String, Tile> tileMap = new HashMap<>();
     public static class Tile {
         public final int x, y, w, h;
         Tile(int i, int j) {

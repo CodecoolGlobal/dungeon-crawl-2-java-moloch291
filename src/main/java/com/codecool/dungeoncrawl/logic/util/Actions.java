@@ -115,7 +115,7 @@ public class Actions {
             int enemyHealth;
             enemyHealth = hit(actionLabel, player, enemy, StringFactory.HIT_ENEMY.message);
             if (gameConditions.isDead(enemyHealth)) {
-                killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy, enemy.getHealth());
+                killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy);
                 break;
             }
             playerHealth = hit(actionLabel, enemy, player, StringFactory.ENEMY_HIT.message);
@@ -137,18 +137,11 @@ public class Actions {
         System.exit(0);
     }
 
-    private void killEnemy(
-            Cell nearbyCell,
-            Actor player,
-            Label actionLabel,
-            int playerHealth,
-            Actor enemy,
-            int enemyHealth
-    ) {
+    private void killEnemy(Cell nearbyCell, Actor player, Label actionLabel, int playerHealth, Actor enemy) {
         nearbyCell.setActor(null);
         actionLabel.setText(actionLabel.getText() + StringFactory.KILL_ENEMY.message);
         player.setHealth(playerHealth);
-        enemy.setHealth(enemyHealth);
+        enemy.setHealth(enemy.getHealth());
     }
 
 
