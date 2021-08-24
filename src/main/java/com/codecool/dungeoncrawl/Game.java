@@ -80,7 +80,6 @@ public class Game extends Application {
     private void setUpUi(GridPane ui) {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-
         lineBreak.minHeightProperty().bind(inventoryLabel.heightProperty());
         lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
         ui.add(new Label("Health: "), 0, 0);
