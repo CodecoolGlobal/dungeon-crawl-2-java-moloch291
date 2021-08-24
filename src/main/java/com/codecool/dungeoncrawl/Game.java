@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.Actions;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -39,8 +40,8 @@ public class Game extends Application {
 
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Inventory: "), 0, 1);
-        ui.add(inventoryLabel, 1, 1);
+        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(inventoryLabel, 1, 2);
 
         BorderPane borderPane = new BorderPane();
 
@@ -57,49 +58,26 @@ public class Game extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        Actions actions = new Actions();
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
-                int playerXUp = map.getPlayer().getX();
-                int playerYUp = map.getPlayer().getY();
-                if (map.getCell(playerXUp, playerYUp).getItem() != null) {
-                    Item item = map.getCell(playerXUp, playerYUp).getItem();
-                    map.getPlayer().setInventory(item, 1);
-                    map.getCell(playerXUp, playerYUp).setItem(null);
-                }
+                actions.pickUpItem(map);
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
-                int playerXDown = map.getPlayer().getX();
-                int playerYDown = map.getPlayer().getY();
-                if (map.getCell(playerXDown, playerYDown).getItem() != null) {
-                    Item item = map.getCell(playerXDown, playerYDown).getItem();
-                    map.getPlayer().setInventory(item, 1);
-                    map.getCell(playerXDown, playerYDown).setItem(null);
-                }
+                actions.pickUpItem(map);
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
-                int playerXLeft = map.getPlayer().getX();
-                int playerYLeft = map.getPlayer().getY();
-                if (map.getCell(playerXLeft, playerYLeft).getItem() != null) {
-                    Item item = map.getCell(playerXLeft, playerYLeft).getItem();
-                    map.getPlayer().setInventory(item, 1);
-                    map.getCell(playerXLeft, playerYLeft).setItem(null);
-                }
+                actions.pickUpItem(map);
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
-                int playerXRight = map.getPlayer().getX();
-                int playerYRight = map.getPlayer().getY();
-                if (map.getCell(playerXRight, playerYRight).getItem() != null) {
-                    Item item = map.getCell(playerXRight, playerYRight).getItem();
-                    map.getPlayer().setInventory(item, 1);
-                    map.getCell(playerXRight, playerYRight).setItem(null);
-                }
+                actions.pickUpItem(map);
                 refresh();
                 break;
         }
@@ -126,8 +104,12 @@ public class Game extends Application {
         for (Item item: playerInventory.keySet()) {
             String key = item.getName();
             String value = playerInventory.get(item).toString();
-            output.append(" ").append(key).append(" ").append(value).append(" ");
+            output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
         };
-        inventoryLabel.setText("" + output);
+        if (playerInventory.size() == 0) {
+            inventoryLabel.setText("Empty");
+        } else {
+            inventoryLabel.setText("" + output);
+        }
     }
 }

@@ -42,23 +42,23 @@ public class MapLoader {
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
-                            new Key("key", cell, ItemType.KEY);
+                            new Key("Key", cell, ItemType.KEY);
                             break;
                         case 'a':
                             cell.setType(CellType.FLOOR);
-                            new Armor("armor", cell, ItemType.ARMOR, 10);
+                            new Armor("Shield", cell, ItemType.ARMOR, 10);
                             break;
                         case 'w':
                             cell.setType(CellType.FLOOR);
-                            new Weapon("weapon", cell, ItemType.WEAPON, 10);
+                            new Weapon("Sword", cell, ItemType.WEAPON, 10);
                             break;
                         case 'f':
                             cell.setType(CellType.FLOOR);
-                            new Food("food", cell, ItemType.FOOD);
+                            new Food("Bread", cell, ItemType.FOOD);
                             break;
                         case 'p':
                             cell.setType(CellType.FLOOR);
-                            new Potion("potion", cell, ItemType.POTION);
+                            new Potion("Potion", cell, ItemType.POTION);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
