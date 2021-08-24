@@ -134,7 +134,7 @@ public class Game extends Application {
         actionLabel.setText("");
         int playerAttack = player.getAttack();
         int playerDefense = player.getDefense();
-        int playerHealth = player.getHealth();
+        int playerHealth = 100;
         Actor enemy = nearbyCell.getActor();
         int enemyAttack = enemy.getAttack();
         int enemyDefense = enemy.getDefense();
@@ -147,6 +147,7 @@ public class Game extends Application {
                 nearbyCell.setActor(null);
                 actionLabel.setText(actionLabel.getText() + "\nYou killed the enemy!");
                 player.setHealth(playerHealth);
+                enemy.setHealth(enemyHealth);
                 break;
             }
             int enemyHit = Util.getRandomNumber(enemyAttack + 2, enemyAttack - 1) - (playerDefense / 2);
