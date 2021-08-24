@@ -1,24 +1,16 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.actors.Undead;
 import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.util.Booleans;
 import com.codecool.dungeoncrawl.logic.util.Direction;
-import com.codecool.dungeoncrawl.logic.util.Util;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Orc;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -27,7 +19,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class Game extends Application {
@@ -100,7 +91,6 @@ public class Game extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        Actions actions = new Actions();
         switch (keyEvent.getCode()) {
             case UP:
                 actions.movement(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
