@@ -8,6 +8,9 @@ public class Orc extends Actor{
 
     public Orc(Cell cell) {
         super(cell);
+        super.setAttack(2);
+        super.setHealth(3);
+        super.setDefense(3);
     }
 
     @Override
