@@ -103,12 +103,13 @@ public class Actions {
 
     private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection, Label actionLabel) {
         Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
-        if (nearbyCell.getActor() != null) {
+        if (booleans.isCellOccupied(nearbyCell)) {
             fight(nearbyCell, player, actionLabel);
         }
     }
 
     private void fight(Cell nearbyCell, Actor player, Label actionLabel) {
+
         actionLabel.setText("");
         int playerAttack = player.getAttack();
         int playerDefense = player.getDefense();
@@ -117,7 +118,19 @@ public class Actions {
         int enemyAttack = enemy.getAttack();
         int enemyDefense = enemy.getDefense();
         int enemyHealth = enemy.getHealth();
-        fightLoop(nearbyCell, player, actionLabel, playerAttack, playerDefense, playerHealth, enemy, enemyAttack, enemyDefense, enemyHealth);
+
+        fightLoop(
+                nearbyCell,
+                player,
+                actionLabel,
+                playerAttack,
+                playerDefense,
+                playerHealth,
+                enemy,
+                enemyAttack,
+                enemyDefense,
+                enemyHealth
+        );
     }
 
     private void fightLoop(

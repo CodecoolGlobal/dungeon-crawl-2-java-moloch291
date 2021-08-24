@@ -20,4 +20,8 @@ public class Booleans {
     public boolean isItemOnPlayerPosition(int playerX, int playerY, GameMap map) {
         return map.getCell(playerX, playerY).getItem() != null;
     }
+
+    public boolean isCellOccupied(Cell cell) {
+        return cell.getActor() != null;
+    }
 }

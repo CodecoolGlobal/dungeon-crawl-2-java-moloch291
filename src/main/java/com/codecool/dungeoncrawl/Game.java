@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.util.Booleans;
 import com.codecool.dungeoncrawl.logic.util.Direction;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -26,6 +27,7 @@ public class Game extends Application {
     GameMap map;
     Canvas canvas = new Canvas(30 * Tiles.TILE_WIDTH, 20 * Tiles.TILE_WIDTH);
     Actions actions = new Actions();
+    Booleans booleans = new Booleans();
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
@@ -138,7 +140,7 @@ public class Game extends Application {
         for (int x = 0; x < canvas.getWidth() && Math.max(playerX - diffX, 0) + x < map.getWidth(); x++) {
             for (int y = 0; y < canvas.getHeight() && Math.max(playerY - diffY, 0) + y < map.getHeight(); y++) {
                 Cell cell = map.getCell(Math.max(playerX - diffX, 0) + x, Math.max(playerY - diffY, 0) + y);
-                if (cell.getActor() != null) {
+                if (booleans.isCellOccupied(cell)) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
