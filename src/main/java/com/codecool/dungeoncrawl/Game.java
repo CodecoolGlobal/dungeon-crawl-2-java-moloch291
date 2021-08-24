@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -27,6 +28,7 @@ public class Game extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
+    Label quitLabel = new Label();
 
     public static void main(String[] args) {
         launch(args);
@@ -79,6 +81,9 @@ public class Game extends Application {
                 map.getPlayer().move(1,0);
                 actions.pickUpItem(map);
                 refresh();
+                break;
+            case Q:
+                System.exit(0);
                 break;
         }
     }
