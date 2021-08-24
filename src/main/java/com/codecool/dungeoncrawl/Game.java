@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.actors.Undead;
 import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -23,6 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class Game extends Application {
@@ -86,22 +88,22 @@ public class Game extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 movement(Direction.NORTH.getX(), Direction.NORTH.getY());
-                moveMonsters();
+                monsterInteractions();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
                 movement(Direction.SOUTH.getX(), Direction.SOUTH.getY());
-                moveMonsters();
+                monsterInteractions();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
                 movement(Direction.WEST.getX(), Direction.WEST.getY());
-                moveMonsters();
+                monsterInteractions();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
                 movement(Direction.EAST.getX(), Direction.EAST.getY());
-                moveMonsters();
+                monsterInteractions();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
@@ -110,9 +112,31 @@ public class Game extends Application {
         }
     }
 
-    private void moveMonsters() {
+    private void monsterInteractions() {
+        removeDeadMonsters();
         moveSkeletons();
         moveOrcs();
+    }
+
+    private void removeDeadMonsters() {
+        ArrayList<Skeleton> skeletons = map.getSkeletons();
+        for (int i = 0; i < skeletons.size(); i++) {
+            if (skeletons.get(i).getHealth() <= 0) {
+                map.removeSkeleton(i);
+            }
+        }
+        ArrayList<Orc> orcs = map.getOrcs();
+        for (int i = 0; i < orcs.size(); i++) {
+            if (orcs.get(i).getHealth() <= 0) {
+                map.removeOrc(i);
+            }
+        }
+        ArrayList<Undead> undeads = map.getUndeads();
+        for (int i = 0; i < undeads.size(); i++) {
+            if (undeads.get(i).getHealth() <= 0) {
+                map.removeUndead(i);
+            }
+        }
     }
 
     private void moveOrcs() {

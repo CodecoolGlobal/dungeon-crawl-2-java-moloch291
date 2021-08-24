@@ -21,16 +21,28 @@ public class GameMap {
     private Player player;
     private CellType exit;
 
-    public void setSkeletons(Skeleton skeleton) {
+    public void addSkeleton(Skeleton skeleton) {
         this.skeletons.add(skeleton);
     }
 
-    public void setOrcs(Orc orc) {
+    public void addOrc(Orc orc) {
         this.orcs.add(orc);
     }
 
-    public void setUndeads(Undead undead) {
+    public void addUndead(Undead undead) {
         this.undeads.add(undead);
+    }
+
+    public void removeSkeleton(int index) {
+        this.skeletons.remove(index);
+    }
+
+    public void removeOrc(int index) {
+        this.orcs.remove(index);
+    }
+
+    public void removeUndead(int index) {
+        this.undeads.remove(index);
     }
 
     public ArrayList<Skeleton> getSkeletons() {

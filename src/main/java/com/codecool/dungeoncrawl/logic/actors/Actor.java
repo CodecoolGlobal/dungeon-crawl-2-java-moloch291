@@ -29,7 +29,7 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if (booleans.checkNextCell(nextCell, this.getHealth())) {
+        if (booleans.checkNextCell(nextCell)) {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;
