@@ -14,7 +14,7 @@ public class Booleans {
     public boolean checkNextCell(Cell nextCell) {
         return (nextCell.getType().equals(CellType.FLOOR) ||
                 nextCell.getType().equals(CellType.OPEN_DOOR)) &&
-                nextCell.getActor() == null;
+                isCellOccupied(nextCell);
     }
 
     public boolean isItemOnPlayerPosition(int playerX, int playerY, GameMap map) {
