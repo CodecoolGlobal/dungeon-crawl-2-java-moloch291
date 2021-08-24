@@ -31,9 +31,7 @@ public class Game extends Application {
     Actions actions = new Actions();
     Booleans booleans = new Booleans();
 
-    Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+    Canvas canvas = new Canvas(map.getWidth() * Tiles.TILE_WIDTH, map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
@@ -47,9 +45,31 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GridPane ui = new GridPane();
+        setUpUi(ui);
+
+        BorderPane borderPane = new BorderPane();
+        setUpBorderPane(ui, borderPane);
+
+        Scene scene = new Scene(borderPane);
+        setUpScene(primaryStage, scene);
+    }
+
+    private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
+        borderPane.setCenter(canvas);
+        borderPane.setRight(ui);
+    }
+
+    private void setUpScene(Stage primaryStage, Scene scene) {
+        primaryStage.setScene(scene);
+        refresh();
+        scene.setOnKeyPressed(this::onKeyPressed);
+        primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.show();
+    }
+
+    private void setUpUi(GridPane ui) {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Action: "), 0, 1);
@@ -57,19 +77,6 @@ public class Game extends Application {
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(inventoryLabel, 1, 2);
         ui.add(quitLabel, 0, 3);
-
-        BorderPane borderPane = new BorderPane();
-
-        borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
-
-        Scene scene = new Scene(borderPane);
-        primaryStage.setScene(scene);
-        refresh();
-        scene.setOnKeyPressed(this::onKeyPressed);
-
-        primaryStage.setTitle("Dungeon Crawl");
-        primaryStage.show();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
