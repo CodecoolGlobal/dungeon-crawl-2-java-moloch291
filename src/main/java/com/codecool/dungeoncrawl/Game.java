@@ -1,5 +1,7 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.actors.Undead;
+import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
 import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
@@ -84,12 +86,14 @@ public class Game extends Application {
         ui.add(lineBreak, 0, 3);
         ui.add(pickUpInfo, 0, 4, 2, 1);
         ui.add(lineBreak2, 0, 5);
-        pickUpInfo.setText("Pick up items by pressing P while standing on the item.");
+        pickUpInfo.setText("Pick up items by pressing Enter while standing on the item.");
         pickUpInfo.setWrapText(true);
         quitLabel.setWrapText(true);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        Actions actions = new Actions();
+        ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
                 actions.movement(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
@@ -115,7 +119,7 @@ public class Game extends Application {
                 quitLabel.setText("Are you sure you want to quit? Y/N");
                 confirmQuit = true;
                 break;
-            case P:
+            case ENTER:
                 actions.pickUpItem(map);
                 break;
             case Y:
@@ -126,6 +130,12 @@ public class Game extends Application {
             case N:
                 confirmQuit = false;
                 quitLabel.setText("");
+                break;
+            case F:
+                itemActions.consumeFood(map, "Bread");
+                break;
+            case P:
+                itemActions.consumePotion(map, "Potion");
                 break;
         }
     }

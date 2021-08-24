@@ -31,6 +31,10 @@ public class Player extends Actor {
 
     }
 
+    public void removeFromInventory(Item item) {
+        inventory.remove(item);
+    }
+
     public String getTileName() {
         return "player";
     }
