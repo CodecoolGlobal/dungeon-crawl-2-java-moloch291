@@ -15,11 +15,10 @@ public class Util {
     }
 
     public int getAttackerHit(Actor attacker, Actor defender) {
-        return Util.getRandomNumber(
+        return getRandomNumber(
                 attacker.getAttack() + NumberParameters.ATTACK_BONUS.getValue(),
-                attacker.getAttack() - NumberParameters.ATTACK_NERF.getValue())
-                - (defender.getDefense() / NumberParameters.DEFENSE_DIVISOR.getValue()
-        );
+                attacker.getAttack() - NumberParameters.ATTACK_NERF.getValue()
+        ) - (defender.getDefense() / NumberParameters.DEFENSE_DIVISOR.getValue());
     }
 
     public static int getRandomNumber(int min, int max) {
