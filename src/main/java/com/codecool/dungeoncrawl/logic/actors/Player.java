@@ -11,6 +11,12 @@ public class Player extends Actor {
         super(cell);
     }
 
+    @Override
+    public void monsterMove(Cell playerCell) {
+
+    }
+
+
     private final Map<Item, Integer> inventory = new HashMap<>();
 
     public String getTileName() {
