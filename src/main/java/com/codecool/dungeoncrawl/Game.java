@@ -1,12 +1,13 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.Actions;
+import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.Util;
+import com.codecool.dungeoncrawl.logic.util.Booleans;
+import com.codecool.dungeoncrawl.logic.util.Direction;
+import com.codecool.dungeoncrawl.logic.util.Util;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
@@ -16,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -25,15 +25,13 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
-import static javafx.scene.input.KeyCode.N;
-import static javafx.scene.input.KeyCode.Y;
-
 public class Game extends Application {
 
     GameMap map = MapLoader.loadMap();
-    Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+    Actions actions = new Actions();
+    Booleans booleans = new Booleans();
+
+    Canvas canvas = new Canvas(map.getWidth() * Tiles.TILE_WIDTH, map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
@@ -47,9 +45,31 @@ public class Game extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         GridPane ui = new GridPane();
+        setUpUi(ui);
+
+        BorderPane borderPane = new BorderPane();
+        setUpBorderPane(ui, borderPane);
+
+        Scene scene = new Scene(borderPane);
+        setUpScene(primaryStage, scene);
+    }
+
+    private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
+        borderPane.setCenter(canvas);
+        borderPane.setRight(ui);
+    }
+
+    private void setUpScene(Stage primaryStage, Scene scene) {
+        primaryStage.setScene(scene);
+        refresh();
+        scene.setOnKeyPressed(this::onKeyPressed);
+        primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.show();
+    }
+
+    private void setUpUi(GridPane ui) {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Action: "), 0, 1);
@@ -57,49 +77,27 @@ public class Game extends Application {
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(inventoryLabel, 1, 2);
         ui.add(quitLabel, 0, 3);
-
-        BorderPane borderPane = new BorderPane();
-
-        borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
-
-        Scene scene = new Scene(borderPane);
-        primaryStage.setScene(scene);
-        refresh();
-        scene.setOnKeyPressed(this::onKeyPressed);
-
-        primaryStage.setTitle("Dungeon Crawl");
-        primaryStage.show();
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        Actions actions = new Actions();
         switch (keyEvent.getCode()) {
             case UP:
-                movement(0, -1);
-                actions.pickUpItem(map);
-                checkNearbyMonsters(map.getPlayer());
+                movement(Direction.NORTH.getX(), Direction.NORTH.getY());
                 moveMonsters();
                 refresh();
                 break;
             case DOWN:
-                movement(0, 1);
-                actions.pickUpItem(map);
-                checkNearbyMonsters(map.getPlayer());
+                movement(Direction.SOUTH.getX(), Direction.SOUTH.getY());
                 moveMonsters();
                 refresh();
                 break;
             case LEFT:
-                movement(-1, 0);
-                actions.pickUpItem(map);
-                checkNearbyMonsters(map.getPlayer());
+                movement(Direction.WEST.getX(), Direction.WEST.getY());
                 moveMonsters();
                 refresh();
                 break;
             case RIGHT:
-                movement(1, 0);
-                actions.pickUpItem(map);
-                checkNearbyMonsters(map.getPlayer());
+                movement(Direction.EAST.getX(), Direction.EAST.getY());
                 moveMonsters();
                 refresh();
                 break;
@@ -108,18 +106,29 @@ public class Game extends Application {
                 break;
         }
     }
-    private void moveMonsters(){
-        for (Skeleton skeleton : map.getSkeletons()){
-            skeleton.monsterMove(map.getPlayer().getCell());
-        }
-        for (Orc orc : map.getOrcs()){
+
+    private void moveMonsters() {
+        moveSkeletons();
+        moveOrcs();
+    }
+
+    private void moveOrcs() {
+        for (Orc orc : map.getOrcs()) {
             orc.monsterMove(map.getPlayer().getCell());
+        }
+    }
+
+    private void moveSkeletons() {
+        for (Skeleton skeleton : map.getSkeletons()) {
+            skeleton.monsterMove(map.getPlayer().getCell());
         }
     }
 
     private void movement(int moveInRow, int moveInColumn) {
         map.getPlayer().move(moveInRow, moveInColumn);
         lookForDoor();
+        actions.pickUpItem(map);
+        checkNearbyMonsters(map.getPlayer());
     }
 
     private void lookForDoor() {
@@ -130,10 +139,10 @@ public class Game extends Application {
     }
 
     private boolean doorNextToPlayer(int playerX, int playerY) {
-        boolean doorToTheLeft = map.getCell(playerX, playerY - 1).getType() == CellType.CLOSED_DOOR;
-        boolean doorToTheRight = map.getCell(playerX, playerY + 1).getType() == CellType.CLOSED_DOOR;
-        boolean doorBelow = map.getCell(playerX + 1, playerY).getType() == CellType.CLOSED_DOOR;
-        boolean doorAbove = map.getCell(playerX - 1, playerY).getType() == CellType.CLOSED_DOOR;
+        boolean doorToTheLeft = booleans.checkDoorInDirection(playerX, playerY, Direction.NORTH, map);
+        boolean doorToTheRight = booleans.checkDoorInDirection(playerX, playerY, Direction.SOUTH, map);
+        boolean doorBelow = booleans.checkDoorInDirection(playerX, playerY, Direction.EAST, map);
+        boolean doorAbove = booleans.checkDoorInDirection(playerX, playerY, Direction.WEST, map);
         return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
@@ -145,7 +154,7 @@ public class Game extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getItem() != null){
+                } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
@@ -155,11 +164,11 @@ public class Game extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         StringBuilder output = new StringBuilder();
-        for (Item item: playerInventory.keySet()) {
+        for (Item item : playerInventory.keySet()) {
             String key = item.getName();
             String value = playerInventory.get(item).toString();
             output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
-        };
+        }
         if (playerInventory.size() == 0) {
             inventoryLabel.setText("Empty");
         } else {
@@ -169,19 +178,14 @@ public class Game extends Application {
 
     public void checkNearbyMonsters(Actor player) {
         Cell cell = player.getCell();
-        Cell nearbyCell = cell.getNeighbor(-1, 0);
-        if (nearbyCell.getActor() != null) {
-            fight(nearbyCell, player);
-        }
-        nearbyCell = cell.getNeighbor(1, 0);
-        if (nearbyCell.getActor() != null) {
-            fight(nearbyCell, player);
-        }
-        nearbyCell = cell.getNeighbor(0, -1);
-        if (nearbyCell.getActor() != null) {
-            fight(nearbyCell, player);
-        }
-        nearbyCell = cell.getNeighbor(0, 1);
+        checkForEnemies(player, cell, Direction.WEST);
+        checkForEnemies(player, cell, Direction.EAST);
+        checkForEnemies(player, cell, Direction.NORTH);
+        checkForEnemies(player, cell, Direction.SOUTH);
+    }
+
+    private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection) {
+        Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
         if (nearbyCell.getActor() != null) {
             fight(nearbyCell, player);
         }

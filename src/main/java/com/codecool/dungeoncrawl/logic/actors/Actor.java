@@ -1,16 +1,18 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.Drawable;
+import com.codecool.dungeoncrawl.logic.util.Booleans;
 
 public abstract class Actor implements Drawable {
+
     private Cell cell;
 
     private int health = 10;
     private int attack = 3;
     private int defense = 0;
 
+    Booleans booleans = new Booleans();
 
     public void setCell(Cell cell) {
         this.cell = cell;
@@ -27,8 +29,7 @@ public abstract class Actor implements Drawable {
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
-        if ((nextCell.getType().equals(CellType.FLOOR) || nextCell.getType().equals(CellType.OPEN_DOOR))
-                && nextCell.getActor() == null && this.getHealth() > 0) {
+        if (booleans.checkNextCell(nextCell, this.getHealth())) {
             cell.setActor(null);
             nextCell.setActor(this);
             cell = nextCell;

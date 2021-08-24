@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.util.Direction;
 
 public class Skeleton extends Actor {
     public Skeleton(Cell cell) {
@@ -19,18 +20,18 @@ public class Skeleton extends Actor {
     public void setXCoordinate(Cell playerCell) {
         int playerX = playerCell.getX();
         if (getX() > playerX) {
-            move( -1, 0);
+            move( Direction.WEST.getX(), Direction.WEST.getY());
         } else if (getX() < playerX) {
-            move( 1, 0);
+            move( Direction.EAST.getX(), Direction.EAST.getY());
         }
     }
 
     public void setYCoordinate(Cell playerCell) {
         int playerY = playerCell.getY();
         if (getY() > playerY) {
-            move(0 , -1);
+            move(Direction.NORTH.getX(), Direction.NORTH.getY());
         } else if (getY() < playerY) {
-            move(0 , 1);
+            move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
         }
     }
 
