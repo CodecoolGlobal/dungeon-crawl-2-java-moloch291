@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.actors.Undead;
+import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
 import java.util.Scanner;
@@ -40,6 +41,26 @@ public class MapLoader {
                         case '@':
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
+                            break;
+                        case 'k':
+                            cell.setType(CellType.FLOOR);
+                            new Key("Key", cell, ItemType.KEY);
+                            break;
+                        case 'a':
+                            cell.setType(CellType.FLOOR);
+                            new Armor("Shield", cell, ItemType.ARMOR, 10);
+                            break;
+                        case 'w':
+                            cell.setType(CellType.FLOOR);
+                            new Weapon("Sword", cell, ItemType.WEAPON, 10);
+                            break;
+                        case 'f':
+                            cell.setType(CellType.FLOOR);
+                            new Food("Bread", cell, ItemType.FOOD);
+                            break;
+                        case 'p':
+                            cell.setType(CellType.FLOOR);
+                            new Potion("Potion", cell, ItemType.POTION);
                             break;
                         case 'd':
                             cell.setType(map.getExit());

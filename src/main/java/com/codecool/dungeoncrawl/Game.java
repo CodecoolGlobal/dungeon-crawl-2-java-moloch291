@@ -1,9 +1,11 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.Actions;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.Util;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Orc;
@@ -14,11 +16,17 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.util.Map;
+
+import static javafx.scene.input.KeyCode.N;
+import static javafx.scene.input.KeyCode.Y;
 
 public class Game extends Application {
 
@@ -28,6 +36,8 @@ public class Game extends Application {
             map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
+    Label inventoryLabel = new Label();
+    Label quitLabel = new Label();
     Label actionLabel = new Label();
 
     public static void main(String[] args) {
@@ -44,6 +54,9 @@ public class Game extends Application {
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Action: "), 0, 1);
         ui.add(actionLabel, 1, 1);
+        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(inventoryLabel, 1, 2);
+        ui.add(quitLabel, 0, 3);
 
         BorderPane borderPane = new BorderPane();
 
@@ -60,30 +73,38 @@ public class Game extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        Actions actions = new Actions();
         switch (keyEvent.getCode()) {
             case UP:
                 movement(0, -1);
+                actions.pickUpItem(map);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case DOWN:
                 movement(0, 1);
+                actions.pickUpItem(map);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case LEFT:
                 movement(-1, 0);
+                actions.pickUpItem(map);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case RIGHT:
                 movement(1, 0);
+                actions.pickUpItem(map);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
+                break;
+            case Q:
+                System.exit(0);
                 break;
         }
     }
@@ -124,12 +145,26 @@ public class Game extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
+                } else if (cell.getItem() != null){
+                    Tiles.drawTile(context, cell.getItem(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
                 }
             }
         }
         healthLabel.setText("" + map.getPlayer().getHealth());
+        Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
+        StringBuilder output = new StringBuilder();
+        for (Item item: playerInventory.keySet()) {
+            String key = item.getName();
+            String value = playerInventory.get(item).toString();
+            output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
+        };
+        if (playerInventory.size() == 0) {
+            inventoryLabel.setText("Empty");
+        } else {
+            inventoryLabel.setText("" + output);
+        }
     }
 
     public void checkNearbyMonsters(Actor player) {
