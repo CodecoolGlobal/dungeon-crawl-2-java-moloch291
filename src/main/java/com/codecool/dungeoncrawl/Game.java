@@ -13,13 +13,16 @@ import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -38,6 +41,10 @@ public class Game extends Application {
     Label inventoryLabel = new Label();
     Label quitLabel = new Label();
     Label actionLabel = new Label();
+    Label pickUpInfo = new Label();
+    boolean confirmQuit = false;
+    Pane lineBreak = new Pane();
+    Pane lineBreak2 = new Pane();
 
     public static void main(String[] args) {
         launch(args);
@@ -73,16 +80,41 @@ public class Game extends Application {
     private void setUpUi(GridPane ui) {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
+
+        lineBreak.minHeightProperty().bind(inventoryLabel.heightProperty());
+        lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Action: "), 0, 1);
         ui.add(actionLabel, 1, 1);
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(inventoryLabel, 1, 2);
+        ui.add(quitLabel, 0, 6, 2, 1);
+        ui.add(lineBreak, 0, 3);
+        ui.add(pickUpInfo, 0, 4, 2, 1);
+        ui.add(lineBreak2, 0, 5);
+        pickUpInfo.setText("Pick up items by pressing P while standing on the item.");
+        pickUpInfo.setWrapText(true);
+        quitLabel.setWrapText(true);
+
+
+        BorderPane borderPane = new BorderPane();
+
+        borderPane.setCenter(canvas);
+        borderPane.setRight(ui);
+
+        Scene scene = new Scene(borderPane);
+        primaryStage.setScene(scene);
+        refresh();
+        scene.setOnKeyPressed(this::onKeyPressed);
+
+        primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.show();
         ui.add(quitLabel, 0, 3);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
+        Actions actions = new Actions();
         switch (keyEvent.getCode()) {
             case UP:
                 movement(Direction.NORTH.getX(), Direction.NORTH.getY());
@@ -105,7 +137,20 @@ public class Game extends Application {
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
-                System.exit(0);
+                quitLabel.setText("Are you sure you want to quit? Y/N");
+                confirmQuit = true;
+                break;
+            case P:
+                actions.pickUpItem(map);
+                break;
+            case Y:
+                if (confirmQuit) {
+                    System.exit(0);
+                }
+                break;
+            case N:
+                confirmQuit = false;
+                quitLabel.setText("");
                 break;
         }
     }
@@ -118,6 +163,7 @@ public class Game extends Application {
     private void moveOrcs() {
         for (Orc orc : map.getOrcs()) {
             orc.monsterMove(map.getPlayer().getCell());
+
         }
     }
 
