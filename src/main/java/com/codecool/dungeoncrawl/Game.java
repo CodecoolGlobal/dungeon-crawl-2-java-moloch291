@@ -20,6 +20,9 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
+import static javafx.scene.input.KeyCode.N;
+import static javafx.scene.input.KeyCode.Y;
+
 public class Game extends Application {
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
@@ -44,6 +47,7 @@ public class Game extends Application {
         ui.add(healthLabel, 1, 0);
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(inventoryLabel, 1, 2);
+        ui.add(quitLabel, 0, 3);
 
         BorderPane borderPane = new BorderPane();
 
