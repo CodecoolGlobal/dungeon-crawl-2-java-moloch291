@@ -16,4 +16,8 @@ public class Booleans {
                 nextCell.getType().equals(CellType.OPEN_DOOR)) &&
                 nextCell.getActor() == null && healthOfThis > 0;
     }
+
+    public boolean isItemOnPlayerPosition(int playerX, int playerY, GameMap map) {
+        return map.getCell(playerX, playerY).getItem() != null;
+    }
 }
