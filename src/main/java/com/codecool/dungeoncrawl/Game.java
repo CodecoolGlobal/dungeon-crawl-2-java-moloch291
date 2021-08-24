@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.actors.Undead;
+import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -101,6 +102,7 @@ public class Game extends Application {
 
     private void onKeyPressed(KeyEvent keyEvent) {
         Actions actions = new Actions();
+        ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
                 actions.movement(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
@@ -137,6 +139,9 @@ public class Game extends Application {
             case N:
                 confirmQuit = false;
                 quitLabel.setText("");
+                break;
+            case F:
+                itemActions.consumeFood(map, "Bread");
                 break;
         }
     }
