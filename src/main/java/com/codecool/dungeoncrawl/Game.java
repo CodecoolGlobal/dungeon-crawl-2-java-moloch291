@@ -7,6 +7,7 @@ import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -50,9 +51,12 @@ public class Game extends Application {
         ui.add(actionLabel, 1, 1);
         ui.add(new Label("Inventory: "), 0, 2);
         ui.add(inventoryLabel, 1, 2);
-        ui.add(quitLabel, 0, 6);
-        ui.add(pickUpInfo, 0, 4);
+        ui.add(quitLabel, 0, 6, 2, 1);
+        ui.add(pickUpInfo, 0, 4, 2, 1);
         pickUpInfo.setText("Pick up items by pressing P while standing on it");
+        pickUpInfo.setWrapText(true);
+        quitLabel.setWrapText(true);
+
 
         BorderPane borderPane = new BorderPane();
 
