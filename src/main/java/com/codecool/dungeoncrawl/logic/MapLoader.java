@@ -7,21 +7,55 @@ import com.codecool.dungeoncrawl.logic.actors.Undead;
 import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class MapLoader {
-    public static GameMap loadMap() {
+
+    public static int[] getPlayerPosition() {
         InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
         Scanner scanner = new Scanner(is);
-        int width = scanner.nextInt();
-        int height = scanner.nextInt();
 
         scanner.nextLine(); // empty line
+        int[] result = new int[3];
+        int y = -1;
+        while (true) {
+            y++;
+            String line = "";
+            try {
+                line = scanner.nextLine();
+            } catch (NoSuchElementException e) {
+                break;
+            }
+            for (int x = 0; x < line.length(); x++) {
+                if (line.charAt(x) == '@') {
+                    result[0] = y;
+                    result[1] = x;
+                }
+            }
+        }
+        result[2] = y;
+        return result;
+    }
+
+    public static GameMap loadMap(int height) {
+        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+        Scanner scanner = new Scanner(is);
+
+        String line = scanner.nextLine(); // empty line
+        int width = line.length();
 
         GameMap map = new GameMap(width, height, CellType.EMPTY);
-        for (int y = 0; y < height; y++) {
-            String line = scanner.nextLine();
-            for (int x = 0; x < width; x++) {
+        int y = -1;
+        while (true) {
+            y++;
+            line = "";
+            try {
+                line = scanner.nextLine();
+            } catch (NoSuchElementException e) {
+                break;
+            }
+            for (int x = 0; x < line.length(); x++) {
                 if (x < line.length()) {
                     Cell cell = map.getCell(x, y);
                     switch (line.charAt(x)) {

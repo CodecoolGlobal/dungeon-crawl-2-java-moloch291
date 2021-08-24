@@ -27,11 +27,12 @@ import java.util.Map;
 
 public class Game extends Application {
 
-    GameMap map = MapLoader.loadMap();
+    GameMap map;
+    Canvas canvas = new Canvas(
+            30 * Tiles.TILE_WIDTH,
+            20 * Tiles.TILE_WIDTH);
     Actions actions = new Actions();
     Booleans booleans = new Booleans();
-
-    Canvas canvas = new Canvas(map.getWidth() * Tiles.TILE_WIDTH, map.getHeight() * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
@@ -61,7 +62,9 @@ public class Game extends Application {
 
     private void setUpScene(Stage primaryStage, Scene scene) {
         primaryStage.setScene(scene);
-        refresh();
+        int[] coordinates = MapLoader.getPlayerPosition();
+        map = MapLoader.loadMap(coordinates[2]);
+        refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle("Dungeon Crawl");
         primaryStage.show();
@@ -84,22 +87,22 @@ public class Game extends Application {
             case UP:
                 movement(Direction.NORTH.getX(), Direction.NORTH.getY());
                 moveMonsters();
-                refresh();
+                refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
                 movement(Direction.SOUTH.getX(), Direction.SOUTH.getY());
                 moveMonsters();
-                refresh();
+                refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
                 movement(Direction.WEST.getX(), Direction.WEST.getY());
                 moveMonsters();
-                refresh();
+                refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
                 movement(Direction.EAST.getX(), Direction.EAST.getY());
                 moveMonsters();
-                refresh();
+                refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
                 System.exit(0);
@@ -146,12 +149,14 @@ public class Game extends Application {
         return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
-    private void refresh() {
+    private void refresh(int playerX, int playerY) {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        int diffX = (int) (canvas.getWidth() / (2 * Tiles.TILE_WIDTH));
+        int diffY = (int) (canvas.getHeight() / (2 * Tiles.TILE_WIDTH));
+        for (int x = 0; x < canvas.getWidth() && Math.max(playerX - diffX, 0) + x < map.getWidth(); x++) {
+            for (int y = 0; y < canvas.getHeight() && Math.max(playerY - diffY, 0) + y < map.getHeight(); y++) {
+                Cell cell = map.getCell(Math.max(playerX - diffX, 0) + x, Math.max(playerY - diffY, 0) + y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null) {
