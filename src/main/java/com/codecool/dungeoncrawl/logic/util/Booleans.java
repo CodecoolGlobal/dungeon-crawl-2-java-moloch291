@@ -11,10 +11,10 @@ public class Booleans {
                 .getType() == CellType.CLOSED_DOOR;
     }
 
-    public boolean checkNextCell(Cell nextCell, int healthOfThis) {
+    public boolean checkNextCell(Cell nextCell) {
         return (nextCell.getType().equals(CellType.FLOOR) ||
                 nextCell.getType().equals(CellType.OPEN_DOOR)) &&
-                nextCell.getActor() == null && healthOfThis > 0;
+                nextCell.getActor() == null;
     }
 
     public boolean isItemOnPlayerPosition(int playerX, int playerY, GameMap map) {

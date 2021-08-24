@@ -70,7 +70,7 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            map.setSkeletons(new Skeleton(cell));
+                            map.addSkeleton(new Skeleton(cell));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
@@ -101,11 +101,11 @@ public class MapLoader {
                             break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
-                            map.setOrcs(new Orc(cell));
+                            map.addOrc(new Orc(cell));
                             break;
                         case 'u':
                             cell.setType(CellType.FLOOR);
-                            map.setUndeads(new Undead(cell));
+                            map.addUndead(new Undead(cell));
                             break;
                         case '/':
                             cell.setType(CellType.BRICK_WALL);
