@@ -117,6 +117,21 @@ public class Actions {
         int enemyAttack = enemy.getAttack();
         int enemyDefense = enemy.getDefense();
         int enemyHealth = enemy.getHealth();
+        fightLoop(nearbyCell, player, actionLabel, playerAttack, playerDefense, playerHealth, enemy, enemyAttack, enemyDefense, enemyHealth);
+    }
+
+    private void fightLoop(
+            Cell nearbyCell,
+            Actor player,
+            Label actionLabel,
+            int playerAttack,
+            int playerDefense,
+            int playerHealth,
+            Actor enemy,
+            int enemyAttack,
+            int enemyDefense,
+            int enemyHealth
+    ) {
         while (true) {
             enemyHealth = hit(actionLabel, playerAttack, enemyDefense, enemyHealth, "\nYou hit the enemy for ");
             if (enemyHealth <= 0) {
@@ -144,7 +159,14 @@ public class Actions {
         System.exit(0);
     }
 
-    private void killEnemy(Cell nearbyCell, Actor player, Label actionLabel, int playerHealth, Actor enemy, int enemyHealth) {
+    private void killEnemy(
+            Cell nearbyCell,
+            Actor player,
+            Label actionLabel,
+            int playerHealth,
+            Actor enemy,
+            int enemyHealth
+    ) {
         nearbyCell.setActor(null);
         actionLabel.setText(actionLabel.getText() + "\nYou killed the enemy!");
         player.setHealth(playerHealth);

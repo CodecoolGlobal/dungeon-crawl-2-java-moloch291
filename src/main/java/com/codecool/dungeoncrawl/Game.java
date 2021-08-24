@@ -24,9 +24,7 @@ import java.util.Map;
 public class Game extends Application {
 
     GameMap map;
-    Canvas canvas = new Canvas(
-            30 * Tiles.TILE_WIDTH,
-            20 * Tiles.TILE_WIDTH);
+    Canvas canvas = new Canvas(30 * Tiles.TILE_WIDTH, 20 * Tiles.TILE_WIDTH);
     Actions actions = new Actions();
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
