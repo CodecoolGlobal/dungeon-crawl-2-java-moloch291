@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.Util;
@@ -20,6 +21,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Game extends Application {
+
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -60,25 +62,25 @@ public class Game extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                map.getPlayer().move(0, -1);
+                movement(0, -1);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case DOWN:
-                map.getPlayer().move(0, 1);
+                movement(0, 1);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case LEFT:
-                map.getPlayer().move(-1, 0);
+                movement(-1, 0);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case RIGHT:
-                map.getPlayer().move(1,0);
+                movement(1, 0);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
@@ -92,6 +94,26 @@ public class Game extends Application {
         for (Orc orc : map.getOrcs()){
             orc.monsterMove(map.getPlayer().getCell());
         }
+    }
+
+    private void movement(int moveInRow, int moveInColumn) {
+        map.getPlayer().move(moveInRow, moveInColumn);
+        lookForDoor();
+    }
+
+    private void lookForDoor() {
+        int playerX = map.getPlayer().getCell().getX();
+        int playerY = map.getPlayer().getCell().getY();
+        if (doorNextToPlayer(playerX, playerY) && map.getPlayer().hasKey())
+            map.openDoor();
+    }
+
+    private boolean doorNextToPlayer(int playerX, int playerY) {
+        boolean doorToTheLeft = map.getCell(playerX, playerY - 1).getType() == CellType.CLOSED_DOOR;
+        boolean doorToTheRight = map.getCell(playerX, playerY + 1).getType() == CellType.CLOSED_DOOR;
+        boolean doorBelow = map.getCell(playerX + 1, playerY).getType() == CellType.CLOSED_DOOR;
+        boolean doorAbove = map.getCell(playerX - 1, playerY).getType() == CellType.CLOSED_DOOR;
+        return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
     private void refresh() {

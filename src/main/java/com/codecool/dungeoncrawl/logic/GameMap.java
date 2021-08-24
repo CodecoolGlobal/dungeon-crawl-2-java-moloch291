@@ -8,6 +8,7 @@ import com.codecool.dungeoncrawl.logic.actors.Undead;
 import java.util.ArrayList;
 
 public class GameMap {
+
     private int width;
     private int height;
     private Cell[][] cells;
@@ -16,6 +17,7 @@ public class GameMap {
     private ArrayList<Undead> undeads = new ArrayList<>();
 
     private Player player;
+    private CellType exit;
 
     public void setSkeletons(Skeleton skeleton) {
         this.skeletons.add(skeleton);
@@ -45,10 +47,25 @@ public class GameMap {
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
         this.height = height;
+        this.exit = CellType.CLOSED_DOOR;
         cells = new Cell[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 cells[x][y] = new Cell(this, x, y, defaultCellType);
+            }
+        }
+    }
+
+    public CellType getExit() {
+        return exit;
+    }
+
+    public void openDoor() {
+        this.exit = CellType.OPEN_DOOR;
+        for (Cell[] value : cells) {
+            for (Cell cell : value) {
+                if (cell.getType() == CellType.CLOSED_DOOR)
+                    cell.setType(CellType.OPEN_DOOR);
             }
         }
     }

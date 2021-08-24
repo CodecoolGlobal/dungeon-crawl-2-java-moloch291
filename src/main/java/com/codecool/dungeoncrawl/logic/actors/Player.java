@@ -21,6 +21,10 @@ public class Player extends Actor {
 
     private final Map<Item, Integer> inventory = new HashMap<>();
 
+    public boolean hasKey() {
+        return true;
+    }
+
     public String getTileName() {
         return "player";
     }
