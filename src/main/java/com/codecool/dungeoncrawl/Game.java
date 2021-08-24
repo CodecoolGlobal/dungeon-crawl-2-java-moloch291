@@ -30,10 +30,10 @@ import static javafx.scene.input.KeyCode.Y;
 
 public class Game extends Application {
 
-    GameMap map = MapLoader.loadMap();
+    GameMap map;
     Canvas canvas = new Canvas(
-            map.getWidth() * Tiles.TILE_WIDTH,
-            map.getHeight() * Tiles.TILE_WIDTH);
+            30 * Tiles.TILE_WIDTH,
+            20 * Tiles.TILE_WIDTH);
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
@@ -65,7 +65,9 @@ public class Game extends Application {
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
-        refresh();
+        int[] coordinates = MapLoader.getPlayerPosition();
+        map = MapLoader.loadMap(coordinates[2]);
+        refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
 
         primaryStage.setTitle("Dungeon Crawl");
@@ -80,28 +82,28 @@ public class Game extends Application {
                 actions.pickUpItem(map);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
-                refresh();
+                refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
                 movement(0, 1);
                 actions.pickUpItem(map);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
-                refresh();
+                refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
                 movement(-1, 0);
                 actions.pickUpItem(map);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
-                refresh();
+                refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
                 movement(1, 0);
                 actions.pickUpItem(map);
                 checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
-                refresh();
+                refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
                 System.exit(0);
@@ -137,12 +139,14 @@ public class Game extends Application {
         return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
-    private void refresh() {
+    private void refresh(int playerX, int playerY) {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        for (int x = 0; x < map.getWidth(); x++) {
-            for (int y = 0; y < map.getHeight(); y++) {
-                Cell cell = map.getCell(x, y);
+        int diffX = (int) (canvas.getWidth() / (2 * Tiles.TILE_WIDTH));
+        int diffY = (int) (canvas.getHeight() / (2 * Tiles.TILE_WIDTH));
+        for (int x = 0; x < canvas.getWidth() && Math.max(playerX - diffX, 0) + x < map.getWidth(); x++) {
+            for (int y = 0; y < canvas.getHeight() && Math.max(playerY - diffY, 0) + y < map.getHeight(); y++) {
+                Cell cell = map.getCell(Math.max(playerX - diffX, 0) + x, Math.max(playerY - diffY, 0) + y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
                 } else if (cell.getItem() != null){
