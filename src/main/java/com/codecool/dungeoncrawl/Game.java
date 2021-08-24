@@ -1,12 +1,13 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.Actions;
+import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.Util;
+import com.codecool.dungeoncrawl.logic.util.Direction;
+import com.codecool.dungeoncrawl.logic.util.Util;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
@@ -16,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -24,9 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Map;
-
-import static javafx.scene.input.KeyCode.N;
-import static javafx.scene.input.KeyCode.Y;
 
 public class Game extends Application {
 
@@ -159,7 +156,7 @@ public class Game extends Application {
             String key = item.getName();
             String value = playerInventory.get(item).toString();
             output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
-        };
+        }
         if (playerInventory.size() == 0) {
             inventoryLabel.setText("Empty");
         } else {
@@ -169,19 +166,14 @@ public class Game extends Application {
 
     public void checkNearbyMonsters(Actor player) {
         Cell cell = player.getCell();
-        Cell nearbyCell = cell.getNeighbor(-1, 0);
-        if (nearbyCell.getActor() != null) {
-            fight(nearbyCell, player);
-        }
-        nearbyCell = cell.getNeighbor(1, 0);
-        if (nearbyCell.getActor() != null) {
-            fight(nearbyCell, player);
-        }
-        nearbyCell = cell.getNeighbor(0, -1);
-        if (nearbyCell.getActor() != null) {
-            fight(nearbyCell, player);
-        }
-        nearbyCell = cell.getNeighbor(0, 1);
+        checkForEnemies(player, cell, Direction.WEST);
+        checkForEnemies(player, cell, Direction.EAST);
+        checkForEnemies(player, cell, Direction.NORTH);
+        checkForEnemies(player, cell, Direction.SOUTH);
+    }
+
+    private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection) {
+        Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
         if (nearbyCell.getActor() != null) {
             fight(nearbyCell, player);
         }

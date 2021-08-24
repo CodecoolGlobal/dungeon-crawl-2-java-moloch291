@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic.actors;
+package com.codecool.dungeoncrawl.logic.util;
 
 
 public enum Direction {
@@ -7,8 +7,8 @@ public enum Direction {
     SOUTH(0,1),
     WEST(-1,0);
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     Direction(int x, int y) {
         this.x = x;

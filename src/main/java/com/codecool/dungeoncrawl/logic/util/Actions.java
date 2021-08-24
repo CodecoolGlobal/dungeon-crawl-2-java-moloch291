@@ -1,5 +1,6 @@
-package com.codecool.dungeoncrawl.logic;
+package com.codecool.dungeoncrawl.logic.util;
 
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;

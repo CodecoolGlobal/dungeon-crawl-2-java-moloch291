@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic;
+package com.codecool.dungeoncrawl.logic.util;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,4 +15,6 @@ public class Util {
     public static int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
+
+
 }
