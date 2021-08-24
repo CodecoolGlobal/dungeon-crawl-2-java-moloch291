@@ -103,23 +103,23 @@ public class Game extends Application {
         Actions actions = new Actions();
         switch (keyEvent.getCode()) {
             case UP:
-                movement(Direction.NORTH.getX(), Direction.NORTH.getY());
-                monsterInteractions();
+                actions.movement(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
+                actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
-                movement(Direction.SOUTH.getX(), Direction.SOUTH.getY());
-                monsterInteractions();
+                actions.movement(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
+                actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
-                movement(Direction.WEST.getX(), Direction.WEST.getY());
-                monsterInteractions();
+                actions.movement(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
+                actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
-                movement(Direction.EAST.getX(), Direction.EAST.getY());
-                monsterInteractions();
+                actions.movement(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
+                actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
@@ -141,66 +141,7 @@ public class Game extends Application {
         }
     }
 
-    private void monsterInteractions() {
-        removeDeadMonsters();
-        moveSkeletons();
-        moveOrcs();
-    }
 
-    private void removeDeadMonsters() {
-        ArrayList<Skeleton> skeletons = map.getSkeletons();
-        for (int i = 0; i < skeletons.size(); i++) {
-            if (skeletons.get(i).getHealth() <= 0) {
-                map.removeSkeleton(i);
-            }
-        }
-        ArrayList<Orc> orcs = map.getOrcs();
-        for (int i = 0; i < orcs.size(); i++) {
-            if (orcs.get(i).getHealth() <= 0) {
-                map.removeOrc(i);
-            }
-        }
-        ArrayList<Undead> undeads = map.getUndeads();
-        for (int i = 0; i < undeads.size(); i++) {
-            if (undeads.get(i).getHealth() <= 0) {
-                map.removeUndead(i);
-            }
-        }
-    }
-
-    private void moveOrcs() {
-        for (Orc orc : map.getOrcs()) {
-            orc.monsterMove(map.getPlayer().getCell());
-
-        }
-    }
-
-    private void moveSkeletons() {
-        for (Skeleton skeleton : map.getSkeletons()) {
-            skeleton.monsterMove(map.getPlayer().getCell());
-        }
-    }
-
-    private void movement(int moveInRow, int moveInColumn) {
-        map.getPlayer().move(moveInRow, moveInColumn);
-        lookForDoor();
-        checkNearbyMonsters(map.getPlayer());
-    }
-
-    private void lookForDoor() {
-        int playerX = map.getPlayer().getCell().getX();
-        int playerY = map.getPlayer().getCell().getY();
-        if (doorNextToPlayer(playerX, playerY) && map.getPlayer().hasKey())
-            map.openDoor();
-    }
-
-    private boolean doorNextToPlayer(int playerX, int playerY) {
-        boolean doorToTheLeft = booleans.checkDoorInDirection(playerX, playerY, Direction.NORTH, map);
-        boolean doorToTheRight = booleans.checkDoorInDirection(playerX, playerY, Direction.SOUTH, map);
-        boolean doorBelow = booleans.checkDoorInDirection(playerX, playerY, Direction.EAST, map);
-        boolean doorAbove = booleans.checkDoorInDirection(playerX, playerY, Direction.WEST, map);
-        return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
-    }
 
     private void refresh(int playerX, int playerY) {
         context.setFill(Color.BLACK);
@@ -234,51 +175,4 @@ public class Game extends Application {
         }
     }
 
-    public void checkNearbyMonsters(Actor player) {
-        Cell cell = player.getCell();
-        checkForEnemies(player, cell, Direction.WEST);
-        checkForEnemies(player, cell, Direction.EAST);
-        checkForEnemies(player, cell, Direction.NORTH);
-        checkForEnemies(player, cell, Direction.SOUTH);
-    }
-
-    private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection) {
-        Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
-        if (nearbyCell.getActor() != null) {
-            fight(nearbyCell, player);
-        }
-    }
-
-    private void fight(Cell nearbyCell, Actor player) {
-        actionLabel.setText("");
-        int playerAttack = player.getAttack();
-        int playerDefense = player.getDefense();
-        int playerHealth = 100;
-        Actor enemy = nearbyCell.getActor();
-        int enemyAttack = enemy.getAttack();
-        int enemyDefense = enemy.getDefense();
-        int enemyHealth = enemy.getHealth();
-        while (true) {
-            int playerHit = Util.getRandomNumber(playerAttack + 2, playerAttack - 1) - (enemyDefense / 2);
-            enemyHealth -= playerHit;
-            actionLabel.setText(actionLabel.getText() + "\nYou hit the enemy for " + playerHit);
-            if (enemyHealth <= 0) {
-                nearbyCell.setActor(null);
-                actionLabel.setText(actionLabel.getText() + "\nYou killed the enemy!");
-                player.setHealth(playerHealth);
-                enemy.setHealth(enemyHealth);
-                break;
-            }
-            int enemyHit = Util.getRandomNumber(enemyAttack + 2, enemyAttack - 1) - (playerDefense / 2);
-            playerHealth -= enemyHit;
-            actionLabel.setText(actionLabel.getText() + "\nThe enemy hit you for " + enemyHit);
-            if (playerHealth <= 0) {
-                player.getCell().setActor(null);
-                actionLabel.setText(actionLabel.getText() + "\nYou died!");
-                enemy.setHealth(enemyHealth);
-                System.exit(0);
-                break;
-            }
-        }
-    }
 }
