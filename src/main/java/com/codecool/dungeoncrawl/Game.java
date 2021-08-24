@@ -5,6 +5,8 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.Util;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Orc;
+import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -60,23 +62,35 @@ public class Game extends Application {
             case UP:
                 map.getPlayer().move(0, -1);
                 checkNearbyMonsters(map.getPlayer());
+                moveMonsters();
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
                 checkNearbyMonsters(map.getPlayer());
+                moveMonsters();
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
                 checkNearbyMonsters(map.getPlayer());
+                moveMonsters();
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1,0);
                 checkNearbyMonsters(map.getPlayer());
+                moveMonsters();
                 refresh();
                 break;
+        }
+    }
+    private void moveMonsters(){
+        for (Skeleton skeleton : map.getSkeletons()){
+            skeleton.monsterMove(map.getPlayer().getCell());
+        }
+        for (Orc orc : map.getOrcs()){
+            orc.monsterMove(map.getPlayer().getCell());
         }
     }
 

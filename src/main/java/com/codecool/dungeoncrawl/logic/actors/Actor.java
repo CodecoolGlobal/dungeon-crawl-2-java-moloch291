@@ -10,10 +10,19 @@ public abstract class Actor implements Drawable {
     private int attack = 3;
     private int defense = 0;
 
+
+    public void setCell(Cell cell) {
+        this.cell = cell;
+    }
+
     public Actor(Cell cell) {
         this.cell = cell;
         this.cell.setActor(this);
     }
+
+    public abstract void monsterMove(Cell playerCell);
+
+    ;
 
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
