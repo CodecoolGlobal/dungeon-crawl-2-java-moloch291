@@ -157,12 +157,18 @@ public class Actions {
     }
 
     private int hit(Label actionLabel, Actor attacker, Actor defender, String message) {
-        int attackerHit = Util.getRandomNumber(
-                attacker.getAttack() + 2, attacker.getAttack() - 1) - (defender.getDefense() / 2
-        );
+        int attackerHit = getAttackerHit(attacker, defender);
         defender.setHealth(defender.getHealth() - attackerHit);
         actionLabel.setText(actionLabel.getText() + message + attackerHit + " damage!");
         return defender.getHealth();
+    }
+
+    private int getAttackerHit(Actor attacker, Actor defender) {
+        return Util.getRandomNumber(
+                attacker.getAttack() + NumberParameters.ATTACK_BONUS.getValue(),
+                attacker.getAttack() - NumberParameters.ATTACK_NERF.getValue())
+                - (defender.getDefense() / NumberParameters.DEFENSE_DIVISOR.getValue()
+        );
     }
 
     private void die() {

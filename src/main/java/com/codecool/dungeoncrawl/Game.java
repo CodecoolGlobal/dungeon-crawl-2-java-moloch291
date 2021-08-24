@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.util.NumberParameters;
 import com.codecool.dungeoncrawl.logic.util.gameConditions;
 import com.codecool.dungeoncrawl.logic.util.Direction;
 import javafx.application.Application;
@@ -26,7 +27,10 @@ import java.util.Map;
 public class Game extends Application {
 
     GameMap map;
-    Canvas canvas = new Canvas(30 * Tiles.TILE_WIDTH, 20 * Tiles.TILE_WIDTH);
+    Canvas canvas = new Canvas(
+            NumberParameters.TILE_WIDTH_MULTIPLIER_V.getValue() * Tiles.TILE_WIDTH,
+            NumberParameters.TILE_WIDTH_MULTIPLIER_V1.getValue() * Tiles.TILE_WIDTH
+    );
     Actions actions = new Actions();
     gameConditions gameConditions = new gameConditions();
     GraphicsContext context = canvas.getGraphicsContext2D();
