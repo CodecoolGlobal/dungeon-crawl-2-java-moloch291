@@ -43,6 +43,7 @@ public class MapLoader {
                             break;
                         case 'd':
                             cell.setType(map.getExit());
+                            break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
                             map.setOrcs(new Orc(cell));

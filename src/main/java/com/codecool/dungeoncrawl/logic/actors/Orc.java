@@ -26,9 +26,6 @@ public class Orc extends Actor{
         }
         int newX = direction.getX();
         int newY = direction.getY();
-
-        System.out.println(newX);
-        System.out.println(newY);
         move(newX,newY);
     }
 
