@@ -1,9 +1,9 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.util.Actions;
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.MapLoader;
+import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
+import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
+import com.codecool.dungeoncrawl.logic.MapAndParts.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.util.Booleans;
 import com.codecool.dungeoncrawl.logic.util.Direction;
@@ -137,30 +137,50 @@ public class Game extends Application {
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         int diffX = (int) (canvas.getWidth() / (2 * Tiles.TILE_WIDTH));
         int diffY = (int) (canvas.getHeight() / (2 * Tiles.TILE_WIDTH));
+        buildingCells(playerX, playerY, diffX, diffY);
+        refreshUi();
+    }
+
+    private void buildingCells(int playerX, int playerY, int diffX, int diffY) {
         for (int x = 0; x < canvas.getWidth() && Math.max(playerX - diffX, 0) + x < map.getWidth(); x++) {
             for (int y = 0; y < canvas.getHeight() && Math.max(playerY - diffY, 0) + y < map.getHeight(); y++) {
                 Cell cell = map.getCell(Math.max(playerX - diffX, 0) + x, Math.max(playerY - diffY, 0) + y);
-                if (booleans.isCellOccupied(cell)) {
-                    Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getItem() != null) {
-                    Tiles.drawTile(context, cell.getItem(), x, y);
-                } else {
-                    Tiles.drawTile(context, cell, x, y);
-                }
+                drawingTiles(x, y, cell);
             }
         }
+    }
+
+    private void drawingTiles(int x, int y, Cell cell) {
+        if (booleans.isCellOccupied(cell)) {
+            Tiles.drawTile(context, cell.getActor(), x, y);
+        } else if (cell.getItem() != null) {
+            Tiles.drawTile(context, cell.getItem(), x, y);
+        } else {
+            Tiles.drawTile(context, cell, x, y);
+        }
+    }
+
+    private void refreshUi() {
         healthLabel.setText("" + map.getPlayer().getHealth());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         StringBuilder output = new StringBuilder();
-        for (Item item : playerInventory.keySet()) {
-            String key = item.getName();
-            String value = playerInventory.get(item).toString();
-            output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
-        }
+        buildInventory(playerInventory, output);
+        checkIfEmpty(playerInventory, output);
+    }
+
+    private void checkIfEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
         if (playerInventory.size() == 0) {
             inventoryLabel.setText("Empty");
         } else {
             inventoryLabel.setText("" + output);
+        }
+    }
+
+    private void buildInventory(Map<Item, Integer> playerInventory, StringBuilder output) {
+        for (Item item : playerInventory.keySet()) {
+            String key = item.getName();
+            String value = playerInventory.get(item).toString();
+            output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
         }
     }
 

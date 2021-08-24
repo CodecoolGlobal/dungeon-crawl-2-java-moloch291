@@ -1,5 +1,8 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
+import com.codecool.dungeoncrawl.logic.MapAndParts.CellType;
+import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

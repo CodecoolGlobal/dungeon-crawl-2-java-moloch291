@@ -1,19 +1,15 @@
 package com.codecool.dungeoncrawl.logic.util;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
+import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.actors.Undead;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
-
-import static javafx.scene.input.KeyCode.N;
-import static javafx.scene.input.KeyCode.Y;
 
 public class Actions {
 

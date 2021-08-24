@@ -1,8 +1,8 @@
 package com.codecool.dungeoncrawl.logic.util;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
+import com.codecool.dungeoncrawl.logic.MapAndParts.CellType;
+import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
 
 public class Booleans {
 
@@ -14,7 +14,7 @@ public class Booleans {
     public boolean checkNextCell(Cell nextCell) {
         return (nextCell.getType().equals(CellType.FLOOR) ||
                 nextCell.getType().equals(CellType.OPEN_DOOR)) &&
-                isCellOccupied(nextCell);
+                !isCellOccupied(nextCell);
     }
 
     public boolean isItemOnPlayerPosition(int playerX, int playerY, GameMap map) {
