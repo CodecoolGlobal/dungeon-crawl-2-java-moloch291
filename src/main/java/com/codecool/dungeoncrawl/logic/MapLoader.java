@@ -39,6 +39,17 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             map.setPlayer(new Player(cell));
                             break;
+                        case 'd':
+                            cell.setType(map.getExit());
+                            break;
+                        case 'o':
+                            cell.setType(CellType.FLOOR);
+                            map.setOrcs(new Orc(cell));
+                            break;
+                        case 'u':
+                            cell.setType(CellType.FLOOR);
+                            map.setUndeads(new Undead(cell));
+                            break;
                         case '/':
                             cell.setType(CellType.BRICK_WALL);
                             break;
