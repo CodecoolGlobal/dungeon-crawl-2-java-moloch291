@@ -73,22 +73,22 @@ public class Game extends Application {
     private void onKeyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getCode()) {
             case UP:
-                movement(0, -1);
+                movement(Direction.NORTH.getX(), Direction.NORTH.getY());
                 moveMonsters();
                 refresh();
                 break;
             case DOWN:
-                movement(0, 1);
+                movement(Direction.SOUTH.getX(), Direction.SOUTH.getY());
                 moveMonsters();
                 refresh();
                 break;
             case LEFT:
-                movement(-1, 0);
+                movement(Direction.WEST.getX(), Direction.WEST.getY());
                 moveMonsters();
                 refresh();
                 break;
             case RIGHT:
-                movement(1, 0);
+                movement(Direction.EAST.getX(), Direction.EAST.getY());
                 moveMonsters();
                 refresh();
                 break;
