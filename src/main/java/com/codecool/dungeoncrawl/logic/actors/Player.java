@@ -26,6 +26,10 @@ public class Player extends Actor {
         }
         return false;
     }
+    @Override
+    public void monsterMove(Cell playerCell) {
+
+    }
 
     public String getTileName() {
         return "player";

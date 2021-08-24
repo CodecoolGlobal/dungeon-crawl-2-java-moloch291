@@ -1,7 +1,9 @@
 package com.codecool.dungeoncrawl.logic;
 
+import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import com.codecool.dungeoncrawl.logic.actors.Undead;
 import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
@@ -34,7 +36,7 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            new Skeleton(cell);
+                            map.setSkeletons(new Skeleton(cell));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
@@ -59,6 +61,26 @@ public class MapLoader {
                         case 'p':
                             cell.setType(CellType.FLOOR);
                             new Potion("Potion", cell, ItemType.POTION);
+                            break;
+                        case 'd':
+                            cell.setType(map.getExit());
+                            break;
+                        case 'o':
+                            cell.setType(CellType.FLOOR);
+                            map.setOrcs(new Orc(cell));
+                            break;
+                        case 'u':
+                            cell.setType(CellType.FLOOR);
+                            map.setUndeads(new Undead(cell));
+                            break;
+                        case '/':
+                            cell.setType(CellType.BRICK_WALL);
+                            break;
+                        case '~':
+                            cell.setType(CellType.WATER);
+                            break;
+                        case '^':
+                            cell.setType(CellType.HOUSE);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
