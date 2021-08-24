@@ -4,17 +4,19 @@ import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.actors.Undead;
+import com.codecool.dungeoncrawl.logic.util.Booleans;
 
 import java.util.ArrayList;
 
 public class GameMap {
 
-    private int width;
-    private int height;
-    private Cell[][] cells;
-    private ArrayList<Skeleton> skeletons = new ArrayList<>();
-    private ArrayList<Orc> orcs = new ArrayList<>();
-    private ArrayList<Undead> undeads = new ArrayList<>();
+    private final int width;
+    private final int height;
+    public Booleans booleans;
+    private final Cell[][] cells;
+    private final ArrayList<Skeleton> skeletons = new ArrayList<>();
+    private final ArrayList<Orc> orcs = new ArrayList<>();
+    private final ArrayList<Undead> undeads = new ArrayList<>();
 
     private Player player;
     private CellType exit;
@@ -47,6 +49,7 @@ public class GameMap {
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
         this.height = height;
+        this.booleans = new Booleans(this);
         this.exit = CellType.CLOSED_DOOR;
         cells = new Cell[width][height];
         for (int x = 0; x < width; x++) {

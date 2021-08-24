@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
@@ -28,6 +27,8 @@ import java.util.Map;
 public class Game extends Application {
 
     GameMap map = MapLoader.loadMap();
+    Actions actions = new Actions();
+
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
             map.getHeight() * Tiles.TILE_WIDTH);
@@ -36,7 +37,6 @@ public class Game extends Application {
     Label inventoryLabel = new Label();
     Label quitLabel = new Label();
     Label actionLabel = new Label();
-    Actions actions = new Actions();
 
     public static void main(String[] args) {
         launch(args);
@@ -97,11 +97,12 @@ public class Game extends Application {
                 break;
         }
     }
-    private void moveMonsters(){
-        for (Skeleton skeleton : map.getSkeletons()){
+
+    private void moveMonsters() {
+        for (Skeleton skeleton : map.getSkeletons()) {
             skeleton.monsterMove(map.getPlayer().getCell());
         }
-        for (Orc orc : map.getOrcs()){
+        for (Orc orc : map.getOrcs()) {
             orc.monsterMove(map.getPlayer().getCell());
         }
     }
@@ -121,10 +122,10 @@ public class Game extends Application {
     }
 
     private boolean doorNextToPlayer(int playerX, int playerY) {
-        boolean doorToTheLeft = map.getCell(playerX, playerY - 1).getType() == CellType.CLOSED_DOOR;
-        boolean doorToTheRight = map.getCell(playerX, playerY + 1).getType() == CellType.CLOSED_DOOR;
-        boolean doorBelow = map.getCell(playerX + 1, playerY).getType() == CellType.CLOSED_DOOR;
-        boolean doorAbove = map.getCell(playerX - 1, playerY).getType() == CellType.CLOSED_DOOR;
+        boolean doorToTheLeft = map.booleans.checkDoorInDirection(playerX, playerY, Direction.NORTH);
+        boolean doorToTheRight = map.booleans.checkDoorInDirection(playerX, playerY, Direction.SOUTH);
+        boolean doorBelow = map.booleans.checkDoorInDirection(playerX, playerY, Direction.EAST);
+        boolean doorAbove = map.booleans.checkDoorInDirection(playerX, playerY, Direction.WEST);
         return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
@@ -136,7 +137,7 @@ public class Game extends Application {
                 Cell cell = map.getCell(x, y);
                 if (cell.getActor() != null) {
                     Tiles.drawTile(context, cell.getActor(), x, y);
-                } else if (cell.getItem() != null){
+                } else if (cell.getItem() != null) {
                     Tiles.drawTile(context, cell.getItem(), x, y);
                 } else {
                     Tiles.drawTile(context, cell, x, y);
@@ -146,7 +147,7 @@ public class Game extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         StringBuilder output = new StringBuilder();
-        for (Item item: playerInventory.keySet()) {
+        for (Item item : playerInventory.keySet()) {
             String key = item.getName();
             String value = playerInventory.get(item).toString();
             output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
