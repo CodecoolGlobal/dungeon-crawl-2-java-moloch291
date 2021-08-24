@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl.logic.map;
 
-import com.codecool.dungeoncrawl.logic.actors.Orc;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.actors.Undead;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.util.gameConditions;
 
 import java.util.ArrayList;
@@ -14,9 +11,9 @@ public class GameMap {
     private final int height;
     public gameConditions gameConditions;
     private final Cell[][] cells;
-    private final ArrayList<Skeleton> skeletons = new ArrayList<>();
-    private final ArrayList<Orc> orcs = new ArrayList<>();
-    private final ArrayList<Undead> undeads = new ArrayList<>();
+    private final ArrayList<Actor> skeletons = new ArrayList<>();
+    private final ArrayList<Actor> orcs = new ArrayList<>();
+    private final ArrayList<Actor> undeads = new ArrayList<>();
 
     private Player player;
     private CellType exit;
@@ -45,15 +42,15 @@ public class GameMap {
         this.undeads.remove(index);
     }
 
-    public ArrayList<Skeleton> getSkeletons() {
+    public ArrayList<Actor> getSkeletons() {
         return skeletons;
     }
 
-    public ArrayList<Orc> getOrcs() {
+    public ArrayList<Actor> getOrcs() {
         return orcs;
     }
 
-    public ArrayList<Undead> getUndeads() {
+    public ArrayList<Actor> getUndeads() {
         return undeads;
     }
 

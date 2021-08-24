@@ -47,8 +47,8 @@ public class Actions {
 
     public void monsterInteractions(GameMap map) {
         removeDeadMonsters(map);
-        moveSkeletons(map);
-        moveOrcs(map);
+        moveMonsters(map.getSkeletons(), map.getPlayer().getCell());
+        moveMonsters(map.getOrcs(), map.getPlayer().getCell());
     }
 
 
@@ -59,7 +59,7 @@ public class Actions {
     }
 
     private void removeUndeads(GameMap map) {
-        ArrayList<Undead> undeads = map.getUndeads();
+        ArrayList<Actor> undeads = map.getUndeads();
         for (int i = 0; i < undeads.size(); i++) {
             if (undeads.get(i).getHealth() <= 0) {
                 map.removeUndead(i);
@@ -68,7 +68,7 @@ public class Actions {
     }
 
     private void removeOrcs(GameMap map) {
-        ArrayList<Orc> orcs = map.getOrcs();
+        ArrayList<Actor> orcs = map.getOrcs();
         for (int i = 0; i < orcs.size(); i++) {
             if (orcs.get(i).getHealth() <= 0) {
                 map.removeOrc(i);
@@ -77,7 +77,7 @@ public class Actions {
     }
 
     private void removeSkeletons(GameMap map) {
-        ArrayList<Skeleton> skeletons = map.getSkeletons();
+        ArrayList<Actor> skeletons = map.getSkeletons();
         for (int i = 0; i < skeletons.size(); i++) {
             if (skeletons.get(i).getHealth() <= 0) {
                 map.removeSkeleton(i);
@@ -85,17 +85,9 @@ public class Actions {
         }
     }
 
-    private void moveOrcs(GameMap map) {
-        for (Orc orc : map.getOrcs()) {
-            orc.monsterMove(map.getPlayer().getCell());
-
-        }
-    }
-
-    private void moveSkeletons(GameMap map) {
-        for (Skeleton skeleton : map.getSkeletons()) {
-            skeleton.monsterMove(map.getPlayer().getCell());
-        }
+    private void moveMonsters(ArrayList<Actor> monstersToMove, Cell playerCell) {
+        for (Actor monster : monstersToMove)
+            monster.monsterMove(playerCell);
     }
 
 
