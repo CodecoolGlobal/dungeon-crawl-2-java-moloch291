@@ -1,14 +1,11 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
-import com.codecool.dungeoncrawl.logic.util.Actions;
+import com.codecool.dungeoncrawl.logic.util.*;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.util.NumberParameters;
-import com.codecool.dungeoncrawl.logic.util.gameConditions;
-import com.codecool.dungeoncrawl.logic.util.Direction;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -34,12 +31,15 @@ public class Game extends Application {
     Actions actions = new Actions();
     gameConditions gameConditions = new gameConditions();
     GraphicsContext context = canvas.getGraphicsContext2D();
+
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
     Label quitLabel = new Label();
     Label actionLabel = new Label();
     Label pickUpInfo = new Label();
+
     boolean confirmQuit = false;
+
     Pane lineBreak = new Pane();
     Pane lineBreak2 = new Pane();
 
@@ -70,7 +70,7 @@ public class Game extends Application {
         map = MapLoader.loadMap(coordinates[2]);
         refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
-        primaryStage.setTitle("Dungeon Crawl");
+        primaryStage.setTitle(StringFactory.TITLE.message);
         primaryStage.show();
     }
 
@@ -79,19 +79,23 @@ public class Game extends Application {
         ui.setPadding(new Insets(10));
         lineBreak.minHeightProperty().bind(inventoryLabel.heightProperty());
         lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
-        ui.add(new Label("Health: "), 0, 0);
+        setLabels(ui);
+        pickUpInfo.setText(StringFactory.PICK_UP_ITEMS.message);
+        pickUpInfo.setWrapText(true);
+        quitLabel.setWrapText(true);
+    }
+
+    private void setLabels(GridPane ui) {
+        ui.add(new Label(StringFactory.HEALTH_LABEL.message), 0, 0);
         ui.add(healthLabel, 1, 0);
-        ui.add(new Label("Action: "), 0, 1);
+        ui.add(new Label(StringFactory.ACTION_LABEL.message), 0, 1);
         ui.add(actionLabel, 1, 1);
-        ui.add(new Label("Inventory: "), 0, 2);
+        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 2);
         ui.add(inventoryLabel, 1, 2);
         ui.add(quitLabel, 0, 6, 2, 1);
         ui.add(lineBreak, 0, 3);
         ui.add(pickUpInfo, 0, 4, 2, 1);
         ui.add(lineBreak2, 0, 5);
-        pickUpInfo.setText("Pick up items by pressing Enter while standing on the item.");
-        pickUpInfo.setWrapText(true);
-        quitLabel.setWrapText(true);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -118,7 +122,7 @@ public class Game extends Application {
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
-                quitLabel.setText("Are you sure you want to quit? Y/N");
+                quitLabel.setText(StringFactory.WANT_TO_QUIT.message);
                 confirmQuit = true;
                 break;
             case ENTER:
@@ -134,10 +138,10 @@ public class Game extends Application {
                 quitLabel.setText("");
                 break;
             case F:
-                itemActions.consumeFood(map, "Bread");
+                itemActions.consumeFood(map, StringFactory.BREAD.message);
                 break;
             case P:
-                itemActions.consumePotion(map, "Potion");
+                itemActions.consumePotion(map, StringFactory.POTION.message);
                 break;
         }
     }
@@ -182,7 +186,7 @@ public class Game extends Application {
 
     private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
         if (playerInventory.size() == 0) {
-            inventoryLabel.setText("Empty");
+            inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
         } else {
             inventoryLabel.setText("" + output);
         }

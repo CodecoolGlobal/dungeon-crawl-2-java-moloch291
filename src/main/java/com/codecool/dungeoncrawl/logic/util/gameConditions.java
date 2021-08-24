@@ -21,6 +21,14 @@ public class gameConditions {
         return map.getCell(playerX, playerY).getItem() != null;
     }
 
+    public boolean doorNextToPlayer(int playerX, int playerY, GameMap map) {
+        boolean doorToTheLeft = checkDoorInDirection(playerX, playerY, Direction.NORTH, map);
+        boolean doorToTheRight = checkDoorInDirection(playerX, playerY, Direction.SOUTH, map);
+        boolean doorBelow = checkDoorInDirection(playerX, playerY, Direction.EAST, map);
+        boolean doorAbove = checkDoorInDirection(playerX, playerY, Direction.WEST, map);
+        return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
+    }
+
     public boolean isCellOccupied(Cell cell) {
         return cell.getActor() != null;
     }

@@ -15,6 +15,7 @@ import java.util.Map;
 public class Actions {
 
     gameConditions gameConditions = new gameConditions();
+    Util util = new Util();
 
     public void pickUpItem(GameMap map) {
         int playerX = map.getPlayer().getX();
@@ -85,16 +86,8 @@ public class Actions {
     private void lookForDoor(GameMap map) {
         int playerX = map.getPlayer().getCell().getX();
         int playerY = map.getPlayer().getCell().getY();
-        if (doorNextToPlayer(playerX, playerY, map) && map.getPlayer().hasKey())
+        if (gameConditions.doorNextToPlayer(playerX, playerY, map) && map.getPlayer().hasKey())
             map.openDoor();
-    }
-
-    private boolean doorNextToPlayer(int playerX, int playerY, GameMap map) {
-        boolean doorToTheLeft = gameConditions.checkDoorInDirection(playerX, playerY, Direction.NORTH, map);
-        boolean doorToTheRight = gameConditions.checkDoorInDirection(playerX, playerY, Direction.SOUTH, map);
-        boolean doorBelow = gameConditions.checkDoorInDirection(playerX, playerY, Direction.EAST, map);
-        boolean doorAbove = gameConditions.checkDoorInDirection(playerX, playerY, Direction.WEST, map);
-        return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
     }
 
     private void checkNearbyMonsters(Actor player, Label actionLabel) {
@@ -120,31 +113,25 @@ public class Actions {
         while (true) {
             int playerHealth = 100;
             int enemyHealth;
-            enemyHealth = hit(actionLabel, player, enemy, "\nYou hit the enemy for ");
+            enemyHealth = hit(actionLabel, player, enemy, StringFactory.HIT_ENEMY.message);
             if (gameConditions.isDead(enemyHealth)) {
                 killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy, enemy.getHealth());
                 break;
             }
-            playerHealth = hit(actionLabel, enemy, player, "\nEnemy hit you for ");
+            playerHealth = hit(actionLabel, enemy, player, StringFactory.ENEMY_HIT.message);
             if (gameConditions.isDead(playerHealth))
                 die();
         }
     }
 
     private int hit(Label actionLabel, Actor attacker, Actor defender, String message) {
-        int attackerHit = getAttackerHit(attacker, defender);
+        int attackerHit = util.getAttackerHit(attacker, defender);
         defender.setHealth(defender.getHealth() - attackerHit);
-        actionLabel.setText(actionLabel.getText() + message + attackerHit + " damage!");
+        actionLabel.setText(actionLabel.getText() + message + attackerHit + StringFactory.DAMAGE.message);
         return defender.getHealth();
     }
 
-    private int getAttackerHit(Actor attacker, Actor defender) {
-        return Util.getRandomNumber(
-                attacker.getAttack() + NumberParameters.ATTACK_BONUS.getValue(),
-                attacker.getAttack() - NumberParameters.ATTACK_NERF.getValue())
-                - (defender.getDefense() / NumberParameters.DEFENSE_DIVISOR.getValue()
-        );
-    }
+
 
     private void die() {
         System.exit(0);
@@ -159,7 +146,7 @@ public class Actions {
             int enemyHealth
     ) {
         nearbyCell.setActor(null);
-        actionLabel.setText(actionLabel.getText() + "\nYou killed the enemy!");
+        actionLabel.setText(actionLabel.getText() + StringFactory.KILL_ENEMY.message);
         player.setHealth(playerHealth);
         enemy.setHealth(enemyHealth);
     }
