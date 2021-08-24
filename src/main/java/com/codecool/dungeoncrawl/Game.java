@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
+import com.codecool.dungeoncrawl.logic.map.Tiles;
 import com.codecool.dungeoncrawl.logic.util.*;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
