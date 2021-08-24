@@ -7,8 +7,8 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 public class Booleans {
 
     public boolean checkDoorInDirection(int playerX, int playerY, Direction direction, GameMap map) {
-        return map.getCell(
-                playerX + direction.getX(), playerY + direction.getY()).getType() == CellType.CLOSED_DOOR;
+        return map.getCell(playerX + direction.getX(), playerY + direction.getY())
+                .getType() == CellType.CLOSED_DOOR;
     }
 
     public boolean checkNextCell(Cell nextCell, int healthOfThis) {

@@ -108,11 +108,19 @@ public class Game extends Application {
     }
 
     private void moveMonsters() {
-        for (Skeleton skeleton : map.getSkeletons()) {
-            skeleton.monsterMove(map.getPlayer().getCell());
-        }
+        moveSkeletons();
+        moveOrcs();
+    }
+
+    private void moveOrcs() {
         for (Orc orc : map.getOrcs()) {
             orc.monsterMove(map.getPlayer().getCell());
+        }
+    }
+
+    private void moveSkeletons() {
+        for (Skeleton skeleton : map.getSkeletons()) {
+            skeleton.monsterMove(map.getPlayer().getCell());
         }
     }
 
