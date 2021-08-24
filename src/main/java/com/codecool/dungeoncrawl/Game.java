@@ -36,6 +36,7 @@ public class Game extends Application {
     Label inventoryLabel = new Label();
     Label quitLabel = new Label();
     Label actionLabel = new Label();
+    Actions actions = new Actions();
 
     public static void main(String[] args) {
         launch(args);
@@ -70,33 +71,24 @@ public class Game extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        Actions actions = new Actions();
         switch (keyEvent.getCode()) {
             case UP:
                 movement(0, -1);
-                actions.pickUpItem(map);
-                checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case DOWN:
                 movement(0, 1);
-                actions.pickUpItem(map);
-                checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case LEFT:
                 movement(-1, 0);
-                actions.pickUpItem(map);
-                checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
             case RIGHT:
                 movement(1, 0);
-                actions.pickUpItem(map);
-                checkNearbyMonsters(map.getPlayer());
                 moveMonsters();
                 refresh();
                 break;
@@ -117,6 +109,8 @@ public class Game extends Application {
     private void movement(int moveInRow, int moveInColumn) {
         map.getPlayer().move(moveInRow, moveInColumn);
         lookForDoor();
+        actions.pickUpItem(map);
+        checkNearbyMonsters(map.getPlayer());
     }
 
     private void lookForDoor() {
