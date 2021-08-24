@@ -33,18 +33,12 @@ public class Actions {
 
 
     private void removeDeadMonsters(GameMap map) {
-        ArrayList<Skeleton> skeletons = map.getSkeletons();
-        for (int i = 0; i < skeletons.size(); i++) {
-            if (skeletons.get(i).getHealth() <= 0) {
-                map.removeSkeleton(i);
-            }
-        }
-        ArrayList<Orc> orcs = map.getOrcs();
-        for (int i = 0; i < orcs.size(); i++) {
-            if (orcs.get(i).getHealth() <= 0) {
-                map.removeOrc(i);
-            }
-        }
+        removeSkeletons(map);
+        removeOrcs(map);
+        removeUndeads(map);
+    }
+
+    private void removeUndeads(GameMap map) {
         ArrayList<Undead> undeads = map.getUndeads();
         for (int i = 0; i < undeads.size(); i++) {
             if (undeads.get(i).getHealth() <= 0) {
@@ -53,6 +47,23 @@ public class Actions {
         }
     }
 
+    private void removeOrcs(GameMap map) {
+        ArrayList<Orc> orcs = map.getOrcs();
+        for (int i = 0; i < orcs.size(); i++) {
+            if (orcs.get(i).getHealth() <= 0) {
+                map.removeOrc(i);
+            }
+        }
+    }
+
+    private void removeSkeletons(GameMap map) {
+        ArrayList<Skeleton> skeletons = map.getSkeletons();
+        for (int i = 0; i < skeletons.size(); i++) {
+            if (skeletons.get(i).getHealth() <= 0) {
+                map.removeSkeleton(i);
+            }
+        }
+    }
 
     private void moveOrcs(GameMap map) {
         for (Orc orc : map.getOrcs()) {
