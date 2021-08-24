@@ -53,41 +53,26 @@ public class Actions {
 
 
     private void removeDeadMonsters(GameMap map) {
-        removeSkeletons(map);
-        removeOrcs(map);
-        removeUndeads(map);
+        removeBodies(map.getSkeletons(), map);
+        removeBodies(map.getOrcs(), map);
+        removeBodies(map.getUndeads(), map);
     }
 
-    private void removeUndeads(GameMap map) {
-        ArrayList<Actor> undeads = map.getUndeads();
-        for (int i = 0; i < undeads.size(); i++) {
-            if (undeads.get(i).getHealth() <= 0) {
-                map.removeUndead(i);
-            }
+    private void removeBodies(ArrayList<Actor> monsters, GameMap map) {
+        for (int index = 0; index < monsters.size(); index++) {
+            if (gameConditions.isDead(monsters.get(index).getHealth()))
+                removeBody(monsters.get(index), map, index);
         }
     }
 
-    private void removeOrcs(GameMap map) {
-        ArrayList<Actor> orcs = map.getOrcs();
-        for (int i = 0; i < orcs.size(); i++) {
-            if (orcs.get(i).getHealth() <= 0) {
-                map.removeOrc(i);
-            }
-        }
-    }
-
-    private void removeSkeletons(GameMap map) {
-        ArrayList<Actor> skeletons = map.getSkeletons();
-        for (int i = 0; i < skeletons.size(); i++) {
-            if (skeletons.get(i).getHealth() <= 0) {
-                map.removeSkeleton(i);
-            }
-        }
+    private void removeBody(Actor monster, GameMap map, int index) {
+        if (monster instanceof Skeleton) map.removeSkeleton(index);
+        else if (monster instanceof Orc) map.removeOrc(index);
+        else if (monster instanceof Undead) map.removeUndead(index);
     }
 
     private void moveMonsters(ArrayList<Actor> monstersToMove, Cell playerCell) {
-        for (Actor monster : monstersToMove)
-            monster.monsterMove(playerCell);
+        for (Actor monster : monstersToMove) monster.monsterMove(playerCell);
     }
 
 
@@ -122,9 +107,8 @@ public class Actions {
 
     private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection, Label actionLabel) {
         Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
-        if (gameConditions.isCellOccupied(nearbyCell)) {
+        if (gameConditions.isCellOccupied(nearbyCell))
             fight(nearbyCell, player, actionLabel);
-        }
     }
 
     private void fight(Cell nearbyCell, Actor player, Label actionLabel) {
@@ -137,14 +121,13 @@ public class Actions {
             int playerHealth = 100;
             int enemyHealth;
             enemyHealth = hit(actionLabel, player, enemy, "\nYou hit the enemy for ");
-            if (enemyHealth <= 0) {
+            if (gameConditions.isDead(enemyHealth)) {
                 killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy, enemy.getHealth());
                 break;
             }
             playerHealth = hit(actionLabel, enemy, player, "\nEnemy hit you for ");
-            if (playerHealth <= 0) {
+            if (gameConditions.isDead(playerHealth))
                 die();
-            }
         }
     }
 

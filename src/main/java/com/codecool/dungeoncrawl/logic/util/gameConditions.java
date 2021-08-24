@@ -24,4 +24,8 @@ public class gameConditions {
     public boolean isCellOccupied(Cell cell) {
         return cell.getActor() != null;
     }
+
+    public boolean isDead(int actorHealth) {
+        return actorHealth <= 0;
+    }
 }
