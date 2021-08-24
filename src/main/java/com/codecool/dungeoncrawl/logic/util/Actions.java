@@ -118,29 +118,38 @@ public class Actions {
         int enemyDefense = enemy.getDefense();
         int enemyHealth = enemy.getHealth();
         while (true) {
-            int playerHit = Util.getRandomNumber(playerAttack + 2, playerAttack - 1) - (enemyDefense / 2);
-            enemyHealth -= playerHit;
-            actionLabel.setText(actionLabel.getText() + "\nYou hit the enemy for " + playerHit);
+            enemyHealth = hit(actionLabel, playerAttack, enemyDefense, enemyHealth, "\nYou hit the enemy for ");
             if (enemyHealth <= 0) {
-                nearbyCell.setActor(null);
-                actionLabel.setText(actionLabel.getText() + "\nYou killed the enemy!");
-                player.setHealth(playerHealth);
-                enemy.setHealth(enemyHealth);
+                killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy, enemyHealth);
                 break;
             }
-            int enemyHit = Util.getRandomNumber(enemyAttack + 2, enemyAttack - 1) - (playerDefense / 2);
-            playerHealth -= enemyHit;
-            actionLabel.setText(actionLabel.getText() + "\nThe enemy hit you for " + enemyHit);
+            playerHealth = hit(actionLabel, enemyAttack, playerDefense, playerHealth, "\nEnemy hit you for ");
             if (playerHealth <= 0) {
-                player.getCell().setActor(null);
-                actionLabel.setText(actionLabel.getText() + "\nYou died!");
-                enemy.setHealth(enemyHealth);
-                System.exit(0);
-                break;
+                die(player, actionLabel, enemy, enemyHealth);
             }
         }
     }
 
+    private int hit(Label actionLabel, int attackerAttack, int defenderDefense, int defenderHealth, String message) {
+        int attackerHit = Util.getRandomNumber(attackerAttack + 2, attackerAttack - 1) - (defenderDefense / 2);
+        defenderHealth -= attackerHit;
+        actionLabel.setText(actionLabel.getText() + message + attackerHit + " damage!");
+        return defenderHealth;
+    }
+
+    private void die(Actor player, Label actionLabel, Actor enemy, int enemyHealth) {
+        player.getCell().setActor(null);
+        actionLabel.setText(actionLabel.getText() + "\nYou died!");
+        enemy.setHealth(enemyHealth);
+        System.exit(0);
+    }
+
+    private void killEnemy(Cell nearbyCell, Actor player, Label actionLabel, int playerHealth, Actor enemy, int enemyHealth) {
+        nearbyCell.setActor(null);
+        actionLabel.setText(actionLabel.getText() + "\nYou killed the enemy!");
+        player.setHealth(playerHealth);
+        enemy.setHealth(enemyHealth);
+    }
 
 
     public Actions() {

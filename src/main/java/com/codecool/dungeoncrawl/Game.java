@@ -28,7 +28,6 @@ public class Game extends Application {
             30 * Tiles.TILE_WIDTH,
             20 * Tiles.TILE_WIDTH);
     Actions actions = new Actions();
-    Booleans booleans = new Booleans();
     GraphicsContext context = canvas.getGraphicsContext2D();
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
