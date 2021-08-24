@@ -1,20 +1,16 @@
 package com.codecool.dungeoncrawl.logic.util;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.GameMap;
+import com.codecool.dungeoncrawl.logic.MapAndParts.Cell;
+import com.codecool.dungeoncrawl.logic.MapAndParts.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Orc;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
 import com.codecool.dungeoncrawl.logic.actors.Undead;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.scene.control.Label;
-import javafx.scene.input.KeyEvent;
 
 import java.util.ArrayList;
 import java.util.Map;
-
-import static javafx.scene.input.KeyCode.N;
-import static javafx.scene.input.KeyCode.Y;
 
 public class Actions {
 
@@ -57,18 +53,12 @@ public class Actions {
 
 
     private void removeDeadMonsters(GameMap map) {
-        ArrayList<Skeleton> skeletons = map.getSkeletons();
-        for (int i = 0; i < skeletons.size(); i++) {
-            if (skeletons.get(i).getHealth() <= 0) {
-                map.removeSkeleton(i);
-            }
-        }
-        ArrayList<Orc> orcs = map.getOrcs();
-        for (int i = 0; i < orcs.size(); i++) {
-            if (orcs.get(i).getHealth() <= 0) {
-                map.removeOrc(i);
-            }
-        }
+        removeSkeletons(map);
+        removeOrcs(map);
+        removeUndeads(map);
+    }
+
+    private void removeUndeads(GameMap map) {
         ArrayList<Undead> undeads = map.getUndeads();
         for (int i = 0; i < undeads.size(); i++) {
             if (undeads.get(i).getHealth() <= 0) {
@@ -77,6 +67,23 @@ public class Actions {
         }
     }
 
+    private void removeOrcs(GameMap map) {
+        ArrayList<Orc> orcs = map.getOrcs();
+        for (int i = 0; i < orcs.size(); i++) {
+            if (orcs.get(i).getHealth() <= 0) {
+                map.removeOrc(i);
+            }
+        }
+    }
+
+    private void removeSkeletons(GameMap map) {
+        ArrayList<Skeleton> skeletons = map.getSkeletons();
+        for (int i = 0; i < skeletons.size(); i++) {
+            if (skeletons.get(i).getHealth() <= 0) {
+                map.removeSkeleton(i);
+            }
+        }
+    }
 
     private void moveOrcs(GameMap map) {
         for (Orc orc : map.getOrcs()) {
@@ -123,12 +130,13 @@ public class Actions {
 
     private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection, Label actionLabel) {
         Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
-        if (nearbyCell.getActor() != null) {
+        if (booleans.isCellOccupied(nearbyCell)) {
             fight(nearbyCell, player, actionLabel);
         }
     }
 
     private void fight(Cell nearbyCell, Actor player, Label actionLabel) {
+
         actionLabel.setText("");
         int playerAttack = player.getAttack();
         int playerDefense = player.getDefense();
@@ -137,30 +145,73 @@ public class Actions {
         int enemyAttack = enemy.getAttack();
         int enemyDefense = enemy.getDefense();
         int enemyHealth = enemy.getHealth();
+
+        fightLoop(
+                nearbyCell,
+                player,
+                actionLabel,
+                playerAttack,
+                playerDefense,
+                playerHealth,
+                enemy,
+                enemyAttack,
+                enemyDefense,
+                enemyHealth
+        );
+    }
+
+    private void fightLoop(
+            Cell nearbyCell,
+            Actor player,
+            Label actionLabel,
+            int playerAttack,
+            int playerDefense,
+            int playerHealth,
+            Actor enemy,
+            int enemyAttack,
+            int enemyDefense,
+            int enemyHealth
+    ) {
         while (true) {
-            int playerHit = Util.getRandomNumber(playerAttack + 2, playerAttack - 1) - (enemyDefense / 2);
-            enemyHealth -= playerHit;
-            actionLabel.setText(actionLabel.getText() + "\nYou hit the enemy for " + playerHit);
+            enemyHealth = hit(actionLabel, playerAttack, enemyDefense, enemyHealth, "\nYou hit the enemy for ");
             if (enemyHealth <= 0) {
-                nearbyCell.setActor(null);
-                actionLabel.setText(actionLabel.getText() + "\nYou killed the enemy!");
-                player.setHealth(playerHealth);
-                enemy.setHealth(enemyHealth);
+                killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy, enemyHealth);
                 break;
             }
-            int enemyHit = Util.getRandomNumber(enemyAttack + 2, enemyAttack - 1) - (playerDefense / 2);
-            playerHealth -= enemyHit;
-            actionLabel.setText(actionLabel.getText() + "\nThe enemy hit you for " + enemyHit);
+            playerHealth = hit(actionLabel, enemyAttack, playerDefense, playerHealth, "\nEnemy hit you for ");
             if (playerHealth <= 0) {
-                player.getCell().setActor(null);
-                actionLabel.setText(actionLabel.getText() + "\nYou died!");
-                enemy.setHealth(enemyHealth);
-                System.exit(0);
-                break;
+                die(player, actionLabel, enemy, enemyHealth);
             }
         }
     }
 
+    private int hit(Label actionLabel, int attackerAttack, int defenderDefense, int defenderHealth, String message) {
+        int attackerHit = Util.getRandomNumber(attackerAttack + 2, attackerAttack - 1) - (defenderDefense / 2);
+        defenderHealth -= attackerHit;
+        actionLabel.setText(actionLabel.getText() + message + attackerHit + " damage!");
+        return defenderHealth;
+    }
+
+    private void die(Actor player, Label actionLabel, Actor enemy, int enemyHealth) {
+        player.getCell().setActor(null);
+        actionLabel.setText(actionLabel.getText() + "\nYou died!");
+        enemy.setHealth(enemyHealth);
+        System.exit(0);
+    }
+
+    private void killEnemy(
+            Cell nearbyCell,
+            Actor player,
+            Label actionLabel,
+            int playerHealth,
+            Actor enemy,
+            int enemyHealth
+    ) {
+        nearbyCell.setActor(null);
+        actionLabel.setText(actionLabel.getText() + "\nYou killed the enemy!");
+        player.setHealth(playerHealth);
+        enemy.setHealth(enemyHealth);
+    }
 
 
     public Actions() {

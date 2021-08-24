@@ -1,10 +1,9 @@
-package com.codecool.dungeoncrawl.logic;
+package com.codecool.dungeoncrawl.logic.MapAndParts;
 
 public enum CellType {
     EMPTY("empty"),
     FLOOR("floor"),
     WALL("wall"),
-    DOOR("door"),
     BRICK_WALL("redbrick"),
     WATER("water"),
     HOUSE("house"),

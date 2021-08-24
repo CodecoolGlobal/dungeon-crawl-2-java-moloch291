@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.logic;
+package com.codecool.dungeoncrawl.logic.MapAndParts;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
@@ -7,7 +7,7 @@ public class Cell implements Drawable {
     private CellType type;
     private Actor actor;
     private Item item;
-    private GameMap gameMap;
+    private final GameMap gameMap;
     private int x, y;
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
