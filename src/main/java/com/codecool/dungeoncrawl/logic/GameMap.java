@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
 public class GameMap {
+
     private int width;
     private int height;
     private Cell[][] cells;

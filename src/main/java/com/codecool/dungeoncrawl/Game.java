@@ -17,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Game extends Application {
+
     GameMap map = MapLoader.loadMap();
     Canvas canvas = new Canvas(
             map.getWidth() * Tiles.TILE_WIDTH,
@@ -80,9 +81,8 @@ public class Game extends Application {
     private void lookForDoor() {
         int playerX = map.getPlayer().getCell().getX();
         int playerY = map.getPlayer().getCell().getY();
-        if (doorNextToPlayer(playerX, playerY) && map.getPlayer().isKeyPickedUp()) {
+        if (doorNextToPlayer(playerX, playerY) && map.getPlayer().hasKey())
             map.openDoor();
-        }
     }
 
     private boolean doorNextToPlayer(int playerX, int playerY) {
