@@ -31,9 +31,8 @@ public class Tiles {
         tileMap.put("redbrick", new Tile(6,13));
         tileMap.put("water", new Tile(8, 5));
         tileMap.put("house", new Tile(0,20));
-        tileMap.put("door", new Tile(21,11));
-        tileMap.put("closed door", new Tile(9, 11));
-        tileMap.put("open door", new Tile(12, 11));
+        tileMap.put("closed door", new Tile(22, 11));
+        tileMap.put("open door", new Tile(21, 11));
         tileMap.put("orc", new Tile(28,6));
         tileMap.put("undead", new Tile(25,2));
     }
