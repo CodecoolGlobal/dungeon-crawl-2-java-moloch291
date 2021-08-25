@@ -6,9 +6,9 @@ public class Undead extends Actor{
 
     public Undead(Cell cell) {
         super(cell);
-        super.setAttack(3);
+        super.setAttack(5);
         super.setDefense(3);
-        super.setHealth(4);
+        super.setHealth(8);
     }
 
     @Override
