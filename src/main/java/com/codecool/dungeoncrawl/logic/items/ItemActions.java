@@ -41,9 +41,9 @@ public class ItemActions {
             }
         }
         if (count > 1) {
-            map.getPlayer().setInventory(inInventory, playerInventory.get(inInventory) - 1);
+            map.getPlayer().addToInventory(inInventory, playerInventory.get(inInventory) - 1);
         } else {
-            map.getPlayer().removeFromInventory(inInventory); 
+            map.getPlayer().removeFromInventory(inInventory);
         }
     }
 }

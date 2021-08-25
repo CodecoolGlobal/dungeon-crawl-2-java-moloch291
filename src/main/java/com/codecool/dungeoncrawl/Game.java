@@ -31,17 +31,18 @@ public class Game extends Application {
             NumberParameters.TILE_WIDTH_MULTIPLIER_V.getValue() * Tiles.TILE_WIDTH,
             NumberParameters.TILE_WIDTH_MULTIPLIER_V1.getValue() * Tiles.TILE_WIDTH
     );
-    Actions actions = new Actions();
-    gameConditions gameConditions = new gameConditions();
     GraphicsContext context = canvas.getGraphicsContext2D();
+
+    Actions actions = new Actions();
+    Util util = new Util();
+    gameConditions gameConditions = new gameConditions();
+    boolean confirmQuit = false;
 
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
     Label quitLabel = new Label();
     Label actionLabel = new Label();
     Label pickUpInfo = new Label();
-
-    boolean confirmQuit = false;
 
     Pane lineBreak = new Pane();
     Pane lineBreak2 = new Pane();
@@ -105,22 +106,22 @@ public class Game extends Application {
         ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
-                actions.movement(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
+                actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
-                actions.movement(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
+                actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
-                actions.movement(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
+                actions.movePlayer(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
-                actions.movement(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
+                actions.movePlayer(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
@@ -133,7 +134,7 @@ public class Game extends Application {
                 break;
             case Y:
                 if (confirmQuit) {
-                    System.exit(0);
+                    util.exitGame();
                 }
                 break;
             case N:
@@ -149,13 +150,11 @@ public class Game extends Application {
         }
     }
 
-
-
     private void refresh(int playerX, int playerY) {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        int diffX = (int) (canvas.getWidth() / (2 * Tiles.TILE_WIDTH));
-        int diffY = (int) (canvas.getHeight() / (2 * Tiles.TILE_WIDTH));
+        int diffX = (int) (canvas.getWidth() / (NumberParameters.TILE_WIDTH_MULTIPLIER.getValue() * Tiles.TILE_WIDTH));
+        int diffY = (int) (canvas.getHeight() / (NumberParameters.TILE_WIDTH_MULTIPLIER.getValue() * Tiles.TILE_WIDTH));
         drawingCells(playerX, playerY, diffX, diffY);
         refreshUi();
     }

@@ -21,6 +21,10 @@ public class Util {
         ) - (defender.getDefense() / NumberParameters.DEFENSE_DIVISOR.getValue());
     }
 
+    public void exitGame() {
+        System.exit(0);
+    }
+
     public static int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
