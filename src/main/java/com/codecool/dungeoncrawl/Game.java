@@ -20,6 +20,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Game extends Application {
@@ -179,25 +181,25 @@ public class Game extends Application {
     private void refreshUi() {
         healthLabel.setText("" + map.getPlayer().getHealth());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        StringBuilder output = new StringBuilder();
-        buildInventoryString(playerInventory, output);
-        isInventoryEmpty(playerInventory, output);
+        String inventoryContents = buildInventory(playerInventory);
+        checkIfInventoryIsEmpty(playerInventory, inventoryContents);
     }
 
-    private void isInventoryEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
+    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, String inventoryContents) {
         if (playerInventory.size() == 0) {
             inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
         } else {
-            inventoryLabel.setText("" + output);
+            inventoryLabel.setText(inventoryContents);
         }
     }
 
-    private void buildInventoryString(Map<Item, Integer> playerInventory, StringBuilder output) {
+    private String buildInventory(Map<Item, Integer> playerInventory) {
+        List<String> itemsInInventory = new ArrayList<>();
         for (Item item : playerInventory.keySet()) {
-            String key = item.getName();
-            String value = playerInventory.get(item).toString();
-            output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
+            itemsInInventory.add(item.getName());
+            itemsInInventory.add(playerInventory.get(item).toString() + "\n");
         }
+        return String.join(" ", itemsInInventory);
     }
 
 }
