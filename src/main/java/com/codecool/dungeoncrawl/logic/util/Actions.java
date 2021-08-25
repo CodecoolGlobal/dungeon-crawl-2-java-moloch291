@@ -127,18 +127,27 @@ public class Actions {
         Actor enemy = nearbyCell.getActor();
         while (true) {
             int playerHealth = 100;
-            int enemyHealth;
             // Player's turn:
-            enemyHealth = hit(actionLabel, player, enemy, StringFactory.HIT_ENEMY.message);
-            if (gameConditions.isDead(enemyHealth)) {
-                killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy);
-                break;
-            }
+            if (playerTurn(nearbyCell, player, actionLabel, enemy, playerHealth)) break;
             // Enemy turn:
-            playerHealth = hit(actionLabel, enemy, player, StringFactory.ENEMY_HIT.message);
-            if (gameConditions.isDead(playerHealth))
-                die();
+            enemyTurn(player, actionLabel, enemy);
         }
+    }
+
+    private void enemyTurn(Actor player, Label actionLabel, Actor enemy) {
+        int playerHealth;
+        playerHealth = hit(actionLabel, enemy, player, StringFactory.ENEMY_HIT.message);
+        if (gameConditions.isDead(playerHealth))
+            die();
+    }
+
+    private boolean playerTurn(Cell nearbyCell, Actor player, Label actionLabel, Actor enemy, int playerHealth) {
+        int enemyHealth = hit(actionLabel, player, enemy, StringFactory.HIT_ENEMY.message);
+        if (gameConditions.isDead(enemyHealth)) {
+            killEnemy(nearbyCell, player, actionLabel, playerHealth, enemy);
+            return true;
+        }
+        return false;
     }
 
     // Decrease and the defender's health according to the attack value of the attacking Actor:
