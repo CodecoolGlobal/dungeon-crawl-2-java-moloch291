@@ -103,22 +103,22 @@ public class Game extends Application {
         ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
-                actions.movement(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
+                actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
-                actions.movement(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
+                actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
-                actions.movement(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
+                actions.movePlayer(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
-                actions.movement(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
+                actions.movePlayer(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
@@ -181,11 +181,11 @@ public class Game extends Application {
         healthLabel.setText("" + map.getPlayer().getHealth());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         StringBuilder output = new StringBuilder();
-        buildInventory(playerInventory, output);
-        checkIfInventoryIsEmpty(playerInventory, output);
+        buildInventoryString(playerInventory, output);
+        isInventoryEmpty(playerInventory, output);
     }
 
-    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
+    private void isInventoryEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
         if (playerInventory.size() == 0) {
             inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
         } else {
@@ -193,7 +193,7 @@ public class Game extends Application {
         }
     }
 
-    private void buildInventory(Map<Item, Integer> playerInventory, StringBuilder output) {
+    private void buildInventoryString(Map<Item, Integer> playerInventory, StringBuilder output) {
         for (Item item : playerInventory.keySet()) {
             String key = item.getName();
             String value = playerInventory.get(item).toString();
