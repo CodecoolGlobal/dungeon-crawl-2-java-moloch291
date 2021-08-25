@@ -159,6 +159,30 @@ public class Game extends Application {
         refreshUi();
     }
 
+    private void refreshUi() {
+        healthLabel.setText("" + map.getPlayer().getHealth());
+        Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
+        String inventoryContents = buildInventoryString(playerInventory);
+        checkIfInventoryIsEmpty(playerInventory, inventoryContents);
+    }
+
+    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, String inventoryContents) {
+        if (playerInventory.size() == 0) {
+            inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
+        } else {
+            inventoryLabel.setText(inventoryContents);
+        }
+    }
+
+    private String buildInventoryString(Map<Item, Integer> playerInventory) {
+        List<String> itemsInInventory = new ArrayList<>();
+        for (Item item : playerInventory.keySet()) {
+            itemsInInventory.add(item.getName());
+            itemsInInventory.add(playerInventory.get(item).toString() + "\n");
+        }
+        return String.join(" ", itemsInInventory);
+    }
+
     private void drawingCells(int playerX, int playerY, int diffX, int diffY) {
         for (int x = 0; x < canvas.getWidth() && Math.max(playerX - diffX, 0) + x < map.getWidth(); x++) {
             for (int y = 0; y < canvas.getHeight() && Math.max(playerY - diffY, 0) + y < map.getHeight(); y++) {
@@ -177,29 +201,4 @@ public class Game extends Application {
             Tiles.drawTile(context, cell, x, y);
         }
     }
-
-    private void refreshUi() {
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        String inventoryContents = buildInventory(playerInventory);
-        checkIfInventoryIsEmpty(playerInventory, inventoryContents);
-    }
-
-    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, String inventoryContents) {
-        if (playerInventory.size() == 0) {
-            inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
-        } else {
-            inventoryLabel.setText(inventoryContents);
-        }
-    }
-
-    private String buildInventory(Map<Item, Integer> playerInventory) {
-        List<String> itemsInInventory = new ArrayList<>();
-        for (Item item : playerInventory.keySet()) {
-            itemsInInventory.add(item.getName());
-            itemsInInventory.add(playerInventory.get(item).toString() + "\n");
-        }
-        return String.join(" ", itemsInInventory);
-    }
-
 }

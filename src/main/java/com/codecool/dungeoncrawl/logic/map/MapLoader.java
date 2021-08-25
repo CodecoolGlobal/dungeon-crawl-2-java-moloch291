@@ -13,15 +13,15 @@ import java.util.Scanner;
 public class MapLoader {
 
     public static int[] getPlayerPosition() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
-        Scanner scanner = new Scanner(is);
+        InputStream inputStream = MapLoader.class.getResourceAsStream("/map.txt");
+        Scanner scanner = new Scanner(inputStream);
 
         scanner.nextLine(); // empty line
         int[] result = new int[3];
         int y = -1;
         while (true) {
             y++;
-            String line = "";
+            String line;
             try {
                 line = scanner.nextLine();
             } catch (NoSuchElementException e) {
@@ -39,8 +39,8 @@ public class MapLoader {
     }
 
     public static GameMap loadMap(int height) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
-        Scanner scanner = new Scanner(is);
+        InputStream inputStream = MapLoader.class.getResourceAsStream("/map.txt");
+        Scanner scanner = new Scanner(inputStream);
 
         String line = scanner.nextLine(); // empty line
         int width = line.length();
@@ -124,5 +124,4 @@ public class MapLoader {
         }
         return map;
     }
-
 }
