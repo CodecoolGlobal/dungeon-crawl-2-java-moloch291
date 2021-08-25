@@ -22,20 +22,20 @@ public class Actions {
         int playerY = map.getPlayer().getY();
         if (gameConditions.isItemOnPlayerPosition(playerX, playerY, map)) {
             Item item = map.getCell(playerX, playerY).getItem();
-            Item itemInInventory;
-            String itemName = item.getName();
-            int count = 0;
+            int addedQuantity = 1;
+            boolean inInventory = false;
             Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
             for (Item itemInLoop: playerInventory.keySet()) {
                 if (itemInLoop.getName().equals(item.getName())) {
-                    itemInInventory = itemInLoop;
-                    count = playerInventory.get(itemInLoop);
-                    map.getPlayer().removeFromInventory(itemInLoop);
+                    item = itemInLoop;
+                    inInventory = true;
                 }
             }
-            //map.getPlayer().setInventory(item, 1);
-            //int count = map.getPlayer().getInventory().getOrDefault(item, 0);
-            map.getPlayer().setInventory(item, count + 1);
+            if (!inInventory) {
+                map.getPlayer().setInventory(item, addedQuantity);
+            } else {
+                map.getPlayer().setInventory(item, playerInventory.get(item) + addedQuantity);
+            }
             map.getCell(playerX, playerY).setItem(null);
         }
     }
