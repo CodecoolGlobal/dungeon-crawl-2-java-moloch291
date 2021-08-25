@@ -6,11 +6,6 @@ import com.codecool.dungeoncrawl.logic.map.GameMap;
 
 public class gameConditions {
 
-    public boolean checkDoorInDirection(int playerX, int playerY, Direction direction, GameMap map) {
-        return map.getCell(playerX + direction.getX(), playerY + direction.getY())
-                .getType() == CellType.CLOSED_DOOR;
-    }
-
     public boolean checkNextCell(Cell nextCell) {
         return (nextCell.getType().equals(CellType.FLOOR) ||
                 nextCell.getType().equals(CellType.OPEN_DOOR)) &&
@@ -27,6 +22,11 @@ public class gameConditions {
         boolean doorBelow = checkDoorInDirection(playerX, playerY, Direction.EAST, map);
         boolean doorAbove = checkDoorInDirection(playerX, playerY, Direction.WEST, map);
         return doorToTheLeft || doorToTheRight || doorBelow || doorAbove;
+    }
+
+    public boolean checkDoorInDirection(int playerX, int playerY, Direction direction, GameMap map) {
+        return map.getCell(playerX + direction.getX(), playerY + direction.getY())
+                .getType() == CellType.CLOSED_DOOR;
     }
 
     public boolean isCellOccupied(Cell cell) {
