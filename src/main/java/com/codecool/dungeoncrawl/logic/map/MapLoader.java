@@ -12,8 +12,8 @@ import java.util.Scanner;
 
 public class MapLoader {
 
-    public static int[] getPlayerPosition() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+    public static int[] getPlayerPosition(String map) {
+        InputStream is = MapLoader.class.getResourceAsStream(map);
         Scanner scanner = new Scanner(is);
 
         scanner.nextLine(); // empty line
@@ -38,8 +38,8 @@ public class MapLoader {
         return result;
     }
 
-    public static GameMap loadMap(int height) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+    public static GameMap loadMap(int height,String mapToLoad) {
+        InputStream is = MapLoader.class.getResourceAsStream(mapToLoad);
         Scanner scanner = new Scanner(is);
 
         String line = scanner.nextLine(); // empty line

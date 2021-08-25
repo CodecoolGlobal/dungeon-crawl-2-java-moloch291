@@ -11,6 +11,12 @@ public class gameConditions {
                 .getType() == CellType.CLOSED_DOOR;
     }
 
+    public boolean checkOpenDoor(int playerX, int playerY, GameMap map) {
+        return map.getCell(playerX, playerY)
+                .getType() == CellType.OPEN_DOOR;
+    }
+
+
     public boolean checkNextCell(Cell nextCell) {
         return (nextCell.getType().equals(CellType.FLOOR) ||
                 nextCell.getType().equals(CellType.OPEN_DOOR)) &&

@@ -57,7 +57,7 @@ public class Game extends Application {
         setUpBorderPane(ui, borderPane);
 
         Scene scene = new Scene(borderPane);
-        setUpScene(primaryStage, scene);
+        setUpScene(primaryStage, scene, "/map.txt");
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -65,10 +65,10 @@ public class Game extends Application {
         borderPane.setRight(ui);
     }
 
-    private void setUpScene(Stage primaryStage, Scene scene) {
+    private void setUpScene(Stage primaryStage, Scene scene, String mapToLoad) {
         primaryStage.setScene(scene);
-        int[] coordinates = MapLoader.getPlayerPosition();
-        map = MapLoader.loadMap(coordinates[2]);
+        int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
+        map = MapLoader.loadMap(coordinates[2],mapToLoad);
         refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle(StringFactory.TITLE.message);
@@ -105,21 +105,25 @@ public class Game extends Application {
             case UP:
                 actions.movement(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                tryTogoToMap2();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
                 actions.movement(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                tryTogoToMap2();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
                 actions.movement(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                tryTogoToMap2();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
                 actions.movement(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                tryTogoToMap2();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
@@ -198,6 +202,19 @@ public class Game extends Application {
             String key = item.getName();
             String value = playerInventory.get(item).toString();
             output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
+        }
+    }
+
+    private void tryTogoToMap2() {
+        if (gameConditions.checkOpenDoor(map.getPlayer().getX(), map.getPlayer().getY(), map)) {
+            GridPane ui = new GridPane();
+            setUpUi(ui);
+
+            BorderPane borderPane = new BorderPane();
+            setUpBorderPane(ui, borderPane);
+
+            Scene scene = new Scene(borderPane);
+            setUpScene(new Stage(), scene, "/map2.txt");
         }
     }
 
