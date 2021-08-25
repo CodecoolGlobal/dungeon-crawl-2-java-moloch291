@@ -29,6 +29,10 @@ public class Cell implements Drawable {
         this.actor = actor;
     }
 
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
     public Actor getActor() {
         return actor;
     }
@@ -52,9 +56,5 @@ public class Cell implements Drawable {
 
     public Item getItem() {
         return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
     }
 }
