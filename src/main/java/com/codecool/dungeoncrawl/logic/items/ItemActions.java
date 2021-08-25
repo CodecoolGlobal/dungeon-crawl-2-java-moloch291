@@ -40,7 +40,7 @@ public class ItemActions {
                 count = playerInventory.get(item);
                 if (count > 1) {
                     map.getPlayer().removeFromInventory(item);
-                    map.getPlayer().setInventory(oldItem, count - 1);
+                    map.getPlayer().addToInventory(oldItem, count - 1);
                 } else {
                     map.getPlayer().removeFromInventory(item);
                 }

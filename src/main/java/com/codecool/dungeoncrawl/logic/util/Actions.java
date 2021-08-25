@@ -39,7 +39,7 @@ public class Actions {
             }
             //map.getPlayer().setInventory(item, 1);
             //int count = map.getPlayer().getInventory().getOrDefault(item, 0);
-            map.getPlayer().setInventory(item, count + 1);
+            map.getPlayer().addToInventory(item, count + 1);
             map.getCell(playerX, playerY).setItem(null);
         }
     }
