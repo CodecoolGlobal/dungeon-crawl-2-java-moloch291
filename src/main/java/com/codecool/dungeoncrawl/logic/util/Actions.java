@@ -151,7 +151,7 @@ public class Actions {
 
     // If player's health 0 or less:
     private void die() {
-        System.exit(0);
+        util.exitGame();
     }
 
     // If enemy's health 0 or less:

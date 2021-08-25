@@ -30,6 +30,7 @@ public class Game extends Application {
             NumberParameters.TILE_WIDTH_MULTIPLIER_V1.getValue() * Tiles.TILE_WIDTH
     );
     Actions actions = new Actions();
+    Util util = new Util();
     gameConditions gameConditions = new gameConditions();
     GraphicsContext context = canvas.getGraphicsContext2D();
 
@@ -131,7 +132,7 @@ public class Game extends Application {
                 break;
             case Y:
                 if (confirmQuit) {
-                    System.exit(0);
+                    util.exitGame();
                 }
                 break;
             case N:
@@ -146,8 +147,6 @@ public class Game extends Application {
                 break;
         }
     }
-
-
 
     private void refresh(int playerX, int playerY) {
         context.setFill(Color.BLACK);
