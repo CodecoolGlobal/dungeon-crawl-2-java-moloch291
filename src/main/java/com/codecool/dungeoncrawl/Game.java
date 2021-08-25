@@ -210,6 +210,7 @@ public class Game extends Application {
             GridPane ui = new GridPane();
             setUpUi(ui);
 
+
             BorderPane borderPane = new BorderPane();
             setUpBorderPane(ui, borderPane);
 
