@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class MapLoader {
 
     public static int[] getPlayerPosition() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+        InputStream is = MapLoader.class.getResourceAsStream("/map2.txt");
         Scanner scanner = new Scanner(is);
 
         scanner.nextLine(); // empty line
@@ -39,7 +39,7 @@ public class MapLoader {
     }
 
     public static GameMap loadMap(int height) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+        InputStream is = MapLoader.class.getResourceAsStream("/map2.txt");
         Scanner scanner = new Scanner(is);
 
         String line = scanner.nextLine(); // empty line
@@ -67,6 +67,9 @@ public class MapLoader {
                             break;
                         case '.':
                             cell.setType(CellType.FLOOR);
+                            break;
+                        case '-':
+                            cell.setType(CellType.FLOOR2);
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
@@ -113,8 +116,35 @@ public class MapLoader {
                         case '~':
                             cell.setType(CellType.WATER);
                             break;
+                        case '_':
+                            cell.setType(CellType.RIVER);
+                            break;
                         case '^':
                             cell.setType(CellType.HOUSE);
+                            break;
+                        case '«':
+                            cell.setType(CellType.RAMP_START);
+                            break;
+                        case '|':
+                            cell.setType(CellType.RAMP_MIDDLE);
+                            break;
+                        case '»':
+                            cell.setType(CellType.RAMP_END);
+                            break;
+                        case 'B':
+                            cell.setType(CellType.BOAT);
+                            break;
+                        case '!':
+                            cell.setType(CellType.TORCH);
+                            break;
+                        case 'L':
+                            cell.setType(CellType.LADDER);
+                            break;
+                        case 'l':
+                            cell.setType(CellType.LADDER_UPPER);
+                            break;
+                        case 'H':
+                            cell.setType(CellType.LAKE_HOUSE);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

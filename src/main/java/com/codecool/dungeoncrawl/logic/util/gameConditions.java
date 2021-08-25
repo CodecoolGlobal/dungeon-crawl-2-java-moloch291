@@ -13,6 +13,13 @@ public class gameConditions {
 
     public boolean checkNextCell(Cell nextCell) {
         return (nextCell.getType().equals(CellType.FLOOR) ||
+                nextCell.getType().equals(CellType.FLOOR2) ||
+                nextCell.getType().equals(CellType.RAMP_START) ||
+                nextCell.getType().equals(CellType.RAMP_MIDDLE) ||
+                nextCell.getType().equals(CellType.RAMP_END) ||
+                nextCell.getType().equals(CellType.LADDER) ||
+                nextCell.getType().equals(CellType.LADDER_UPPER) ||
+                nextCell.getType().equals(CellType.WATER) ||
                 nextCell.getType().equals(CellType.OPEN_DOOR)) &&
                 !isCellOccupied(nextCell);
     }
