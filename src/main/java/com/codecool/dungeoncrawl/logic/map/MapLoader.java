@@ -84,7 +84,7 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Key("Bridge key", cell, ItemType.KEY, KeyType.BRIDGE_KEY);
                             break;
-                        case 'l':
+                        case 'e':
                             cell.setType(CellType.FLOOR);
                             new Key("Lock pick", cell, ItemType.KEY, KeyType.LOCK_PICK);
                             break;
@@ -92,7 +92,7 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Armor("Shield", cell, ItemType.ARMOR, ArmorType.SHIELD);
                             break;
-                        case 'H':
+                        case 'T':
                             cell.setType(CellType.FLOOR);
                             new Armor("Helmet", cell, ItemType.ARMOR, ArmorType.HELMET);
                             break;
@@ -100,7 +100,7 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Armor("Breastplate", cell, ItemType.ARMOR, ArmorType.BREASTPLATE);
                             break;
-                        case 'L':
+                        case 'E':
                             cell.setType(CellType.FLOOR);
                             new Armor("Greaves", cell, ItemType.ARMOR, ArmorType.GREAVES);
                             break;
