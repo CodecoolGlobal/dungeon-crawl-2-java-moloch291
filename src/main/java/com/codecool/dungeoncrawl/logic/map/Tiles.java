@@ -59,6 +59,7 @@ public class Tiles {
         tileMap.put("cheese", new Tile(18, 28));
         tileMap.put("apple", new Tile(15, 29));
         tileMap.put("fish", new Tile(17, 29));
+        tileMap.put("beer", new Tile(15, 31));
         tileMap.put("helmet", new Tile(1, 22));
         tileMap.put("breastplate", new Tile(0, 23));
         tileMap.put("greaves", new Tile(8, 23));

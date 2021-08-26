@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.util;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.map.GameMap;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,18 +35,21 @@ public class Util {
     }
 
 
-    public String getRandomTile(String tileName) {
+    public String getRandomTile(String tileName, GameMap map) {
         String actualTileName = tileName;
-        switch (tileName) {
-            case "redbrick":
-                actualTileName = redbrickRefs[getRandomNumber(0, 2)];
-                break;
-            case "house":
-                actualTileName = houseRefs[getRandomNumber(0, 4)];
-                break;
-            case "lake house":
-                actualTileName = lakeHouseRefs[getRandomNumber(0, 2)];
-                break;
+        if (map.getPlayer().isDrunk()) {
+            switch (tileName) {
+                case "redbrick":
+                    actualTileName = redbrickRefs[getRandomNumber(0, 2)];
+                    break;
+                case "house":
+                    actualTileName = houseRefs[getRandomNumber(0, 4)];
+                    break;
+                case "lake house":
+                    actualTileName = lakeHouseRefs[getRandomNumber(0, 2)];
+                    break;
+            }
+            return actualTileName;
         }
         return tileName;
     }

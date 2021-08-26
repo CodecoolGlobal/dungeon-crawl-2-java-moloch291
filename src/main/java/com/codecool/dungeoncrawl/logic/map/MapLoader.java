@@ -203,6 +203,10 @@ public class MapLoader {
                         case 'F':
                             cell.setType(CellType.FAKE_DOOR);
                             break;
+                        case 'A':
+                            cell.setType(CellType.FLOOR);
+                            new Alcohol("Beer", cell, ItemType.ALCOHOL);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }

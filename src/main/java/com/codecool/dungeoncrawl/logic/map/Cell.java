@@ -31,7 +31,7 @@ public class Cell implements Drawable {
 
     @Override
     public String getTileName() {
-        return util.getRandomTile(util.getRandomTile(type.getTileName()));
+        return util.getRandomTile(type.getTileName(), gameMap);
     }
 
     public int getX() {
