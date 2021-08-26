@@ -23,8 +23,9 @@ public class Tiles {
 
     static {
         tileMap.put("empty", new Tile(0, 0));
-        tileMap.put("wall", new Tile(10, 17));
+        tileMap.put("wall", new Tile(1, 3));
         tileMap.put("floor", new Tile(2, 0));
+        tileMap.put("floor second", new Tile(19, 1));
         tileMap.put("player", new Tile(27, 0));
         tileMap.put("skeleton", new Tile(29, 6));
         tileMap.put("key", new Tile(16, 23));
@@ -34,11 +35,21 @@ public class Tiles {
         tileMap.put("healing potion", new Tile(16, 25));
         tileMap.put("redbrick", new Tile(6,13));
         tileMap.put("water", new Tile(8, 5));
+        tileMap.put("river", new Tile(12, 5));
         tileMap.put("house", new Tile(0,20));
         tileMap.put("closed door", new Tile(22, 11));
         tileMap.put("open door", new Tile(21, 11));
         tileMap.put("orc", new Tile(28,6));
         tileMap.put("undead", new Tile(25,2));
+        tileMap.put("ramp start", new Tile(10, 15));
+        tileMap.put("ramp middle", new Tile(11, 15));
+        tileMap.put("ramp end", new Tile(12, 15));
+        tileMap.put("boat", new Tile(11, 19));
+        tileMap.put("torch", new Tile(3, 15));
+        tileMap.put("ladder", new Tile(21, 0));
+        tileMap.put("ladder upper", new Tile(21, 1));
+        tileMap.put("lake house", new Tile(8, 20));
+        tileMap.put("fake door",new Tile(21, 11));
         tileMap.put("water item", new Tile(16, 30));
         tileMap.put("cheese", new Tile(18, 28));
         tileMap.put("apple", new Tile(15, 29));

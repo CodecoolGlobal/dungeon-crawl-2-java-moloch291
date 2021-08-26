@@ -8,7 +8,7 @@ public class Util {
 
     public static void waitOneSec() {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(NumberParameters.WAIT_TIME.getValue());
         } catch (Exception e) {
             System.out.println("Can not wait for some reason, Mr. Developer");
         }

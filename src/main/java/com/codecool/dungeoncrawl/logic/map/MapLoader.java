@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl.logic.map;
 
-import com.codecool.dungeoncrawl.logic.actors.Orc;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.actors.Undead;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
@@ -12,8 +9,8 @@ import java.util.Scanner;
 
 public class MapLoader {
 
-    public static int[] getPlayerPosition() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+    public static int[] getPlayerPosition(String map) {
+        InputStream is = MapLoader.class.getResourceAsStream(map);
         Scanner scanner = new Scanner(is);
 
         scanner.nextLine(); // empty line
@@ -21,7 +18,7 @@ public class MapLoader {
         int y = -1;
         while (true) {
             y++;
-            String line = "";
+            String line;
             try {
                 line = scanner.nextLine();
             } catch (NoSuchElementException e) {
@@ -38,8 +35,8 @@ public class MapLoader {
         return result;
     }
 
-    public static GameMap loadMap(int height) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map.txt");
+    public static GameMap loadMap(int height, String mapToLoad, GameMap previousMap) {
+        InputStream is = MapLoader.class.getResourceAsStream(mapToLoad);
         Scanner scanner = new Scanner(is);
 
         String line = scanner.nextLine(); // empty line
@@ -68,13 +65,16 @@ public class MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
+                        case '-':
+                            cell.setType(CellType.FLOOR2);
+                            break;
                         case 's':
                             cell.setType(CellType.FLOOR);
                             map.addSkeleton(new Skeleton(cell));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            setPlayer(previousMap, map, cell);
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
@@ -152,6 +152,10 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Potion("Potion of might", cell, ItemType.POTION, PotionType.MIGHT_POTION);
                             break;
+                        case 'B':
+                            cell.setType(CellType.WATER);
+                            new Boat("Boat", cell, ItemType.BOAT);
+                            break;
                         case 'd':
                             cell.setType(map.getExit());
                             break;
@@ -169,8 +173,35 @@ public class MapLoader {
                         case '~':
                             cell.setType(CellType.WATER);
                             break;
+                        case '_':
+                            cell.setType(CellType.RIVER);
+                            break;
                         case '^':
                             cell.setType(CellType.HOUSE);
+                            break;
+                        case '«':
+                            cell.setType(CellType.RAMP_START);
+                            break;
+                        case '|':
+                            cell.setType(CellType.RAMP_MIDDLE);
+                            break;
+                        case '»':
+                            cell.setType(CellType.RAMP_END);
+                            break;
+                        case '!':
+                            cell.setType(CellType.TORCH);
+                            break;
+                        case 'L':
+                            cell.setType(CellType.LADDER);
+                            break;
+                        case 'l':
+                            cell.setType(CellType.LADDER_UPPER);
+                            break;
+                        case 'H':
+                            cell.setType(CellType.LAKE_HOUSE);
+                            break;
+                        case 'F':
+                            cell.setType(CellType.FAKE_DOOR);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
@@ -181,4 +212,18 @@ public class MapLoader {
         return map;
     }
 
+    private static void setPlayer(GameMap previousMap, GameMap map, Cell cell) {
+        if (previousMap != null) {
+            setExistingPlayer(previousMap, map, cell);
+        } else {
+            map.setPlayer(new Player(cell));
+        }
+    }
+
+    private static void setExistingPlayer(GameMap previousMap, GameMap map, Cell cell) {
+        Player previousPlayer = previousMap.getPlayer();
+        cell.setActor(previousPlayer);
+        previousPlayer.setCell(cell);
+        map.setPlayer(previousPlayer);
+    }
 }

@@ -3,22 +3,56 @@ package com.codecool.dungeoncrawl.logic.util;
 import com.codecool.dungeoncrawl.logic.items.Armor;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 
+import java.util.Map;
+
 public class gameConditions {
+
+    public boolean checkFakeDoor(int playerX, int playerY, GameMap map) {
+        return map.getCell(playerX, playerY)
+                .getType() == CellType.FAKE_DOOR;
+    }
 
     public boolean checkDoorInDirection(int playerX, int playerY, Direction direction, GameMap map) {
         return map.getCell(playerX + direction.getX(), playerY + direction.getY())
                 .getType() == CellType.CLOSED_DOOR;
     }
 
+    public boolean checkOpenDoor(int playerX, int playerY, GameMap map) {
+        return map.getCell(playerX, playerY)
+                .getType() == CellType.OPEN_DOOR;
+    }
+
+
     public boolean checkNextCell(Cell nextCell) {
         return (nextCell.getType().equals(CellType.FLOOR) ||
-                nextCell.getType().equals(CellType.OPEN_DOOR)) &&
+                nextCell.getType().equals(CellType.FLOOR2)) &&
                 !isCellOccupied(nextCell);
     }
+
+    public boolean checkNextCellPlayer(Cell nextCell, boolean boatChecker) {
+        if(boatChecker) {
+            return nextCell.getType().equals(CellType.WATER);
+        }
+        return (nextCell.getType().equals(CellType.FLOOR) ||
+                nextCell.getType().equals(CellType.FLOOR2) ||
+                nextCell.getType().equals(CellType.RAMP_START) ||
+                nextCell.getType().equals(CellType.RAMP_MIDDLE) ||
+                nextCell.getType().equals(CellType.RAMP_END) ||
+                nextCell.getType().equals(CellType.LADDER) ||
+                nextCell.getType().equals(CellType.LADDER_UPPER) ||
+                nextCell.getType().equals(CellType.WATER) && nextCell.getItem() != null ||
+                nextCell.getType().equals(CellType.OPEN_DOOR) ||
+                nextCell.getType().equals(CellType.FAKE_DOOR)) &&
+                !isCellOccupied(nextCell);
+    }
+
+
 
     public boolean isItemOnPlayerPosition(int playerX, int playerY, GameMap map) {
         return map.getCell(playerX, playerY).getItem() != null;

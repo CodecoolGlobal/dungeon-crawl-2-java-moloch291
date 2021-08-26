@@ -1,8 +1,11 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.items.Boat;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.map.*;
 import com.codecool.dungeoncrawl.logic.util.*;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
@@ -26,6 +29,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Game extends Application {
+
+    int mapCounter = 1;
+
+    Scene scene;
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -62,8 +69,8 @@ public class Game extends Application {
         BorderPane borderPane = new BorderPane();
         setUpBorderPane(ui, borderPane);
 
-        Scene scene = new Scene(borderPane);
-        setUpScene(primaryStage, scene);
+        scene = new Scene(borderPane);
+        setUpScene(primaryStage, scene, "/map2.txt", null);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -71,14 +78,20 @@ public class Game extends Application {
         borderPane.setRight(ui);
     }
 
-    private void setUpScene(Stage primaryStage, Scene scene) {
+    private void setUpScene(Stage primaryStage, Scene scene, String mapToLoad, GameMap previousMap) {
         primaryStage.setScene(scene);
-        int[] coordinates = MapLoader.getPlayerPosition();
-        map = MapLoader.loadMap(coordinates[2]);
+        int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
+        map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
         refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle(StringFactory.TITLE.message);
         primaryStage.show();
+    }
+
+    private void setUpSecondScene(String mapToLoad, GameMap previousMap){
+        int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
+        map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
+        refresh(coordinates[1], coordinates[0]);
     }
 
     private void setUpUi(GridPane ui) {
@@ -115,21 +128,25 @@ public class Game extends Application {
             case UP:
                 actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
                 actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
                 actions.movePlayer(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
                 actions.movePlayer(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
@@ -163,6 +180,11 @@ public class Game extends Application {
             case J:
                 itemActions.consumePotion(map, StringFactory.MIGHT_POTION.message);
                 break;
+            case B:
+                if (map.getPlayer().hasItem(ItemType.BOAT)) {
+                    itemActions.leaveBoat(map, map.getPlayer());
+                }
+                break;
         }
     }
 
@@ -173,6 +195,24 @@ public class Game extends Application {
         int diffY = (int) (canvas.getHeight() / (NumberParameters.TILE_WIDTH_MULTIPLIER.getValue() * Tiles.TILE_WIDTH));
         drawingCells(playerX, playerY, diffX, diffY);
         refreshUi();
+    }
+
+
+    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, String inventoryContents) {
+        if (playerInventory.size() == 0) {
+            inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
+        } else {
+            inventoryLabel.setText(inventoryContents);
+        }
+    }
+
+    private String buildInventoryString(Map<Item, Integer> playerInventory) {
+        List<String> itemsInInventory = new ArrayList<>();
+        for (Item item : playerInventory.keySet()) {
+            itemsInInventory.add(item.getName());
+            itemsInInventory.add(playerInventory.get(item).toString() + "\n");
+        }
+        return String.join(" ", itemsInInventory);
     }
 
     private void drawingCells(int playerX, int playerY, int diffX, int diffY) {
@@ -199,25 +239,47 @@ public class Game extends Application {
         defenseLabel.setText("" + map.getPlayer().getDefense());
         attackLabel.setText("" + map.getPlayer().getAttack());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        String inventoryContents = buildInventory(playerInventory);
+        String inventoryContents = buildInventoryString(playerInventory);
         checkIfInventoryIsEmpty(playerInventory, inventoryContents);
     }
 
-    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, String inventoryContents) {
-        if (playerInventory.size() == 0) {
-            inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
-        } else {
-            inventoryLabel.setText(inventoryContents);
+    private void enterTheDoor(){
+        if (doorIsOpen()) {
+            switch (mapCounter) {
+                case 1:
+                    goToNextMap(MapName.MAP2);
+                    mapCounter++;
+                    break;
+                case 2:
+                    goToNextMap(MapName.MAP3);
+                    mapCounter++;
+                    break;
+                case 3:
+                    goToNextMap(MapName.MAP4);
+                    mapCounter++;
+                    break;
+                case 4:
+                    goToNextMap(MapName.MAP5);
+                    mapCounter++;
+                    break;
+            }
         }
+        else if (doorIsFake()){
+            goToNextMap(MapName.DEAD);
+            }
+        }
+
+    private void goToNextMap(MapName mapName) {
+        setUpSecondScene( mapName.getMapName(), map);
     }
 
-    private String buildInventory(Map<Item, Integer> playerInventory) {
-        List<String> itemsInInventory = new ArrayList<>();
-        for (Item item : playerInventory.keySet()) {
-            itemsInInventory.add(item.getName());
-            itemsInInventory.add(playerInventory.get(item).toString() + "\n");
-        }
-        return String.join(" ", itemsInInventory);
+
+    private boolean doorIsOpen(){
+        return gameConditions.checkOpenDoor(map.getPlayer().getX(), map.getPlayer().getY(), map);
+    }
+
+    private boolean doorIsFake() {
+        return gameConditions.checkFakeDoor(map.getPlayer().getX(), map.getPlayer().getY(), map);
     }
 
 }

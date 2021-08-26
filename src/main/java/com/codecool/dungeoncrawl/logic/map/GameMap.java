@@ -18,6 +18,50 @@ public class GameMap {
     private Player player;
     private CellType exit;
 
+    public GameMap(int width, int height, CellType defaultCellType) {
+        this.width = width;
+        this.height = height;
+        this.gameConditions = new gameConditions();
+        this.exit = CellType.CLOSED_DOOR;
+        cells = defineCells(width, height, defaultCellType);
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public ArrayList<Actor> getSkeletons() {
+        return skeletons;
+    }
+
+    public ArrayList<Actor> getOrcs() {
+        return orcs;
+    }
+
+    public ArrayList<Actor> getUndeads() {
+        return undeads;
+    }
+
+    public Cell getCell(int x, int y) {
+        return cells[x][y];
+    }
+
+    public CellType getExit() {
+        return exit;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
     public void addSkeleton(Skeleton skeleton) {
         this.skeletons.add(skeleton);
     }
@@ -42,34 +86,15 @@ public class GameMap {
         this.undeads.remove(index);
     }
 
-    public ArrayList<Actor> getSkeletons() {
-        return skeletons;
-    }
-
-    public ArrayList<Actor> getOrcs() {
-        return orcs;
-    }
-
-    public ArrayList<Actor> getUndeads() {
-        return undeads;
-    }
-
-
-    public GameMap(int width, int height, CellType defaultCellType) {
-        this.width = width;
-        this.height = height;
-        this.gameConditions = new gameConditions();
-        this.exit = CellType.CLOSED_DOOR;
+    private Cell[][] defineCells(int width, int height, CellType defaultCellType) {
+        final Cell[][] cells;
         cells = new Cell[width][height];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 cells[x][y] = new Cell(this, x, y, defaultCellType);
             }
         }
-    }
-
-    public CellType getExit() {
-        return exit;
+        return cells;
     }
 
     public void openDoor() {
@@ -81,25 +106,4 @@ public class GameMap {
             }
         }
     }
-
-    public Cell getCell(int x, int y) {
-        return cells[x][y];
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
 }

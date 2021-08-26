@@ -1,5 +1,8 @@
 package com.codecool.dungeoncrawl.logic.items;
 
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -51,18 +54,33 @@ public class ItemActions {
     private void decrementItem(GameMap map, String itemName) {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         int count = 0;
-        Item inInventory = null;
+        Item itemFromInventory = null;
         for (Item item : playerInventory.keySet()) {
             if (item.getName().equals(itemName)) {
-                inInventory = item;
+                itemFromInventory = item;
                 count = playerInventory.get(item);
             }
         }
+        handleInventory(map, playerInventory, count, itemFromInventory);
+    }
+
+    private void handleInventory(GameMap map, Map<Item, Integer> playerInventory, int count, Item itemFromInventory) {
         if (count > 1) {
-            map.getPlayer().addToInventory(inInventory, playerInventory.get(inInventory) - 1);
+            map.getPlayer().addToInventory(itemFromInventory, playerInventory.get(itemFromInventory) - 1);
         } else {
-            map.getPlayer().removeFromInventory(inInventory);
+            map.getPlayer().removeFromInventory(itemFromInventory);
         }
+    }
+
+    public void leaveBoat(GameMap map, Player player) {
+        for (Item item : player.getInventory().keySet()) {
+            if (item.getItemType().equals(ItemType.BOAT)) {
+                player.removeFromInventory(item);
+            }
+        }
+        Cell playerCell = player.getCell();
+        playerCell.setType(CellType.WATER);
+        new Boat("Boat", playerCell, ItemType.BOAT);
     }
 
     public void equipArmor(GameMap map, String itemName) {
