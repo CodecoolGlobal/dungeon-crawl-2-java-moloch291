@@ -26,6 +26,8 @@ import java.util.Map;
 
 public class Game extends Application {
 
+    Scene scene;
+
     GameMap map;
     Canvas canvas = new Canvas(
             NumberParameters.TILE_WIDTH_MULTIPLIER_V.getValue() * Tiles.TILE_WIDTH,
@@ -59,7 +61,7 @@ public class Game extends Application {
         BorderPane borderPane = new BorderPane();
         setUpBorderPane(ui, borderPane);
 
-        Scene scene = new Scene(borderPane);
+        scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, "/map.txt", null);
     }
 
@@ -76,6 +78,12 @@ public class Game extends Application {
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle(StringFactory.TITLE.message);
         primaryStage.show();
+    }
+
+    private void setUpSecondScene(String mapToLoad, GameMap previousMap){
+        int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
+        map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
+        refresh(coordinates[1], coordinates[0]);
     }
 
     private void setUpUi(GridPane ui) {
@@ -210,16 +218,9 @@ public class Game extends Application {
 
     private void tryTogoToMap2() {
         if (gameConditions.checkOpenDoor(map.getPlayer().getX(), map.getPlayer().getY(), map)) {
-            GridPane ui = new GridPane();
-            setUpUi(ui);
-
-
-            BorderPane borderPane = new BorderPane();
-            setUpBorderPane(ui, borderPane);
-
-            Scene scene = new Scene(borderPane);
-            setUpScene(new Stage(), scene, "/map2.txt", map);
+            setUpSecondScene( "/map2.txt", map);
         }
     }
+
 
 }
