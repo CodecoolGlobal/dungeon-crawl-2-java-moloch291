@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.map;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.util.Util;
 
 public class Cell implements Drawable {
     private CellType type;
@@ -10,6 +11,8 @@ public class Cell implements Drawable {
     private final GameMap gameMap;
     private final int x;
     private final int y;
+
+    Util util = new Util();
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
@@ -28,7 +31,7 @@ public class Cell implements Drawable {
 
     @Override
     public String getTileName() {
-        return type.getTileName();
+        return util.getRandomTile(util.getRandomTile(type.getTileName()));
     }
 
     public int getX() {

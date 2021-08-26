@@ -34,9 +34,13 @@ public class Tiles {
         tileMap.put("bread", new Tile(15, 28));
         tileMap.put("healing potion", new Tile(16, 25));
         tileMap.put("redbrick", new Tile(6,13));
+        tileMap.put("redbrick alter", new Tile(7,15));
         tileMap.put("water", new Tile(8, 5));
         tileMap.put("river", new Tile(12, 5));
         tileMap.put("house", new Tile(0,20));
+        tileMap.put("house alter", new Tile(0,19));
+        tileMap.put("house alter 2", new Tile(1,19));
+        tileMap.put("house alter 3", new Tile(1,20));
         tileMap.put("closed door", new Tile(22, 11));
         tileMap.put("open door", new Tile(21, 11));
         tileMap.put("orc", new Tile(28,6));
@@ -49,6 +53,7 @@ public class Tiles {
         tileMap.put("ladder", new Tile(21, 0));
         tileMap.put("ladder upper", new Tile(21, 1));
         tileMap.put("lake house", new Tile(8, 20));
+        tileMap.put("lake house alter", new Tile(7, 20));
         tileMap.put("fake door",new Tile(21, 11));
         tileMap.put("water item", new Tile(16, 30));
         tileMap.put("cheese", new Tile(18, 28));

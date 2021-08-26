@@ -5,6 +5,10 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import java.util.concurrent.TimeUnit;
 
 public class Util {
+    private final String[] redbrickRefs = {"redbrick", "redbrick alter"};
+    private final String[] houseRefs = {"house", "house alter", "house alter 2", "house alter 3"};
+    private final String[] lakeHouseRefs = {"lake house", "lake house alter"};
+    
 
     public static void waitOneSec() {
         try {
@@ -27,5 +31,22 @@ public class Util {
 
     public static int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
+    }
+
+
+    public String getRandomTile(String tileName) {
+        String actualTileName = tileName;
+        switch (tileName) {
+            case "redbrick":
+                actualTileName = redbrickRefs[getRandomNumber(0, 2)];
+                break;
+            case "house":
+                actualTileName = houseRefs[getRandomNumber(0, 4)];
+                break;
+            case "lake house":
+                actualTileName = lakeHouseRefs[getRandomNumber(0, 2)];
+                break;
+        }
+        return tileName;
     }
 }
