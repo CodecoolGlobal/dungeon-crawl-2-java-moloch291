@@ -78,23 +78,79 @@ public class MapLoader {
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
-                            new Key("Key", cell, ItemType.KEY);
+                            new Key("Key", cell, ItemType.KEY, KeyType.DOOR_KEY);
                             break;
-                        case 'a':
+                        case 'K':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Shield", cell, ItemType.ARMOR, 10);
+                            new Key("Bridge key", cell, ItemType.KEY, KeyType.BRIDGE_KEY);
+                            break;
+                        case 'l':
+                            cell.setType(CellType.FLOOR);
+                            new Key("Lock pick", cell, ItemType.KEY, KeyType.LOCK_PICK);
+                            break;
+                        case 'S':
+                            cell.setType(CellType.FLOOR);
+                            new Armor("Shield", cell, ItemType.ARMOR, ArmorType.SHIELD);
+                            break;
+                        case 'H':
+                            cell.setType(CellType.FLOOR);
+                            new Armor("Helmet", cell, ItemType.ARMOR, ArmorType.HELMET);
+                            break;
+                        case 'C':
+                            cell.setType(CellType.FLOOR);
+                            new Armor("Breastplate", cell, ItemType.ARMOR, ArmorType.BREASTPLATE);
+                            break;
+                        case 'L':
+                            cell.setType(CellType.FLOOR);
+                            new Armor("Greaves", cell, ItemType.ARMOR, ArmorType.GREAVES);
+                            break;
+                        case 'G':
+                            cell.setType(CellType.FLOOR);
+                            new Armor("Gauntlets", cell, ItemType.ARMOR, ArmorType.GAUNTLETS);
                             break;
                         case 'w':
                             cell.setType(CellType.FLOOR);
-                            new Weapon("Sword", cell, ItemType.WEAPON, 10);
+                            new Weapon("Sword", cell, ItemType.WEAPON, WeaponType.SWORD);
                             break;
-                        case 'f':
+                        case 'a':
                             cell.setType(CellType.FLOOR);
-                            new Food("Bread", cell, ItemType.FOOD);
+                            new Weapon("Axe", cell, ItemType.WEAPON, WeaponType.AXE);
                             break;
                         case 'p':
                             cell.setType(CellType.FLOOR);
-                            new Potion("Potion", cell, ItemType.POTION);
+                            new Weapon("Pike", cell, ItemType.WEAPON, WeaponType.PIKE);
+                            break;
+                        case 'b':
+                            cell.setType(CellType.FLOOR);
+                            new Food("Bread", cell, ItemType.FOOD, FoodType.BREAD);
+                            break;
+                        case 'c':
+                            cell.setType(CellType.FLOOR);
+                            new Food("Cheese", cell, ItemType.FOOD, FoodType.CHEESE);
+                            break;
+                        case 'v':
+                            cell.setType(CellType.FLOOR);
+                            new Food("Water bottle", cell, ItemType.FOOD, FoodType.WATER);
+                            break;
+                        case 'n':
+                            cell.setType(CellType.FLOOR);
+                            new Food("Apple", cell, ItemType.FOOD, FoodType.APPLE);
+                            break;
+                        case 'm':
+                            cell.setType(CellType.FLOOR);
+                            new Food("Fish", cell, ItemType.FOOD, FoodType.FISH);
+                            break;    
+                        case 'h':
+                            cell.setType(CellType.FLOOR);
+                            new Potion("Healing potion", cell, ItemType.POTION, PotionType.HEALING_POTION);
+                            break;
+                        case 'g':
+                            cell.setType(CellType.FLOOR);
+                            new Potion("Stone skin potion", cell, ItemType.POTION, PotionType.STONE_SKIN_POTION);
+                            break;
+                        case 'j':
+                            cell.setType(CellType.FLOOR);
+                            new Potion("Potion of might", cell, ItemType.POTION, PotionType.MIGHT_POTION);
                             break;
                         case 'd':
                             cell.setType(map.getExit());
