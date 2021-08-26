@@ -92,7 +92,7 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Armor("Shield", cell, ItemType.ARMOR, ArmorType.SHIELD);
                             break;
-                        case 'T':
+                        case 'P':
                             cell.setType(CellType.FLOOR);
                             new Armor("Helmet", cell, ItemType.ARMOR, ArmorType.HELMET);
                             break;
@@ -206,6 +206,30 @@ public class MapLoader {
                         case 'A':
                             cell.setType(CellType.FLOOR);
                             new Alcohol("Beer", cell, ItemType.ALCOHOL);
+                            break;
+                        case 't':
+                            cell.setType(CellType.TREE);
+                            break;
+                        case 'W':
+                            cell.setType(CellType.WEED);
+                            break;
+                        case 'M':
+                            cell.setType(CellType.MOSS);
+                            break;
+                        case 'R':
+                            cell.setType(CellType.ROAD_SIGN);
+                            break;
+                        case 'f':
+                            cell.setType(CellType.CAMPFIRE);
+                            break;
+                        case 'ü':
+                            cell.setType(CellType.CAULDRON);
+                            break;
+                        case 'r':
+                            cell.setType(CellType.ROCKS);
+                            break;
+                        case 'T':
+                            cell.setType(CellType.TENT);
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

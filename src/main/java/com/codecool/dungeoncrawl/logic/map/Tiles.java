@@ -70,6 +70,14 @@ public class Tiles {
         tileMap.put("might potion", new Tile(18, 25));
         tileMap.put("axe", new Tile(10, 30));
         tileMap.put("pike", new Tile(4, 25));
+        tileMap.put("tree", new Tile(4, 2));
+        tileMap.put("weed", new Tile(0, 2));
+        tileMap.put("moss", new Tile(5, 0));
+        tileMap.put("road sign", new Tile(0, 7));
+        tileMap.put("campfire", new Tile(14, 10));
+        tileMap.put("cauldron", new Tile(5, 14));
+        tileMap.put("rocks", new Tile(5, 2));
+        tileMap.put("tent", new Tile(6, 20));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
