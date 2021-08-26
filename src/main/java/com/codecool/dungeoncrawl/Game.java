@@ -221,35 +221,43 @@ public class Game extends Application {
     }
 
     private void enterTheDoor(){
-        if (doorIsOpen()){
-            switch (mapCounter){
+        if (doorIsOpen()) {
+            switch (mapCounter) {
                 case 1:
                     System.out.println("map1");
                     goToNextMap(MapName.MAP2);
-                    mapCounter ++;
+                    mapCounter++;
                     break;
                 case 2:
                     goToNextMap(MapName.MAP3);
-                    mapCounter ++;
+                    mapCounter++;
                     break;
                 case 3:
                     goToNextMap(MapName.MAP4);
-                    mapCounter ++;
+                    mapCounter++;
                     break;
                 case 4:
                     goToNextMap(MapName.MAP5);
-                    mapCounter ++;
+                    mapCounter++;
                     break;
             }
         }
-    }
+        else if (doorIsFake()){
+            goToNextMap(MapName.DEAD);
+            }
+        }
 
     private void goToNextMap(MapName mapName) {
         setUpSecondScene( mapName.getMapName(), map);
     }
 
+
     private boolean doorIsOpen(){
         return gameConditions.checkOpenDoor(map.getPlayer().getX(), map.getPlayer().getY(), map);
+    }
+
+    private boolean doorIsFake() {
+        return gameConditions.checkFakeDoor(map.getPlayer().getX(), map.getPlayer().getY(), map);
     }
 
 }

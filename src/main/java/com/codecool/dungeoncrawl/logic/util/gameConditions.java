@@ -10,6 +10,11 @@ import java.util.Map;
 
 public class gameConditions {
 
+    public boolean checkFakeDoor(int playerX, int playerY, GameMap map) {
+        return map.getCell(playerX, playerY)
+                .getType() == CellType.FAKE_DOOR;
+    }
+
     public boolean checkDoorInDirection(int playerX, int playerY, Direction direction, GameMap map) {
         return map.getCell(playerX + direction.getX(), playerY + direction.getY())
                 .getType() == CellType.CLOSED_DOOR;

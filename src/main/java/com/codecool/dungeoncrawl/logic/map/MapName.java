@@ -5,7 +5,8 @@ public enum MapName {
     MAP2("/map2.txt"),
     MAP3("/map3.txt"),
     MAP4("/map4.txt"),
-    MAP5("/map5.txt");
+    MAP5("/map5.txt"),
+    DEAD("/dead.txt");
 
     private String mapName;
 

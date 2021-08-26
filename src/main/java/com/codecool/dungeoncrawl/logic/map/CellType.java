@@ -10,6 +10,8 @@ public enum CellType {
     HOUSE("house"),
     CLOSED_DOOR("closed door"),
     OPEN_DOOR("open door"),
+    FAKE_DOOR("fake door");
+    OPEN_DOOR("open door"),
     RIVER("river"),
     RAMP_START("ramp start"),
     RAMP_MIDDLE("ramp middle"),
