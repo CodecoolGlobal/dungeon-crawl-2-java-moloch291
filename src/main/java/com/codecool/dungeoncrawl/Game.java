@@ -20,6 +20,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Game extends Application {
@@ -29,17 +31,18 @@ public class Game extends Application {
             NumberParameters.TILE_WIDTH_MULTIPLIER_V.getValue() * Tiles.TILE_WIDTH,
             NumberParameters.TILE_WIDTH_MULTIPLIER_V1.getValue() * Tiles.TILE_WIDTH
     );
-    Actions actions = new Actions();
-    gameConditions gameConditions = new gameConditions();
     GraphicsContext context = canvas.getGraphicsContext2D();
+
+    Actions actions = new Actions();
+    Util util = new Util();
+    gameConditions gameConditions = new gameConditions();
+    boolean confirmQuit = false;
 
     Label healthLabel = new Label();
     Label inventoryLabel = new Label();
     Label quitLabel = new Label();
     Label actionLabel = new Label();
     Label pickUpInfo = new Label();
-
-    boolean confirmQuit = false;
 
     Pane lineBreak = new Pane();
     Pane lineBreak2 = new Pane();
@@ -57,7 +60,7 @@ public class Game extends Application {
         setUpBorderPane(ui, borderPane);
 
         Scene scene = new Scene(borderPane);
-        setUpScene(primaryStage, scene);
+        setUpScene(primaryStage, scene, "/map.txt", null);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -65,10 +68,10 @@ public class Game extends Application {
         borderPane.setRight(ui);
     }
 
-    private void setUpScene(Stage primaryStage, Scene scene) {
+    private void setUpScene(Stage primaryStage, Scene scene, String mapToLoad, GameMap previousMap) {
         primaryStage.setScene(scene);
-        int[] coordinates = MapLoader.getPlayerPosition();
-        map = MapLoader.loadMap(coordinates[2]);
+        int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
+        map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
         refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle(StringFactory.TITLE.message);
@@ -103,23 +106,27 @@ public class Game extends Application {
         ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
-                actions.movement(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
+                actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                tryTogoToMap2();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
-                actions.movement(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
+                actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                tryTogoToMap2();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
-                actions.movement(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
+                actions.movePlayer(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                tryTogoToMap2();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
-                actions.movement(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
+                actions.movePlayer(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                tryTogoToMap2();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
@@ -131,7 +138,7 @@ public class Game extends Application {
                 break;
             case Y:
                 if (confirmQuit) {
-                    System.exit(0);
+                    util.exitGame();
                 }
                 break;
             case N:
@@ -147,15 +154,31 @@ public class Game extends Application {
         }
     }
 
-
-
     private void refresh(int playerX, int playerY) {
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        int diffX = (int) (canvas.getWidth() / (2 * Tiles.TILE_WIDTH));
-        int diffY = (int) (canvas.getHeight() / (2 * Tiles.TILE_WIDTH));
+        int diffX = (int) (canvas.getWidth() / (NumberParameters.TILE_WIDTH_MULTIPLIER.getValue() * Tiles.TILE_WIDTH));
+        int diffY = (int) (canvas.getHeight() / (NumberParameters.TILE_WIDTH_MULTIPLIER.getValue() * Tiles.TILE_WIDTH));
         drawingCells(playerX, playerY, diffX, diffY);
         refreshUi();
+    }
+
+
+    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, String inventoryContents) {
+        if (playerInventory.size() == 0) {
+            inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
+        } else {
+            inventoryLabel.setText(inventoryContents);
+        }
+    }
+
+    private String buildInventoryString(Map<Item, Integer> playerInventory) {
+        List<String> itemsInInventory = new ArrayList<>();
+        for (Item item : playerInventory.keySet()) {
+            itemsInInventory.add(item.getName());
+            itemsInInventory.add(playerInventory.get(item).toString() + "\n");
+        }
+        return String.join(" ", itemsInInventory);
     }
 
     private void drawingCells(int playerX, int playerY, int diffX, int diffY) {
@@ -180,24 +203,22 @@ public class Game extends Application {
     private void refreshUi() {
         healthLabel.setText("" + map.getPlayer().getHealth());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        StringBuilder output = new StringBuilder();
-        buildInventory(playerInventory, output);
-        checkIfInventoryIsEmpty(playerInventory, output);
+        String inventoryContents = buildInventoryString(playerInventory);
+        checkIfInventoryIsEmpty(playerInventory, inventoryContents);
     }
 
-    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
-        if (playerInventory.size() == 0) {
-            inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
-        } else {
-            inventoryLabel.setText("" + output);
-        }
-    }
 
-    private void buildInventory(Map<Item, Integer> playerInventory, StringBuilder output) {
-        for (Item item : playerInventory.keySet()) {
-            String key = item.getName();
-            String value = playerInventory.get(item).toString();
-            output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
+    private void tryTogoToMap2() {
+        if (gameConditions.checkOpenDoor(map.getPlayer().getX(), map.getPlayer().getY(), map)) {
+            GridPane ui = new GridPane();
+            setUpUi(ui);
+
+
+            BorderPane borderPane = new BorderPane();
+            setUpBorderPane(ui, borderPane);
+
+            Scene scene = new Scene(borderPane);
+            setUpScene(new Stage(), scene, "/map2.txt", map);
         }
     }
 

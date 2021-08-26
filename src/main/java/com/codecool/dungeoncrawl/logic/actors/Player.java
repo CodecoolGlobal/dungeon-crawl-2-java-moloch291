@@ -9,17 +9,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Actor {
+
+    private final Map<Item, Integer> inventory = new HashMap<>();
+
     public Player(Cell cell) {
         super(cell);
     }
 
-    private final Map<Item, Integer> inventory = new HashMap<>();
+    public String getTileName() {
+        return "player";
+    }
 
-    public void setInventory(Item item, Integer quantity) {
+    public Map<Item, Integer> getInventory() {
+        return inventory;
+    }
+
+    public void addToInventory(Item item, Integer quantity) {
         inventory.put(item, quantity);
     }
 
-    public boolean onBoat = false;
+    public void removeFromInventory(Item item) {
+        inventory.remove(item);
+    }
 
     public boolean hasKey() {
         for (Item item: inventory.keySet()) {
@@ -29,20 +40,8 @@ public class Player extends Actor {
         }
         return false;
     }
+
     @Override
     public void monsterMove(Cell playerCell) {
-    }
-
-
-    public void removeFromInventory(Item item) {
-        inventory.remove(item);
-    }
-
-    public String getTileName() {
-        return "player";
-    }
-
-    public Map<Item, Integer> getInventory() {
-        return inventory;
     }
 }

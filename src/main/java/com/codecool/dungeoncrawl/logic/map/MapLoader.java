@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl.logic.map;
 
-import com.codecool.dungeoncrawl.logic.actors.Orc;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.actors.Undead;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
@@ -12,8 +9,8 @@ import java.util.Scanner;
 
 public class MapLoader {
 
-    public static int[] getPlayerPosition() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map2.txt");
+    public static int[] getPlayerPosition(String map) {
+        InputStream is = MapLoader.class.getResourceAsStream(map);
         Scanner scanner = new Scanner(is);
 
         scanner.nextLine(); // empty line
@@ -21,7 +18,7 @@ public class MapLoader {
         int y = -1;
         while (true) {
             y++;
-            String line = "";
+            String line;
             try {
                 line = scanner.nextLine();
             } catch (NoSuchElementException e) {
@@ -38,8 +35,8 @@ public class MapLoader {
         return result;
     }
 
-    public static GameMap loadMap(int height) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map2.txt");
+    public static GameMap loadMap(int height, String mapToLoad, GameMap previousMap) {
+        InputStream is = MapLoader.class.getResourceAsStream(mapToLoad);
         Scanner scanner = new Scanner(is);
 
         String line = scanner.nextLine(); // empty line
@@ -77,7 +74,7 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            setPlayer(previousMap, map, cell);
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
@@ -156,4 +153,18 @@ public class MapLoader {
         return map;
     }
 
+    private static void setPlayer(GameMap previousMap, GameMap map, Cell cell) {
+        if (previousMap != null) {
+            setExistingPlayer(previousMap, map, cell);
+        } else {
+            map.setPlayer(new Player(cell));
+        }
+    }
+
+    private static void setExistingPlayer(GameMap previousMap, GameMap map, Cell cell) {
+        Player previousPlayer = previousMap.getPlayer();
+        cell.setActor(previousPlayer);
+        previousPlayer.setCell(cell);
+        map.setPlayer(previousPlayer);
+    }
 }
