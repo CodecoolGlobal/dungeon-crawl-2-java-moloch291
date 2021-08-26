@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic.map;
 
 import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.*;
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 import java.io.InputStream;
 import java.util.NoSuchElementException;
@@ -205,7 +206,7 @@ public class MapLoader {
                             break;
                         case 'A':
                             cell.setType(CellType.FLOOR);
-                            new Alcohol("Beer", cell, ItemType.ALCOHOL);
+                            new Alcohol(StringFactory.BEER_CAP.message, cell, ItemType.ALCOHOL);
                             break;
                         case 't':
                             cell.setType(CellType.TREE);
