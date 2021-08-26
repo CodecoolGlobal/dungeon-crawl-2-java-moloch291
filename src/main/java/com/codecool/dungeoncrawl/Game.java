@@ -151,6 +151,9 @@ public class Game extends Application {
             case P:
                 itemActions.consumePotion(map, StringFactory.POTION.message);
                 break;
+            case B:
+                itemActions.leaveBoat(map, map.getPlayer());
+                break;
         }
     }
 

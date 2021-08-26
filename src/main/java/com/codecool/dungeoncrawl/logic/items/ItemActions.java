@@ -1,5 +1,8 @@
 package com.codecool.dungeoncrawl.logic.items;
 
+import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 
 import java.util.Map;
@@ -49,5 +52,16 @@ public class ItemActions {
         } else {
             map.getPlayer().removeFromInventory(itemFromInventory);
         }
+    }
+
+    public void leaveBoat(GameMap map, Player player) {
+        for (Item item : player.getInventory().keySet()) {
+            if (item.getItemType().equals(ItemType.BOAT)) {
+                player.removeFromInventory(item);
+            }
+        }
+        Cell playerCell = player.getCell();
+        playerCell.setType(CellType.WATER);
+        new Boat("Boat", playerCell, ItemType.BOAT);
     }
 }
