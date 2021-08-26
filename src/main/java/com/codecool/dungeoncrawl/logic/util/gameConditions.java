@@ -44,7 +44,8 @@ public class gameConditions {
                 nextCell.getType().equals(CellType.LADDER) ||
                 nextCell.getType().equals(CellType.LADDER_UPPER) ||
                 nextCell.getType().equals(CellType.WATER) && nextCell.getItem() != null ||
-                nextCell.getType().equals(CellType.OPEN_DOOR)) &&
+                nextCell.getType().equals(CellType.OPEN_DOOR) ||
+                nextCell.getType().equals(CellType.FAKE_DOOR)) &&
                 !isCellOccupied(nextCell);
     }
 

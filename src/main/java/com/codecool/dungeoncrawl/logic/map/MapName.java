@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.logic.map;
 
 public enum MapName {
-    MAP1("/map.txt"),
+    MAP1("/map1.txt"),
     MAP2("/map2.txt"),
     MAP3("/map3.txt"),
     MAP4("/map4.txt"),

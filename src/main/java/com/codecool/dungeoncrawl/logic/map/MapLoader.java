@@ -146,6 +146,7 @@ public class MapLoader {
                             break;
                         case 'F':
                             cell.setType(CellType.FAKE_DOOR);
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }

@@ -64,7 +64,7 @@ public class Game extends Application {
         setUpBorderPane(ui, borderPane);
 
         scene = new Scene(borderPane);
-        setUpScene(primaryStage, scene, "/map.txt", null);
+        setUpScene(primaryStage, scene, "/map2.txt", null);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -224,7 +224,6 @@ public class Game extends Application {
         if (doorIsOpen()) {
             switch (mapCounter) {
                 case 1:
-                    System.out.println("map1");
                     goToNextMap(MapName.MAP2);
                     mapCounter++;
                     break;

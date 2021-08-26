@@ -23,8 +23,6 @@ public class Tiles {
 
     static {
         tileMap.put("empty", new Tile(0, 0));
-        //tileMap.put("wall", new Tile(10, 17));
-        //tileMap.put("wall", new Tile(13, 16));
         tileMap.put("wall", new Tile(1, 3));
         tileMap.put("floor", new Tile(2, 0));
         tileMap.put("floor second", new Tile(19, 1));
@@ -51,6 +49,7 @@ public class Tiles {
         tileMap.put("ladder", new Tile(21, 0));
         tileMap.put("ladder upper", new Tile(21, 1));
         tileMap.put("lake house", new Tile(8, 20));
+        tileMap.put("fake door",new Tile(21, 11));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {
