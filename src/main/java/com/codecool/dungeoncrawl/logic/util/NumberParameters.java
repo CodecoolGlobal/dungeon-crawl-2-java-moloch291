@@ -5,11 +5,14 @@ public enum NumberParameters {
     // Used in Game for instancing new Canvas
     TILE_WIDTH_MULTIPLIER_V(30),
     TILE_WIDTH_MULTIPLIER_V1(20),
+    TILE_WIDTH_MULTIPLIER(2),
+
     // Used in Util/getAttackerHit for calculating attack values
     ATTACK_BONUS(2),
     ATTACK_NERF(1),
-    DEFENSE_DIVISOR(2);
-
+    DEFENSE_DIVISOR(2),
+    // Used in Util/waitOneSec as Thread.sleep argument
+    WAIT_TIME(1000);
 
     private final int value;
 

@@ -32,19 +32,22 @@ public class ItemActions {
 
     private void decrementItem(GameMap map, String itemName) {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        int count;
-        Item oldItem;
+        int count = 0;
+        Item itemFromInventory = null;
         for (Item item : playerInventory.keySet()) {
             if (item.getName().equals(itemName)) {
-                oldItem = item;
+                itemFromInventory = item;
                 count = playerInventory.get(item);
-                if (count > 1) {
-                    map.getPlayer().removeFromInventory(item);
-                    map.getPlayer().setInventory(oldItem, count - 1);
-                } else {
-                    map.getPlayer().removeFromInventory(item);
-                }
             }
+        }
+        handleInventory(map, playerInventory, count, itemFromInventory);
+    }
+
+    private void handleInventory(GameMap map, Map<Item, Integer> playerInventory, int count, Item itemFromInventory) {
+        if (count > 1) {
+            map.getPlayer().addToInventory(itemFromInventory, playerInventory.get(itemFromInventory) - 1);
+        } else {
+            map.getPlayer().removeFromInventory(itemFromInventory);
         }
     }
 }

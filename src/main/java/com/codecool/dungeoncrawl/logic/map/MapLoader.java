@@ -21,7 +21,7 @@ public class MapLoader {
         int y = -1;
         while (true) {
             y++;
-            String line = "";
+            String line;
             try {
                 line = scanner.nextLine();
             } catch (NoSuchElementException e) {
@@ -124,5 +124,4 @@ public class MapLoader {
         }
         return map;
     }
-
 }

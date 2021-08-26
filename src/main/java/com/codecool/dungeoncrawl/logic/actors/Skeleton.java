@@ -13,20 +13,20 @@ public class Skeleton extends Actor {
 
     @Override
     public void monsterMove(Cell playerCell) {
-        setXCoordinate(playerCell);
-        setYCoordinate(playerCell);
+        moveInX(playerCell);
+        moveInY(playerCell);
     }
 
-    public void setXCoordinate(Cell playerCell) {
+    private void moveInX(Cell playerCell) {
         int playerX = playerCell.getX();
         if (getX() > playerX) {
-            move( Direction.WEST.getX(), Direction.WEST.getY());
+            move(Direction.WEST.getX(), Direction.WEST.getY());
         } else if (getX() < playerX) {
-            move( Direction.EAST.getX(), Direction.EAST.getY());
+            move(Direction.EAST.getX(), Direction.EAST.getY());
         }
     }
 
-    public void setYCoordinate(Cell playerCell) {
+    private void moveInY(Cell playerCell) {
         int playerY = playerCell.getY();
         if (getY() > playerY) {
             move(Direction.NORTH.getX(), Direction.NORTH.getY());
