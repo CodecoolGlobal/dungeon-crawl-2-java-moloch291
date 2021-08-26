@@ -35,6 +35,13 @@ public class gameConditions {
                 !isCellOccupied(nextCell);
     }
 
+    public boolean checkNextCellKraken(Cell nextCell) {
+        return nextCell.getType().equals(CellType.WATER) &&
+                !isCellOccupied(nextCell);
+    }
+
+
+
     public boolean checkNextCellPlayer(Cell nextCell, boolean boatChecker) {
         if(boatChecker) {
             return nextCell.getType().equals(CellType.WATER);

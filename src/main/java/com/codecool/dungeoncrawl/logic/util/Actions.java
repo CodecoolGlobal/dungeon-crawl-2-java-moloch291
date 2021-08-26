@@ -62,6 +62,7 @@ public class Actions {
         removeDeadMonsters(map);
         moveMonsters(map.getSkeletons(), map.getPlayer().getCell());
         moveMonsters(map.getOrcs(), map.getPlayer().getCell());
+        moveMonsters(map.getKraken(), map.getPlayer().getCell());
     }
 
 

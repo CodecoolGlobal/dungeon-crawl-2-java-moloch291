@@ -14,6 +14,7 @@ public class GameMap {
     private final ArrayList<Actor> skeletons = new ArrayList<>();
     private final ArrayList<Actor> orcs = new ArrayList<>();
     private final ArrayList<Actor> undeads = new ArrayList<>();
+    private final ArrayList<Actor> krakens = new ArrayList<>();
 
     private Player player;
     private CellType exit;
@@ -24,6 +25,14 @@ public class GameMap {
         this.gameConditions = new gameConditions();
         this.exit = CellType.CLOSED_DOOR;
         cells = defineCells(width, height, defaultCellType);
+    }
+
+    public ArrayList<Actor> getKraken() {
+        return krakens;
+    }
+
+    public void addKraken(Kraken kraken) {
+        this.krakens.add(kraken);
     }
 
     public Player getPlayer() {
@@ -48,6 +57,10 @@ public class GameMap {
 
     public ArrayList<Actor> getUndeads() {
         return undeads;
+    }
+
+    public Cell[][] getCells() {
+        return cells;
     }
 
     public Cell getCell(int x, int y) {

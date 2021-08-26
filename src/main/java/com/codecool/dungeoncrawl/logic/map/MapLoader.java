@@ -203,6 +203,10 @@ public class MapLoader {
                         case 'F':
                             cell.setType(CellType.FAKE_DOOR);
                             break;
+                        case 'Q':
+                            cell.setType(CellType.WATER);
+                            map.addKraken(new Kraken(cell,map));
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
