@@ -12,7 +12,8 @@ public enum NumberParameters {
     ATTACK_NERF(1),
     DEFENSE_DIVISOR(2),
     // Used in Util/waitOneSec as Thread.sleep argument
-    WAIT_TIME(1000);
+    WAIT_TIME(1000),
+    KRAKEN_HEALTH(1000000);
 
     private final int value;
 

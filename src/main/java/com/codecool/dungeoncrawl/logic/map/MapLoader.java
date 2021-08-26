@@ -231,6 +231,14 @@ public class MapLoader {
                         case 'T':
                             cell.setType(CellType.TENT);
                             break;
+                        case 'Q':
+                            cell.setType(CellType.WATER);
+                            map.addKraken(new Kraken(cell,map));
+                            break;
+                        case 'Ű':
+                            cell.setType(CellType.FLOOR);
+                            map.addGhost(new Ghost(cell));
+                            break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }

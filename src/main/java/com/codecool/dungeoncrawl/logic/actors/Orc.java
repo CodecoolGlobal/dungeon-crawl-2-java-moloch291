@@ -9,7 +9,7 @@ public class Orc extends Actor{
 
     public Orc(Cell cell) {
         super(cell);
-        super.setAttack(4);
+        super.setAttack(0);
         super.setHealth(4);
         super.setDefense(4);
     }
