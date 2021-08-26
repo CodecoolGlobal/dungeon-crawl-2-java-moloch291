@@ -65,6 +65,9 @@ public class MapLoader {
                         case '.':
                             cell.setType(CellType.FLOOR);
                             break;
+                        case '-':
+                            cell.setType(CellType.FLOOR2);
+                            break;
                         case 's':
                             cell.setType(CellType.FLOOR);
                             map.addSkeleton(new Skeleton(cell));
@@ -93,6 +96,10 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Potion("Potion", cell, ItemType.POTION);
                             break;
+                        case 'B':
+                            cell.setType(CellType.WATER);
+                            new Boat("Boat", cell, ItemType.BOAT);
+                            break;
                         case 'd':
                             cell.setType(map.getExit());
                             break;
@@ -110,8 +117,32 @@ public class MapLoader {
                         case '~':
                             cell.setType(CellType.WATER);
                             break;
+                        case '_':
+                            cell.setType(CellType.RIVER);
+                            break;
                         case '^':
                             cell.setType(CellType.HOUSE);
+                            break;
+                        case '«':
+                            cell.setType(CellType.RAMP_START);
+                            break;
+                        case '|':
+                            cell.setType(CellType.RAMP_MIDDLE);
+                            break;
+                        case '»':
+                            cell.setType(CellType.RAMP_END);
+                            break;
+                        case '!':
+                            cell.setType(CellType.TORCH);
+                            break;
+                        case 'L':
+                            cell.setType(CellType.LADDER);
+                            break;
+                        case 'l':
+                            cell.setType(CellType.LADDER_UPPER);
+                            break;
+                        case 'H':
+                            cell.setType(CellType.LAKE_HOUSE);
                             break;
                         case 'F':
                             cell.setType(CellType.FAKE_DOOR);

@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.map;
 public enum CellType {
     EMPTY("empty"),
     FLOOR("floor"),
+    FLOOR2("floor second"),
     WALL("wall"),
     BRICK_WALL("redbrick"),
     WATER("water"),
@@ -10,6 +11,16 @@ public enum CellType {
     CLOSED_DOOR("closed door"),
     OPEN_DOOR("open door"),
     FAKE_DOOR("fake door");
+    OPEN_DOOR("open door"),
+    RIVER("river"),
+    RAMP_START("ramp start"),
+    RAMP_MIDDLE("ramp middle"),
+    RAMP_END("ramp end"),
+    BOAT("boat"),
+    TORCH("torch"),
+    LADDER("ladder"),
+    LADDER_UPPER("ladder upper"),
+    LAKE_HOUSE("lake house");
 
     private final String tileName;
 

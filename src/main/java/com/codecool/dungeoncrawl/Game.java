@@ -3,6 +3,9 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.map.*;
 import com.codecool.dungeoncrawl.logic.util.*;
+import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.map.GameMap;
+import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -157,6 +160,9 @@ public class Game extends Application {
                 break;
             case P:
                 itemActions.consumePotion(map, StringFactory.POTION.message);
+                break;
+            case B:
+                itemActions.leaveBoat(map, map.getPlayer());
                 break;
         }
     }
