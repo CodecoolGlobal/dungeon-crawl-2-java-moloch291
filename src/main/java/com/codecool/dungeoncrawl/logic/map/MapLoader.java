@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class MapLoader {
 
     public static int[] getPlayerPosition() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map5.txt");
+        InputStream is = MapLoader.class.getResourceAsStream("/map2.txt");
         Scanner scanner = new Scanner(is);
 
         scanner.nextLine(); // empty line
@@ -39,7 +39,7 @@ public class MapLoader {
     }
 
     public static GameMap loadMap(int height) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map5.txt");
+        InputStream is = MapLoader.class.getResourceAsStream("/map2.txt");
         Scanner scanner = new Scanner(is);
 
         String line = scanner.nextLine(); // empty line
@@ -99,6 +99,10 @@ public class MapLoader {
                             cell.setType(CellType.FLOOR);
                             new Potion("Potion", cell, ItemType.POTION);
                             break;
+                        case 'B':
+                            cell.setType(CellType.WATER);
+                            new Boat("Boat", cell, ItemType.BOAT);
+                            break;
                         case 'd':
                             cell.setType(map.getExit());
                             break;
@@ -130,9 +134,6 @@ public class MapLoader {
                             break;
                         case '»':
                             cell.setType(CellType.RAMP_END);
-                            break;
-                        case 'B':
-                            cell.setType(CellType.BOAT);
                             break;
                         case '!':
                             cell.setType(CellType.TORCH);

@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.logic.items.Boat;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
@@ -18,6 +19,8 @@ public class Player extends Actor {
         inventory.put(item, quantity);
     }
 
+    public boolean onBoat = false;
+
     public boolean hasKey() {
         for (Item item: inventory.keySet()) {
             if (item.getItemType().equals(ItemType.KEY)) {
@@ -28,8 +31,8 @@ public class Player extends Actor {
     }
     @Override
     public void monsterMove(Cell playerCell) {
-
     }
+
 
     public void removeFromInventory(Item item) {
         inventory.remove(item);
