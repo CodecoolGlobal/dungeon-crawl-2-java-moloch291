@@ -38,14 +38,12 @@ public class ItemActions {
         int playerHealth = map.getPlayer().getHealth();
         int playerDefense = map.getPlayer().getDefense();
         int playerAttack = map.getPlayer().getAttack();
-        if (searchForItemByName(map, itemName)) {
-            if (itemName.equals("Healing potion")) {
-                map.getPlayer().setHealth(playerHealth + PotionType.HEALING_POTION.effectValue);
-            } else if (itemName.equals("Stone skin potion")) {
-                map.getPlayer().setDefense(playerDefense + PotionType.STONE_SKIN_POTION.effectValue);
-            } else if (itemName.equals("Potion of might")) {
-                map.getPlayer().setAttack(playerAttack + PotionType.MIGHT_POTION.effectValue);
-            }
+        if (itemName.equals("Healing potion")) {
+            map.getPlayer().setHealth(playerHealth + PotionType.HEALING_POTION.effectValue);
+        } else if (itemName.equals("Stone skin potion")) {
+            map.getPlayer().setDefense(playerDefense + PotionType.STONE_SKIN_POTION.effectValue);
+        } else if (itemName.equals("Potion of might")) {
+            map.getPlayer().setAttack(playerAttack + PotionType.MIGHT_POTION.effectValue);
         }
         decrementItem(map, itemName);
     }
@@ -66,4 +64,31 @@ public class ItemActions {
             map.getPlayer().removeFromInventory(inInventory);
         }
     }
+
+    public void equipArmor(GameMap map, String itemName) {
+        int playerDefense = map.getPlayer().getDefense();
+        if (itemName.equals("Shield")) {
+            map.getPlayer().setDefense(playerDefense + ArmorType.SHIELD.defenseValue);
+        } else if (itemName.equals("Helmet")) {
+            map.getPlayer().setDefense(playerDefense + ArmorType.HELMET.defenseValue);
+        } else if (itemName.equals("Breastplate")) {
+            map.getPlayer().setDefense(playerDefense + ArmorType.BREASTPLATE.defenseValue);
+        } else if (itemName.equals("Greaves")) {
+            map.getPlayer().setDefense(playerDefense + ArmorType.GREAVES.defenseValue);
+        } else if (itemName.equals("Gauntlets")) {
+            map.getPlayer().setDefense(playerDefense + ArmorType.GAUNTLETS.defenseValue);
+        }
+    }
+
+    public void equipWeapon(GameMap map, String itemName) {
+        int playerAttack = map.getPlayer().getAttack();
+        if (itemName.equals("Sword")) {
+            map.getPlayer().setAttack(playerAttack + WeaponType.SWORD.attackValue);
+        } else if (itemName.equals("Axe")) {
+            map.getPlayer().setAttack(playerAttack + WeaponType.AXE.attackValue);
+        } else if (itemName.equals("Pike")) {
+            map.getPlayer().setAttack(playerAttack + WeaponType.PIKE.attackValue);
+        }
+    }
+
 }
