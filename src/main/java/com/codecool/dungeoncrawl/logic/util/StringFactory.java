@@ -55,7 +55,8 @@ public enum StringFactory {
     BOAT("boat"),
     BOAT_CAP("Boat"),
     WATER_ITEM("water item"),
-    BEER("beer");
+    BEER("beer"),
+    BEER_CAP("Beer");
 
     public final String message;
 

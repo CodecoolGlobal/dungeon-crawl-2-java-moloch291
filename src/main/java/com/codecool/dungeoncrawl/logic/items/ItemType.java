@@ -10,6 +10,7 @@ public enum ItemType {
     POTION(StringFactory.POTION.message),
     ALCOHOL(StringFactory.BEER.message),
     BOAT(StringFactory.BOAT.message);
+
     public final String name;
 
     ItemType(String name) {
