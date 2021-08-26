@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.util;
 
+import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class Actions {
 
     gameConditions gameConditions = new gameConditions();
+    ItemActions itemActions = new ItemActions();
     Util util = new Util();
 
 /*######################################################################################################################
@@ -38,6 +40,12 @@ public class Actions {
             }
             if (!inInventory) {
                 map.getPlayer().addToInventory(item, addedQuantity);
+                if (gameConditions.checkIfArmor(item)) {
+                    itemActions.equipArmor(map, item.getName());
+                }
+                if (gameConditions.checkIfWeapon(item)) {
+                    itemActions.equipWeapon(map, item.getName());
+                }
             } else {
                 map.getPlayer().addToInventory(item, playerInventory.get(item) + addedQuantity);
             }

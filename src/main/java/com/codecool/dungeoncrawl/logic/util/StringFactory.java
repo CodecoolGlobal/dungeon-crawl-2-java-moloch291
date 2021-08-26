@@ -14,9 +14,13 @@ public enum StringFactory {
     WANT_TO_QUIT("Are you sure you want to quit? Y/N"),
     // Item names:
     BREAD("Bread"),
-    POTION("Potion"),
+    HEALING_POTION("Healing potion"),
+    STONE_SKIN_POTION("Stone skin potion"),
+    MIGHT_POTION("Potion of might"),
     // Labels:
     HEALTH_LABEL("Health: "),
+    ATTACK_LABEL("Attack: "),
+    DEFENSE_LABEL("Defense: "),
     ACTION_LABEL("Action: "),
     INVENTORY_LABEL("Inventory: "),
     // Inventory content

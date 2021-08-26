@@ -1,5 +1,8 @@
 package com.codecool.dungeoncrawl.logic.util;
 
+import com.codecool.dungeoncrawl.logic.items.Armor;
+import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Cell;
@@ -69,5 +72,14 @@ public class gameConditions {
 
     public boolean isDead(int actorHealth) {
         return actorHealth <= 0;
+    }
+
+
+    public boolean checkIfArmor(Item item) {
+        return item.getItemType().equals(ItemType.ARMOR);
+    }
+
+    public boolean checkIfWeapon(Item item) {
+        return item.getItemType().equals(ItemType.WEAPON);
     }
 }

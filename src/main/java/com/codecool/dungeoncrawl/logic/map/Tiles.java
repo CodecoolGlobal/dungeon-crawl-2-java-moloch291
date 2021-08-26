@@ -29,10 +29,10 @@ public class Tiles {
         tileMap.put("player", new Tile(27, 0));
         tileMap.put("skeleton", new Tile(29, 6));
         tileMap.put("key", new Tile(16, 23));
-        tileMap.put("armor", new Tile(5, 25));
-        tileMap.put("weapon", new Tile(0, 29));
-        tileMap.put("food", new Tile(15, 28));
-        tileMap.put("potion", new Tile(26, 23));
+        tileMap.put("shield", new Tile(5, 25));
+        tileMap.put("sword", new Tile(0, 29));
+        tileMap.put("bread", new Tile(15, 28));
+        tileMap.put("healing potion", new Tile(16, 25));
         tileMap.put("redbrick", new Tile(6,13));
         tileMap.put("water", new Tile(8, 5));
         tileMap.put("river", new Tile(12, 5));
@@ -50,6 +50,20 @@ public class Tiles {
         tileMap.put("ladder upper", new Tile(21, 1));
         tileMap.put("lake house", new Tile(8, 20));
         tileMap.put("fake door",new Tile(21, 11));
+        tileMap.put("water item", new Tile(16, 30));
+        tileMap.put("cheese", new Tile(18, 28));
+        tileMap.put("apple", new Tile(15, 29));
+        tileMap.put("fish", new Tile(17, 29));
+        tileMap.put("helmet", new Tile(1, 22));
+        tileMap.put("breastplate", new Tile(0, 23));
+        tileMap.put("greaves", new Tile(8, 23));
+        tileMap.put("gauntlets", new Tile(9, 23));
+        tileMap.put("bridge key", new Tile(17, 23));
+        tileMap.put("lock pick", new Tile(18, 23));
+        tileMap.put("stone skin potion", new Tile(17, 25));
+        tileMap.put("might potion", new Tile(18, 25));
+        tileMap.put("axe", new Tile(10, 30));
+        tileMap.put("pike", new Tile(4, 25));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {

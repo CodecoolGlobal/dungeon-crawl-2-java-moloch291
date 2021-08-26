@@ -3,6 +3,8 @@ package com.codecool.dungeoncrawl;
 import com.codecool.dungeoncrawl.logic.items.Boat;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.map.Tiles;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.*;
 import com.codecool.dungeoncrawl.logic.util.*;
 import com.codecool.dungeoncrawl.logic.map.Cell;
@@ -45,6 +47,8 @@ public class Game extends Application {
     boolean confirmQuit = false;
 
     Label healthLabel = new Label();
+    Label defenseLabel = new Label();
+    Label attackLabel = new Label();
     Label inventoryLabel = new Label();
     Label quitLabel = new Label();
     Label actionLabel = new Label();
@@ -104,14 +108,18 @@ public class Game extends Application {
     private void setLabels(GridPane ui) {
         ui.add(new Label(StringFactory.HEALTH_LABEL.message), 0, 0);
         ui.add(healthLabel, 1, 0);
-        ui.add(new Label(StringFactory.ACTION_LABEL.message), 0, 1);
-        ui.add(actionLabel, 1, 1);
-        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 2);
-        ui.add(inventoryLabel, 1, 2);
-        ui.add(quitLabel, 0, 6, 2, 1);
-        ui.add(lineBreak, 0, 3);
-        ui.add(pickUpInfo, 0, 4, 2, 1);
-        ui.add(lineBreak2, 0, 5);
+        ui.add(new Label(StringFactory.DEFENSE_LABEL.message), 0, 1);
+        ui.add(defenseLabel, 1, 1);
+        ui.add(new Label(StringFactory.ATTACK_LABEL.message), 0, 2);
+        ui.add(attackLabel, 1, 2);
+        ui.add(new Label(StringFactory.ACTION_LABEL.message), 0, 3);
+        ui.add(actionLabel, 1, 3);
+        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 4);
+        ui.add(inventoryLabel, 1, 4);
+        ui.add(quitLabel, 0, 8, 2, 1);
+        ui.add(lineBreak, 0, 5);
+        ui.add(pickUpInfo, 0, 6, 2, 1);
+        ui.add(lineBreak2, 0, 7);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
@@ -158,10 +166,19 @@ public class Game extends Application {
                 quitLabel.setText("");
                 break;
             case F:
-                itemActions.consumeFood(map, StringFactory.BREAD.message);
+                Item foodItem = itemActions.searchForItemByType(map, ItemType.FOOD);
+                if (foodItem != null) {
+                    itemActions.consumeFood(map, foodItem.getName());
+                }
                 break;
-            case P:
-                itemActions.consumePotion(map, StringFactory.POTION.message);
+            case H:
+                itemActions.consumePotion(map, StringFactory.HEALING_POTION.message);
+                break;
+            case G:
+                itemActions.consumePotion(map, StringFactory.STONE_SKIN_POTION.message);
+                break;
+            case J:
+                itemActions.consumePotion(map, StringFactory.MIGHT_POTION.message);
                 break;
             case B:
                 if (map.getPlayer().hasItem(ItemType.BOAT)) {
@@ -219,6 +236,8 @@ public class Game extends Application {
 
     private void refreshUi() {
         healthLabel.setText("" + map.getPlayer().getHealth());
+        defenseLabel.setText("" + map.getPlayer().getDefense());
+        attackLabel.setText("" + map.getPlayer().getAttack());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         String inventoryContents = buildInventoryString(playerInventory);
         checkIfInventoryIsEmpty(playerInventory, inventoryContents);
