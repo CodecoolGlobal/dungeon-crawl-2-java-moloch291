@@ -60,7 +60,7 @@ public class Game extends Application {
         setUpBorderPane(ui, borderPane);
 
         Scene scene = new Scene(borderPane);
-        setUpScene(primaryStage, scene, "/map.txt");
+        setUpScene(primaryStage, scene, "/map.txt", null);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -68,10 +68,10 @@ public class Game extends Application {
         borderPane.setRight(ui);
     }
 
-    private void setUpScene(Stage primaryStage, Scene scene, String mapToLoad) {
+    private void setUpScene(Stage primaryStage, Scene scene, String mapToLoad, GameMap previousMap) {
         primaryStage.setScene(scene);
         int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
-        map = MapLoader.loadMap(coordinates[2],mapToLoad);
+        map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
         refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle(StringFactory.TITLE.message);
@@ -218,7 +218,7 @@ public class Game extends Application {
             setUpBorderPane(ui, borderPane);
 
             Scene scene = new Scene(borderPane);
-            setUpScene(new Stage(), scene, "/map2.txt");
+            setUpScene(new Stage(), scene, "/map2.txt", map);
         }
     }
 

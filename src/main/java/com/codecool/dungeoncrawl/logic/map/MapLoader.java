@@ -1,9 +1,6 @@
 package com.codecool.dungeoncrawl.logic.map;
 
-import com.codecool.dungeoncrawl.logic.actors.Orc;
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.actors.Undead;
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.*;
 
 import java.io.InputStream;
@@ -38,7 +35,7 @@ public class MapLoader {
         return result;
     }
 
-    public static GameMap loadMap(int height,String mapToLoad) {
+    public static GameMap loadMap(int height, String mapToLoad, GameMap previousMap) {
         InputStream is = MapLoader.class.getResourceAsStream(mapToLoad);
         Scanner scanner = new Scanner(is);
 
@@ -74,7 +71,7 @@ public class MapLoader {
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
-                            map.setPlayer(new Player(cell));
+                            setPlayer(previousMap, map, cell);
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
@@ -123,5 +120,20 @@ public class MapLoader {
             }
         }
         return map;
+    }
+
+    private static void setPlayer(GameMap previousMap, GameMap map, Cell cell) {
+        if (previousMap != null) {
+            setExistingPlayer(previousMap, map, cell);
+        } else {
+            map.setPlayer(new Player(cell));
+        }
+    }
+
+    private static void setExistingPlayer(GameMap previousMap, GameMap map, Cell cell) {
+        Player previousPlayer = previousMap.getPlayer();
+        cell.setActor(previousPlayer);
+        previousPlayer.setCell(cell);
+        map.setPlayer(previousPlayer);
     }
 }
