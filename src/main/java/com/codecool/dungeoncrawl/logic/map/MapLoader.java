@@ -113,6 +113,8 @@ public class MapLoader {
                         case '^':
                             cell.setType(CellType.HOUSE);
                             break;
+                        case 'F':
+                            cell.setType(CellType.FAKE_DOOR);
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
                     }
