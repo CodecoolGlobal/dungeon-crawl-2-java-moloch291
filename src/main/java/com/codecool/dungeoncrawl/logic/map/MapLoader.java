@@ -13,7 +13,7 @@ import java.util.Scanner;
 public class MapLoader {
 
     public static int[] getPlayerPosition() {
-        InputStream is = MapLoader.class.getResourceAsStream("/map2.txt");
+        InputStream is = MapLoader.class.getResourceAsStream("/map5.txt");
         Scanner scanner = new Scanner(is);
 
         scanner.nextLine(); // empty line
@@ -39,7 +39,7 @@ public class MapLoader {
     }
 
     public static GameMap loadMap(int height) {
-        InputStream is = MapLoader.class.getResourceAsStream("/map2.txt");
+        InputStream is = MapLoader.class.getResourceAsStream("/map5.txt");
         Scanner scanner = new Scanner(is);
 
         String line = scanner.nextLine(); // empty line
