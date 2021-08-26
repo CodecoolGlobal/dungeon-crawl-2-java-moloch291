@@ -187,6 +187,11 @@ public class Game extends Application {
                     itemActions.leaveBoat(map, map.getPlayer());
                 }
                 break;
+            case A:
+                if (map.getPlayer().hasItem((ItemType.ALCOHOL))) {
+                    itemActions.consumeAlcohol(map, "beer");
+                }
+                break;
         }
     }
 
@@ -249,18 +254,22 @@ public class Game extends Application {
         if (doorIsOpen()) {
             switch (mapCounter) {
                 case 1:
+                    map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP2);
                     mapCounter++;
                     break;
                 case 2:
+                    map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP3);
                     mapCounter++;
                     break;
                 case 3:
+                    map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP4);
                     mapCounter++;
                     break;
                 case 4:
+                    map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP5);
                     mapCounter++;
                     break;

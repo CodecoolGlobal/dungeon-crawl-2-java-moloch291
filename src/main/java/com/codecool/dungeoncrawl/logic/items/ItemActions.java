@@ -50,6 +50,17 @@ public class ItemActions {
         decrementItem(map, itemName);
     }
 
+    public void consumeAlcohol(GameMap map, String itemName) {
+        int defenseModifier = -5;
+        int attackModifier = 3;
+        map.getPlayer().setDrunk(true);
+        if (map.getPlayer().getDefense() > 0) {
+            map.getPlayer().setDefense(map.getPlayer().getDefense() + defenseModifier);
+        }
+        map.getPlayer().setAttack(map.getPlayer().getAttack() + attackModifier);
+        decrementItem(map, itemName);
+    }
+
     private void decrementItem(GameMap map, String itemName) {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         int count = 0;

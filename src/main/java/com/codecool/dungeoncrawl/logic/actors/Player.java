@@ -11,6 +11,7 @@ import java.util.Map;
 public class Player extends Actor {
     private boolean hasShip = false;
     private final Map<Item, Integer> inventory = new HashMap<>();
+    private boolean isDrunk = false;
 
     public Player(Cell cell) {
         super(cell);
@@ -22,6 +23,14 @@ public class Player extends Actor {
 
     public Map<Item, Integer> getInventory() {
         return inventory;
+    }
+
+    public boolean isDrunk() {
+        return isDrunk;
+    }
+
+    public void setDrunk(boolean drunk) {
+        isDrunk = drunk;
     }
 
     public void addToInventory(Item item, Integer quantity) {

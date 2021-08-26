@@ -34,9 +34,13 @@ public class Tiles {
         tileMap.put("bread", new Tile(15, 28));
         tileMap.put("healing potion", new Tile(16, 25));
         tileMap.put("redbrick", new Tile(6,13));
+        tileMap.put("redbrick alter", new Tile(7,15));
         tileMap.put("water", new Tile(8, 5));
         tileMap.put("river", new Tile(12, 5));
         tileMap.put("house", new Tile(0,20));
+        tileMap.put("house alter", new Tile(0,19));
+        tileMap.put("house alter 2", new Tile(1,19));
+        tileMap.put("house alter 3", new Tile(1,20));
         tileMap.put("closed door", new Tile(22, 11));
         tileMap.put("open door", new Tile(21, 11));
         tileMap.put("orc", new Tile(28,6));
@@ -49,11 +53,13 @@ public class Tiles {
         tileMap.put("ladder", new Tile(21, 0));
         tileMap.put("ladder upper", new Tile(21, 1));
         tileMap.put("lake house", new Tile(8, 20));
+        tileMap.put("lake house alter", new Tile(7, 20));
         tileMap.put("fake door",new Tile(21, 11));
         tileMap.put("water item", new Tile(16, 30));
         tileMap.put("cheese", new Tile(18, 28));
         tileMap.put("apple", new Tile(15, 29));
         tileMap.put("fish", new Tile(17, 29));
+        tileMap.put("beer", new Tile(15, 31));
         tileMap.put("helmet", new Tile(1, 22));
         tileMap.put("breastplate", new Tile(0, 23));
         tileMap.put("greaves", new Tile(8, 23));
@@ -64,6 +70,14 @@ public class Tiles {
         tileMap.put("might potion", new Tile(18, 25));
         tileMap.put("axe", new Tile(10, 30));
         tileMap.put("pike", new Tile(4, 25));
+        tileMap.put("tree", new Tile(4, 2));
+        tileMap.put("weed", new Tile(0, 2));
+        tileMap.put("moss", new Tile(5, 0));
+        tileMap.put("road sign", new Tile(0, 7));
+        tileMap.put("campfire", new Tile(14, 10));
+        tileMap.put("cauldron", new Tile(5, 14));
+        tileMap.put("rocks", new Tile(5, 2));
+        tileMap.put("tent", new Tile(6, 20));
         tileMap.put("kraken", new Tile(25,8));
         tileMap.put("ghost", new Tile(27,6));
     }
