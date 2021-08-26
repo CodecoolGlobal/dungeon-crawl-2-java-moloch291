@@ -163,12 +163,6 @@ public class Game extends Application {
         refreshUi();
     }
 
-    private void refreshUi() {
-        healthLabel.setText("" + map.getPlayer().getHealth());
-        Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        String inventoryContents = buildInventoryString(playerInventory);
-        checkIfInventoryIsEmpty(playerInventory, inventoryContents);
-    }
 
     private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, String inventoryContents) {
         if (playerInventory.size() == 0) {
@@ -209,26 +203,10 @@ public class Game extends Application {
     private void refreshUi() {
         healthLabel.setText("" + map.getPlayer().getHealth());
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        StringBuilder output = new StringBuilder();
-        buildInventory(playerInventory, output);
-        checkIfInventoryIsEmpty(playerInventory, output);
+        String inventoryContents = buildInventoryString(playerInventory);
+        checkIfInventoryIsEmpty(playerInventory, inventoryContents);
     }
 
-    private void checkIfInventoryIsEmpty(Map<Item, Integer> playerInventory, StringBuilder output) {
-        if (playerInventory.size() == 0) {
-            inventoryLabel.setText(StringFactory.INVENTORY_EMPTY.message);
-        } else {
-            inventoryLabel.setText("" + output);
-        }
-    }
-
-    private void buildInventory(Map<Item, Integer> playerInventory, StringBuilder output) {
-        for (Item item : playerInventory.keySet()) {
-            String key = item.getName();
-            String value = playerInventory.get(item).toString();
-            output.append(" ").append(key).append(" ").append(value).append(" ").append("\n");
-        }
-    }
 
     private void tryTogoToMap2() {
         if (gameConditions.checkOpenDoor(map.getPlayer().getX(), map.getPlayer().getY(), map)) {
