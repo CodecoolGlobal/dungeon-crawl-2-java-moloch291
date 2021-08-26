@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 public class Key extends Item {
     private final KeyType keyType;
@@ -12,7 +13,7 @@ public class Key extends Item {
 
     @Override
     public String getTileName() {
-        String actualType = "key";
+        String actualType = StringFactory.KEY.message;
         if (keyType.equals(KeyType.BRIDGE_KEY)) {
             actualType = "bridge key";
         } else if (keyType.equals(KeyType.LOCK_PICK)) {

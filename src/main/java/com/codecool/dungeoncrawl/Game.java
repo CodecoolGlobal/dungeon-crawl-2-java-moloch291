@@ -70,7 +70,7 @@ public class Game extends Application {
         setUpBorderPane(ui, borderPane);
 
         scene = new Scene(borderPane);
-        setUpScene(primaryStage, scene, "/map1.txt", null);
+        setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -160,7 +160,7 @@ public class Game extends Application {
                 break;
             case Y:
                 if (confirmQuit) {
-                    util.exitGame();
+                    Util.exitGame();
                 }
                 break;
             case N:

@@ -15,7 +15,6 @@ public class Actions {
 
     gameConditions gameConditions = new gameConditions();
     ItemActions itemActions = new ItemActions();
-    Util util = new Util();
 
 /*######################################################################################################################
 * Inventory method:
@@ -91,9 +90,9 @@ public class Actions {
         for (Actor monster : monstersToMove) monster.monsterMove(playerCell);
     }
 
-    /*######################################################################################################################
-     * Player methods:
-     *#####################################################################################################################*/
+/*######################################################################################################################
+* Player methods:
+*#####################################################################################################################*/
 
     // Wrapper for player methods:
     public void movePlayer(int moveInRow, int moveInColumn, GameMap map, Label actionLabel) {
@@ -126,9 +125,9 @@ public class Actions {
             fight(nearbyCell, player, actionLabel);
     }
 
-    /*######################################################################################################################
-     * Fighting:
-     *#####################################################################################################################*/
+/*######################################################################################################################
+* Fighting:
+*#####################################################################################################################*/
 
     private void fight(Cell nearbyCell, Actor player, Label actionLabel) {
         actionLabel.setText("");
@@ -160,7 +159,7 @@ public class Actions {
 
     // Decrease and the defender's health according to the attack value of the attacking Actor:
     private int hit(Label actionLabel, Actor attacker, Actor defender, String message) {
-        int attackerHit = util.getAttackerHit(attacker, defender);
+        int attackerHit = Util.getAttackerHit(attacker, defender);
         defender.setHealth(defender.getHealth() - attackerHit);
         actionLabel.setText(actionLabel.getText() + message + attackerHit + StringFactory.DAMAGE.message);
         return defender.getHealth();
@@ -168,13 +167,13 @@ public class Actions {
 
     // If player's health 0 or less:
     private void die() {
-        util.exitGame();
+        Util.exitGame();
     }
 
     // If enemy's health 0 or less:
     private void killEnemy(Cell nearbyCell, Actor player, Label actionLabel, int playerHealth, Actor enemy) {
         if (enemy instanceof Ghost){
-            util.exitGame();
+            Util.exitGame();
         }
         nearbyCell.setActor(null);
         actionLabel.setText(actionLabel.getText() + StringFactory.KILL_ENEMY.message);

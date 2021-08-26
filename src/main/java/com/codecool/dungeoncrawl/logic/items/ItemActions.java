@@ -4,8 +4,7 @@ import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 import java.util.Map;
 
@@ -41,11 +40,11 @@ public class ItemActions {
         int playerHealth = map.getPlayer().getHealth();
         int playerDefense = map.getPlayer().getDefense();
         int playerAttack = map.getPlayer().getAttack();
-        if (itemName.equals("Healing potion")) {
+        if (itemName.equals(StringFactory.HEALING_POTION.message)) {
             map.getPlayer().setHealth(playerHealth + PotionType.HEALING_POTION.effectValue);
-        } else if (itemName.equals("Stone skin potion")) {
+        } else if (itemName.equals(StringFactory.STONE_SKIN_POTION.message)) {
             map.getPlayer().setDefense(playerDefense + PotionType.STONE_SKIN_POTION.effectValue);
-        } else if (itemName.equals("Potion of might")) {
+        } else if (itemName.equals(StringFactory.MIGHT_POTION.message)) {
             map.getPlayer().setAttack(playerAttack + PotionType.MIGHT_POTION.effectValue);
         }
         decrementItem(map, itemName);
@@ -82,31 +81,31 @@ public class ItemActions {
         player.removeFromInventory(boat);
         Cell playerCell = player.getCell();
         playerCell.setType(CellType.WATER);
-        new Boat("Boat", playerCell, ItemType.BOAT);
+        new Boat(StringFactory.BOAT_CAP.message, playerCell, ItemType.BOAT);
     }
 
     public void equipArmor(GameMap map, String itemName) {
         int playerDefense = map.getPlayer().getDefense();
-        if (itemName.equals("Shield")) {
+        if (itemName.equals(StringFactory.SHIELD_CAP.message)) {
             map.getPlayer().setDefense(playerDefense + ArmorType.SHIELD.defenseValue);
-        } else if (itemName.equals("Helmet")) {
+        } else if (itemName.equals(StringFactory.HELMET_CAP.message)) {
             map.getPlayer().setDefense(playerDefense + ArmorType.HELMET.defenseValue);
-        } else if (itemName.equals("Breastplate")) {
+        } else if (itemName.equals(StringFactory.BREASTPL_CAP.message)) {
             map.getPlayer().setDefense(playerDefense + ArmorType.BREASTPLATE.defenseValue);
-        } else if (itemName.equals("Greaves")) {
+        } else if (itemName.equals(StringFactory.GREAVES_CAP.message)) {
             map.getPlayer().setDefense(playerDefense + ArmorType.GREAVES.defenseValue);
-        } else if (itemName.equals("Gauntlets")) {
+        } else if (itemName.equals(StringFactory.GAUNTLETS_CAP.message)) {
             map.getPlayer().setDefense(playerDefense + ArmorType.GAUNTLETS.defenseValue);
         }
     }
 
     public void equipWeapon(GameMap map, String itemName) {
         int playerAttack = map.getPlayer().getAttack();
-        if (itemName.equals("Sword")) {
+        if (itemName.equals(StringFactory.SWORD_CAP.message)) {
             map.getPlayer().setAttack(playerAttack + WeaponType.SWORD.attackValue);
-        } else if (itemName.equals("Axe")) {
+        } else if (itemName.equals(StringFactory.AXE_CAP.message)) {
             map.getPlayer().setAttack(playerAttack + WeaponType.AXE.attackValue);
-        } else if (itemName.equals("Pike")) {
+        } else if (itemName.equals(StringFactory.PIKE_CAP.message)) {
             map.getPlayer().setAttack(playerAttack + WeaponType.PIKE.attackValue);
         }
     }

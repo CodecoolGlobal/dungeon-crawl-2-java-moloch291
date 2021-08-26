@@ -1,11 +1,13 @@
 package com.codecool.dungeoncrawl.logic.items;
 
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
+
 public enum FoodType {
-    BREAD("Bread", 5),
-    WATER("Water", 5),
-    CHEESE("Cheese", 5),
-    APPLE("Apple", 5),
-    FISH("Fish", 5);
+    BREAD(StringFactory.BREAD.message, 5),
+    WATER(StringFactory.WATER.message, 5),
+    CHEESE(StringFactory.CHEESE.message, 5),
+    APPLE(StringFactory.APPLE.message, 5),
+    FISH(StringFactory.FISH.message, 5);
 
     public final String itemName;
     public final int replenishHealth;

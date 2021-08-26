@@ -1,9 +1,11 @@
 package com.codecool.dungeoncrawl.logic.items;
 
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
+
 public enum WeaponType {
-    SWORD("Sword", 4),
-    AXE("Axe", 3),
-    PIKE("Pike", 5);
+    SWORD(StringFactory.SWORD_CAP.message, 4),
+    AXE(StringFactory.AXE_CAP.message, 3),
+    PIKE(StringFactory.PIKE_CAP.message, 5);
 
     public final String itemName;
     public final int attackValue;

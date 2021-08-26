@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 public class Food extends Item {
     private final FoodType foodType;
@@ -12,17 +13,17 @@ public class Food extends Item {
 
     @Override
     public String getTileName() {
-        String actualType = "bread";
+        String actualType = StringFactory.BREAD.message;
         if (foodType.equals(FoodType.BREAD)) {
-            actualType = "bread";
+            actualType = StringFactory.BREAD.message;
         } else if (foodType.equals(FoodType.CHEESE)) {
-            actualType = "cheese";
+            actualType = StringFactory.CHEESE.message;
         } else if (foodType.equals(FoodType.WATER)) {
-            actualType = "water item";
+            actualType = StringFactory.WATER_ITEM.message;
         } else if (foodType.equals(FoodType.APPLE)) {
-            actualType = "apple";
+            actualType = StringFactory.APPLE.message;
         } else if (foodType.equals(FoodType.FISH)) {
-            actualType = "fish";
+            actualType = StringFactory.FISH.message;
         }
         return actualType;
     }

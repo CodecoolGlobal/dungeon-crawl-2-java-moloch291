@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 public class Armor extends Item{
     private final ArmorType armorType;
@@ -13,17 +14,17 @@ public class Armor extends Item{
 
     @Override
     public String getTileName() {
-        String actualType = "shield";
+        String actualType = StringFactory.SHIELD.message;
         if (armorType.equals(ArmorType.SHIELD)) {
-            actualType = "shield";
+            actualType = StringFactory.SHIELD.message;
         } else if (armorType.equals(ArmorType.HELMET)) {
-            actualType = "helmet";
+            actualType = StringFactory.HELMET.message;
         } else if (armorType.equals(ArmorType.BREASTPLATE)) {
-            actualType = "breastplate";
+            actualType = StringFactory.BREASTPLATE.message;
         } else if (armorType.equals(ArmorType.GREAVES)) {
-            actualType = "greaves";
+            actualType = StringFactory.GREAVES.message;
         } else if (armorType.equals(ArmorType.GAUNTLETS)) {
-            actualType = "gauntlets";
+            actualType = StringFactory.GAUNTLETS.message;
         }
         return actualType;
     }

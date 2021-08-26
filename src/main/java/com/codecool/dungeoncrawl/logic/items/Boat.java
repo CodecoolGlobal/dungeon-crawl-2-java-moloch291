@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.map.Cell;
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 public class Boat extends Item{
 
@@ -9,5 +10,5 @@ public class Boat extends Item{
     }
 
     @Override
-    public String getTileName() { return "boat"; }
+    public String getTileName() { return StringFactory.BOAT.message; }
 }

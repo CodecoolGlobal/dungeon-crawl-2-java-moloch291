@@ -1,12 +1,14 @@
 package com.codecool.dungeoncrawl.logic.items;
 
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
+
 public enum ItemType {
-    KEY("key"),
-    WEAPON("weapon"),
-    ARMOR("armor"),
-    FOOD("food"),
-    POTION("potion"),
-    BOAT("boat");
+    KEY(StringFactory.KEY.message),
+    WEAPON(StringFactory.WEAPON.message),
+    ARMOR(StringFactory.ARMOR.message),
+    FOOD(StringFactory.FOOD.message),
+    POTION(StringFactory.POTION.message),
+    BOAT(StringFactory.BOAT.message);
 
     public final String name;
 
