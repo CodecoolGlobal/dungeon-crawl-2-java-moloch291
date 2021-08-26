@@ -65,6 +65,7 @@ public class Tiles {
         tileMap.put("axe", new Tile(10, 30));
         tileMap.put("pike", new Tile(4, 25));
         tileMap.put("kraken", new Tile(25,8));
+        tileMap.put("ghost", new Tile(27,6));
     }
 
     public static void drawTile(GraphicsContext context, Drawable d, int x, int y) {

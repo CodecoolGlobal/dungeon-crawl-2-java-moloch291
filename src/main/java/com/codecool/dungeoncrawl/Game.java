@@ -70,7 +70,7 @@ public class Game extends Application {
         setUpBorderPane(ui, borderPane);
 
         scene = new Scene(borderPane);
-        setUpScene(primaryStage, scene, "/map2.txt", null);
+        setUpScene(primaryStage, scene, "/map1.txt", null);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -128,12 +128,14 @@ public class Game extends Application {
             case UP:
                 actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                actions.moveMonsters(map.getGhosts(), map.getPlayer().getCell());
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
                 actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
+                actions.moveMonsters(map.getGhosts(), map.getPlayer().getCell());
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
