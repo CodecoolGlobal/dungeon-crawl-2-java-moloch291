@@ -1,11 +1,8 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
-import com.codecool.dungeoncrawl.logic.map.Tiles;
+import com.codecool.dungeoncrawl.logic.map.*;
 import com.codecool.dungeoncrawl.logic.util.*;
-import com.codecool.dungeoncrawl.logic.map.Cell;
-import com.codecool.dungeoncrawl.logic.map.GameMap;
-import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -25,6 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Game extends Application {
+
+    int mapCounter = 1;
+
+    Scene scene;
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -59,7 +60,7 @@ public class Game extends Application {
         BorderPane borderPane = new BorderPane();
         setUpBorderPane(ui, borderPane);
 
-        Scene scene = new Scene(borderPane);
+        scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, "/map.txt", null);
     }
 
@@ -76,6 +77,12 @@ public class Game extends Application {
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle(StringFactory.TITLE.message);
         primaryStage.show();
+    }
+
+    private void setUpSecondScene(String mapToLoad, GameMap previousMap){
+        int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
+        map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
+        refresh(coordinates[1], coordinates[0]);
     }
 
     private void setUpUi(GridPane ui) {
@@ -108,25 +115,25 @@ public class Game extends Application {
             case UP:
                 actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
-                tryTogoToMap2();
+                enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
                 actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
-                tryTogoToMap2();
+                enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
                 actions.movePlayer(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
-                tryTogoToMap2();
+                enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
                 actions.movePlayer(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
                 actions.monsterInteractions(map);
-                tryTogoToMap2();
+                enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case Q:
@@ -207,19 +214,36 @@ public class Game extends Application {
         checkIfInventoryIsEmpty(playerInventory, inventoryContents);
     }
 
-
-    private void tryTogoToMap2() {
-        if (gameConditions.checkOpenDoor(map.getPlayer().getX(), map.getPlayer().getY(), map)) {
-            GridPane ui = new GridPane();
-            setUpUi(ui);
-
-
-            BorderPane borderPane = new BorderPane();
-            setUpBorderPane(ui, borderPane);
-
-            Scene scene = new Scene(borderPane);
-            setUpScene(new Stage(), scene, "/map2.txt", map);
+    private void enterTheDoor(){
+        if (doorIsOpen()){
+            switch (mapCounter){
+                case 1:
+                    System.out.println("map1");
+                    goToNextMap(MapName.MAP2);
+                    mapCounter ++;
+                    break;
+                case 2:
+                    goToNextMap(MapName.MAP3);
+                    mapCounter ++;
+                    break;
+                case 3:
+                    goToNextMap(MapName.MAP4);
+                    mapCounter ++;
+                    break;
+                case 4:
+                    goToNextMap(MapName.MAP5);
+                    mapCounter ++;
+                    break;
+            }
         }
+    }
+
+    private void goToNextMap(MapName mapName) {
+        setUpSecondScene( mapName.getMapName(), map);
+    }
+
+    private boolean doorIsOpen(){
+        return gameConditions.checkOpenDoor(map.getPlayer().getX(), map.getPlayer().getY(), map);
     }
 
 }
