@@ -60,7 +60,7 @@ public class Game extends Application {
         setUpBorderPane(ui, borderPane);
 
         Scene scene = new Scene(borderPane);
-        setUpScene(primaryStage, scene, "/map.txt", null);
+        setUpScene(primaryStage, scene, "/map2.txt", null);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {

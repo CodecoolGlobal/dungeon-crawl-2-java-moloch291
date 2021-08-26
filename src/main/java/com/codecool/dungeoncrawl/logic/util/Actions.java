@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.util;
 
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -98,7 +99,7 @@ public class Actions {
     private void lookForDoor(GameMap map) {
         int playerX = map.getPlayer().getCell().getX();
         int playerY = map.getPlayer().getCell().getY();
-        if (gameConditions.doorNextToPlayer(playerX, playerY, map) && map.getPlayer().hasKey())
+        if (gameConditions.doorNextToPlayer(playerX, playerY, map) && map.getPlayer().hasItem(ItemType.KEY))
             map.openDoor();
     }
 

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Actor {
-
+    private boolean hasShip = false;
     private final Map<Item, Integer> inventory = new HashMap<>();
 
     public Player(Cell cell) {
@@ -32,13 +32,24 @@ public class Player extends Actor {
         inventory.remove(item);
     }
 
-    public boolean hasKey() {
+    public boolean hasItem(ItemType itemType) {
         for (Item item: inventory.keySet()) {
-            if (item.getItemType().equals(ItemType.KEY)) {
+            if (item.getItemType().equals(itemType)) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public void move(int dx, int dy) {
+        boolean boatChecker = hasItem(ItemType.BOAT);
+        Cell nextCell = super.getCell().getNeighbor(dx, dy);
+        if (gameConditions.checkNextCellPlayer(nextCell, boatChecker)) {
+            super.getCell().setActor(null);
+            nextCell.setActor(this);
+            super.setCell(nextCell);
+        }
     }
 
     @Override
