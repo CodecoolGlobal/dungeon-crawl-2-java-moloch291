@@ -150,7 +150,9 @@ public class Game extends Application {
                 break;
             case F:
                 Item foodItem = itemActions.searchForItemByType(map, ItemType.FOOD);
-                itemActions.consumeFood(map, foodItem.getName());
+                if (foodItem != null) {
+                    itemActions.consumeFood(map, foodItem.getName());
+                }
                 break;
             case H:
                 itemActions.consumePotion(map, StringFactory.HEALING_POTION.message);
