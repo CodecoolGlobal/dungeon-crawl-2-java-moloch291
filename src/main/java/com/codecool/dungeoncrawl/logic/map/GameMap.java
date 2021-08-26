@@ -15,7 +15,7 @@ public class GameMap {
     private final ArrayList<Actor> orcs = new ArrayList<>();
     private final ArrayList<Actor> undeads = new ArrayList<>();
     private final ArrayList<Actor> krakens = new ArrayList<>();
-
+    private final ArrayList<Actor> ghosts = new ArrayList<>();
     private Player player;
     private CellType exit;
 
@@ -33,6 +33,14 @@ public class GameMap {
 
     public void addKraken(Kraken kraken) {
         this.krakens.add(kraken);
+    }
+
+    public void addGhost(Ghost ghost) {
+        this.ghosts.add(ghost);
+    }
+
+    public ArrayList<Actor> getGhosts() {
+        return ghosts;
     }
 
     public Player getPlayer() {

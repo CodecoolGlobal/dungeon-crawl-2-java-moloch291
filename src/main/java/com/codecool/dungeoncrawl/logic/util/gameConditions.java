@@ -40,6 +40,11 @@ public class gameConditions {
                 !isCellOccupied(nextCell);
     }
 
+    public boolean checkNextCellGhost(Cell nextCell) {
+        return (!nextCell.getType().equals(CellType.EMPTY)) &&
+                !isCellOccupied(nextCell);
+    }
+
 
 
     public boolean checkNextCellPlayer(Cell nextCell, boolean boatChecker) {

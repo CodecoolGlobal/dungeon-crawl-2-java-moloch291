@@ -1,13 +1,10 @@
 package com.codecool.dungeoncrawl.logic.util;
 
+import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
-import com.codecool.dungeoncrawl.logic.actors.Actor;
-import com.codecool.dungeoncrawl.logic.actors.Orc;
-import com.codecool.dungeoncrawl.logic.actors.Skeleton;
-import com.codecool.dungeoncrawl.logic.actors.Undead;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.scene.control.Label;
 
@@ -71,6 +68,7 @@ public class Actions {
         removeBodies(map.getSkeletons(), map);
         removeBodies(map.getOrcs(), map);
         removeBodies(map.getUndeads(), map);
+        removeBodies(map.getGhosts(), map);
     }
 
     // Finding dead monsters:
@@ -89,7 +87,7 @@ public class Actions {
     }
 
     // Iterating through a collection of monsters and activate it's move method:
-    private void moveMonsters(ArrayList<Actor> monstersToMove, Cell playerCell) {
+    public void moveMonsters(ArrayList<Actor> monstersToMove, Cell playerCell) {
         for (Actor monster : monstersToMove) monster.monsterMove(playerCell);
     }
 
@@ -175,6 +173,9 @@ public class Actions {
 
     // If enemy's health 0 or less:
     private void killEnemy(Cell nearbyCell, Actor player, Label actionLabel, int playerHealth, Actor enemy) {
+        if (enemy instanceof Ghost){
+            util.exitGame();
+        }
         nearbyCell.setActor(null);
         actionLabel.setText(actionLabel.getText() + StringFactory.KILL_ENEMY.message);
         player.setHealth(playerHealth);
