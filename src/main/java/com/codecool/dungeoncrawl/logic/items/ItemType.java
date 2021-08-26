@@ -6,7 +6,8 @@ public enum ItemType {
     ARMOR("armor"),
     FOOD("food"),
     POTION("potion"),
-    BOAT("boat");
+    BOAT("boat"),
+    ALCOHOL("beer");
 
     public final String name;
 

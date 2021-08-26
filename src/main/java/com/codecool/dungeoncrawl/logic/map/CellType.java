@@ -18,7 +18,16 @@ public enum CellType {
     TORCH("torch"),
     LADDER("ladder"),
     LADDER_UPPER("ladder upper"),
-    LAKE_HOUSE("lake house");
+    LAKE_HOUSE("lake house"),
+    TREE("tree"),
+    WEED("weed"),
+    MOSS("moss"),
+    ROAD_SIGN("road sign"),
+    CAMPFIRE("campfire"),
+    CAULDRON("cauldron"),
+    ROCKS("rocks"),
+    TENT("tent");
+
 
 
     private final String tileName;
