@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.logic.items.Boat;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
+import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.*;
 import com.codecool.dungeoncrawl.logic.util.*;
 import com.codecool.dungeoncrawl.logic.map.Cell;
@@ -162,7 +164,9 @@ public class Game extends Application {
                 itemActions.consumePotion(map, StringFactory.POTION.message);
                 break;
             case B:
-                itemActions.leaveBoat(map, map.getPlayer());
+                if (map.getPlayer().hasItem(ItemType.BOAT)) {
+                    itemActions.leaveBoat(map, map.getPlayer());
+                }
                 break;
         }
     }
