@@ -13,7 +13,6 @@ public class Undead extends Actor{
 
     @Override
     public void monsterMove(Cell playerCell) {
-
     }
 
     @Override

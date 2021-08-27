@@ -1,7 +1,7 @@
 package com.codecool.dungeoncrawl.logic.map;
 
 import com.codecool.dungeoncrawl.logic.actors.*;
-import com.codecool.dungeoncrawl.logic.util.gameConditions;
+import com.codecool.dungeoncrawl.logic.util.GameConditions;
 
 import java.util.ArrayList;
 
@@ -9,7 +9,7 @@ public class GameMap {
 
     private final int width;
     private final int height;
-    public gameConditions gameConditions;
+    public GameConditions gameConditions;
     private final Cell[][] cells;
     private final ArrayList<Actor> skeletons = new ArrayList<>();
     private final ArrayList<Actor> orcs = new ArrayList<>();
@@ -22,21 +22,13 @@ public class GameMap {
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
         this.height = height;
-        this.gameConditions = new gameConditions();
+        this.gameConditions = new GameConditions();
         this.exit = CellType.CLOSED_DOOR;
         cells = defineCells(width, height, defaultCellType);
     }
 
     public ArrayList<Actor> getKraken() {
         return krakens;
-    }
-
-    public void addKraken(Kraken kraken) {
-        this.krakens.add(kraken);
-    }
-
-    public void addGhost(Ghost ghost) {
-        this.ghosts.add(ghost);
     }
 
     public ArrayList<Actor> getGhosts() {
@@ -81,6 +73,14 @@ public class GameMap {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public void addKraken(Kraken kraken) {
+        this.krakens.add(kraken);
+    }
+
+    public void addGhost(Ghost ghost) {
+        this.ghosts.add(ghost);
     }
 
     public void addSkeleton(Skeleton skeleton) {

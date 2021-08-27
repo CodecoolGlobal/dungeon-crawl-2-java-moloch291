@@ -10,14 +10,6 @@ import java.util.Map;
 
 public class ItemActions {
 
-    private boolean searchForItemByName(GameMap map, String nameCheck) {
-        Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        for (Item item : playerInventory.keySet()) {
-            return item.getName().equals(nameCheck);
-        }
-        return false;
-    }
-    
     public Item searchForItemByType(GameMap map, ItemType itemType) {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         Item itemInInventory = null;
@@ -82,7 +74,7 @@ public class ItemActions {
         }
     }
 
-    public void leaveBoat(GameMap map, Player player) {
+    public void leaveBoat(Player player) {
         Item boat = null;
         for (Item item : player.getInventory().keySet()) {
             if (item.getItemType().equals(ItemType.BOAT)) {
@@ -101,7 +93,7 @@ public class ItemActions {
             map.getPlayer().setDefense(playerDefense + ArmorType.SHIELD.defenseValue);
         } else if (itemName.equals(StringFactory.HELMET_CAP.message)) {
             map.getPlayer().setDefense(playerDefense + ArmorType.HELMET.defenseValue);
-        } else if (itemName.equals(StringFactory.BREASTPL_CAP.message)) {
+        } else if (itemName.equals(StringFactory.BREASTPLATE_CAP.message)) {
             map.getPlayer().setDefense(playerDefense + ArmorType.BREASTPLATE.defenseValue);
         } else if (itemName.equals(StringFactory.GREAVES_CAP.message)) {
             map.getPlayer().setDefense(playerDefense + ArmorType.GREAVES.defenseValue);

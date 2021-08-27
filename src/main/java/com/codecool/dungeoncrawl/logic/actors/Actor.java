@@ -2,7 +2,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.Drawable;
-import com.codecool.dungeoncrawl.logic.util.gameConditions;
+import com.codecool.dungeoncrawl.logic.util.GameConditions;
 
 public abstract class Actor implements Drawable {
 
@@ -11,7 +11,7 @@ public abstract class Actor implements Drawable {
     private int attack = 3;
     private int defense = 0;
 
-    gameConditions gameConditions = new gameConditions();
+    GameConditions gameConditions = new GameConditions();
 
     public Actor(Cell cell) {
         this.cell = cell;

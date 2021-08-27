@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class Actions {
 
-    gameConditions gameConditions = new gameConditions();
+    GameConditions gameConditions = new GameConditions();
     ItemActions itemActions = new ItemActions();
 
 /*######################################################################################################################

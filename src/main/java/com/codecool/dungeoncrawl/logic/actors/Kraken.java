@@ -3,7 +3,6 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
-import com.codecool.dungeoncrawl.logic.util.NumberParameters;
 import com.codecool.dungeoncrawl.logic.util.Util;
 
 import java.util.ArrayList;
@@ -13,8 +12,8 @@ public class Kraken extends Actor{
     ArrayList<Cell> waterCells = new ArrayList<>();
     public Kraken(Cell cell, GameMap map) {
         super(cell);
-        super.setAttack(map.getPlayer().getHealth());
-        super.setHealth(NumberParameters.KRAKEN_HEALTH.getValue());
+        super.setAttack(0);
+        super.setHealth(0);
         this.map = map;
         waterFieldSearcher();
     }

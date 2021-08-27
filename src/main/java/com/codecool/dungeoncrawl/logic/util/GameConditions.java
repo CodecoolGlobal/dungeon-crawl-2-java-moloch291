@@ -6,7 +6,7 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 
-public class gameConditions {
+public class GameConditions {
 
     public boolean checkFakeDoor(int playerX, int playerY, GameMap map) {
         return map.getCell(playerX, playerY)

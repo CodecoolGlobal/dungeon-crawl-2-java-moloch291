@@ -17,7 +17,9 @@ public enum StringFactory {
 
     // IN Game class:
     TITLE("Dungeon Crawl"),
-    PICK_UP_ITEMS("Pick up items by pressing Enter while standing on the item."),
+    PICK_UP_ITEMS(
+            "Pick up items by pressing Enter while standing on the item."
+    ),
     WANT_TO_QUIT("Are you sure you want to quit? Y/N"),
     // Item names:
     HEALING_POTION("Healing potion"),
@@ -29,6 +31,7 @@ public enum StringFactory {
     DEFENSE_LABEL("Defense: "),
     ACTION_LABEL("Action: "),
     INVENTORY_LABEL("Inventory: "),
+
     // Inventory content
     INVENTORY_EMPTY("Empty"),
     AXE("axe"),
@@ -42,7 +45,7 @@ public enum StringFactory {
     HELMET("helmet"),
     HELMET_CAP("Helmet"),
     BREASTPLATE("breastplate"),
-    BREASTPL_CAP("Breastplate"),
+    BREASTPLATE_CAP("Breastplate"),
     GREAVES("greaves"),
     GREAVES_CAP("Greaves"),
     GAUNTLETS("gauntlets"),

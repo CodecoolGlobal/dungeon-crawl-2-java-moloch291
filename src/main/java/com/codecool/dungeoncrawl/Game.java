@@ -1,10 +1,8 @@
 package com.codecool.dungeoncrawl;
 
-import com.codecool.dungeoncrawl.logic.items.Boat;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
-import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.*;
 import com.codecool.dungeoncrawl.logic.util.*;
 import com.codecool.dungeoncrawl.logic.map.Cell;
@@ -42,8 +40,7 @@ public class Game extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
 
     Actions actions = new Actions();
-    Util util = new Util();
-    gameConditions gameConditions = new gameConditions();
+    GameConditions gameConditions = new GameConditions();
     boolean confirmQuit = false;
 
     Label healthLabel = new Label();
@@ -62,7 +59,7 @@ public class Game extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         GridPane ui = new GridPane();
         setUpUi(ui);
 
@@ -184,7 +181,7 @@ public class Game extends Application {
                 break;
             case B:
                 if (map.getPlayer().hasItem(ItemType.BOAT)) {
-                    itemActions.leaveBoat(map, map.getPlayer());
+                    itemActions.leaveBoat(map.getPlayer());
                 }
                 break;
             case A:

@@ -1,9 +1,11 @@
 package com.codecool.dungeoncrawl.logic.items;
 
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
+
 public enum PotionType {
-    HEALING_POTION("Healing potion", "health", 20),
-    STONE_SKIN_POTION("Stone skin potion", "defense", 5),
-    MIGHT_POTION("Potion of might", "attack", 5);
+    HEALING_POTION(StringFactory.HEALING_POTION.message, "health", 20),
+    STONE_SKIN_POTION(StringFactory.STONE_SKIN_POTION.message, "defense", 5),
+    MIGHT_POTION(StringFactory.MIGHT_POTION.message, "attack", 5);
 
     public final String itemName;
     public final String affectedStat;
