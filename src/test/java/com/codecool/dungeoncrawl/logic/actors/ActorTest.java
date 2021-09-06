@@ -23,6 +23,30 @@ class ActorTest {
     }
 
     @Test
+    void healthStartsAt10(){
+        Player player = new Player(gameMap.getCell(1,1));
+        int health = 10;
+        int playerHealth = player.getHealth();
+        assertEquals(health,playerHealth);
+    }
+
+    @Test
+    void attackStartsAt3(){
+        Player player = new Player(gameMap.getCell(1,1));
+        int attack = 3;
+        int playerAttack = player.getAttack();
+        assertEquals(attack,playerAttack);
+    }
+
+    @Test
+    void defenseStartAt0(){
+        Player player = new Player(gameMap.getCell(1,1));
+        int defense = 0;
+        int playerDefense = player.getDefense();
+        assertEquals(defense,playerDefense);
+    }
+
+    @Test
     void cannotMoveIntoWall() {
         gameMap.getCell(2, 1).setType(CellType.WALL);
         Player player = new Player(gameMap.getCell(1, 1));
@@ -32,14 +56,7 @@ class ActorTest {
         assertEquals(1, player.getY());
     }
 
-    @Test
-    void cannotMoveOutOfMap() {
-        Player player = new Player(gameMap.getCell(2, 1));
-        player.move(1, 0);
 
-        assertEquals(2, player.getX());
-        assertEquals(1, player.getY());
-    }
 
     @Test
     void cannotMoveIntoAnotherActor() {
