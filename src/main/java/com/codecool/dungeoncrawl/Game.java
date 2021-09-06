@@ -11,6 +11,8 @@ import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,6 +25,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+//import java.awt.event.ActionEvent;
+//import java.beans.EventHandler;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +89,13 @@ public class Game extends Application {
         actionButton.setText(buttonText);
         Button cancelButton = new Button();
         cancelButton.setText("Cancel");
+        EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        cancelButton.setOnAction(event);
         VBox vBox = new VBox();
         vBox.setPadding(new Insets(10));
         vBox.setSpacing(8);
