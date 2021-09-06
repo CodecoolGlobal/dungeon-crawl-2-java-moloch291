@@ -14,13 +14,14 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,8 @@ public class Game extends Application {
     int mapCounter = 1;
 
     Scene scene;
+    Stage saveModal = new Stage();
+    Stage loadModal = new Stage();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -66,8 +69,28 @@ public class Game extends Application {
         BorderPane borderPane = new BorderPane();
         setUpBorderPane(ui, borderPane);
 
+        saveModal.initModality(Modality.WINDOW_MODAL);
+        saveModal.initOwner(primaryStage);
+        loadModal.initModality(Modality.WINDOW_MODAL);
+        loadModal.initOwner(primaryStage);
+        setUpModal(saveModal, "Save");
+        setUpModal(loadModal, "Load");
+
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
+    }
+
+    private void setUpModal (Stage modal, String buttonText) {
+        Button actionButton = new Button();
+        actionButton.setText(buttonText);
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(8);
+        vBox.getChildren().addAll(actionButton, cancelButton);
+        Scene modalScene = new Scene(vBox);
+        modal.setScene(modalScene);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -188,6 +211,12 @@ public class Game extends Application {
                 if (map.getPlayer().hasItem((ItemType.ALCOHOL))) {
                     itemActions.consumeAlcohol(map, StringFactory.BEER_CAP.message);
                 }
+                break;
+            case S:
+                saveModal.show();
+                break;
+            case L:
+                loadModal.show();
                 break;
         }
     }
