@@ -140,13 +140,27 @@ class ItemActionsTest {
                 FoodType.CHEESE
         );
         player.addToInventory(cheese, 2);
-        int expectedAmount = 1;
-
         itemActions.consumeFood(gameMap, StringFactory.CHEESE_CAP.message);
+
+        int expectedAmount = 1;
         int result = player.getInventory().get(cheese);
 
         assertEquals(expectedAmount, result);
     }
+
+    @Test
+    void consumptionOfSingleItemDeletesFromInventory() {
+        Potion healingPotion = new Potion(
+                StringFactory.HEALING_POTION.message,
+                gameMap.getCell(0, 0),
+                PotionType.HEALING_POTION
+        );
+        player.addToInventory(healingPotion, 1);
+        itemActions.consumePotion(gameMap, StringFactory.HEALING_POTION.message);
+
+        assertNull(player.getInventory().get(healingPotion));
+    }
+
     @Test
     void consumeAlcohol() {
     }
