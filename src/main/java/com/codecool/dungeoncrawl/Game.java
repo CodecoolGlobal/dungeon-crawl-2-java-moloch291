@@ -176,10 +176,14 @@ public class Game extends Application {
                     itemActions.consumePotion(map, StringFactory.HEALING_POTION.message);
                 break;
             case G:
-                itemActions.consumePotion(map, StringFactory.STONE_SKIN_POTION.message);
+                Item potionItem2 = itemActions.searchForPotion(map, PotionType.STONE_SKIN_POTION);
+                if (potionItem2 != null)
+                    itemActions.consumePotion(map, StringFactory.STONE_SKIN_POTION.message);
                 break;
             case J:
-                itemActions.consumePotion(map, StringFactory.MIGHT_POTION.message);
+                Item potionItem3 = itemActions.searchForPotion(map, PotionType.MIGHT_POTION);
+                if (potionItem3 != null)
+                    itemActions.consumePotion(map, StringFactory.MIGHT_POTION.message);
                 break;
             case B:
                 if (map.getPlayer().hasItem(ItemType.BOAT)) {
