@@ -23,4 +23,8 @@ public class Potion extends Item {
         }
         return actualType;
     }
+
+    public PotionType getPotionType() {
+        return this.potionType;
+    }
 }

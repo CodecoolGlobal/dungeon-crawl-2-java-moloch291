@@ -12,13 +12,21 @@ public class ItemActions {
 
     public Item searchForItemByType(GameMap map, ItemType itemType) {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        Item itemInInventory = null;
         for (Item item : playerInventory.keySet()) {
             if (item.getItemType().equals(itemType)) {
-                itemInInventory = item;
+                return item;
             }
         }
-        return itemInInventory;
+        return null;
+    }
+
+    public Item searchForPotion(GameMap map, PotionType potionType) {
+        Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
+        for (Item item : playerInventory.keySet()) {
+            if (item instanceof Potion && ((Potion) item).getPotionType().equals(potionType))
+                return item;
+        }
+        return null;
     }
 
     public void consumeFood(GameMap map, String itemName) {

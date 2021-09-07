@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.items.PotionType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
 import com.codecool.dungeoncrawl.logic.map.*;
 import com.codecool.dungeoncrawl.logic.util.*;
@@ -166,12 +167,13 @@ public class Game extends Application {
                 break;
             case F:
                 Item foodItem = itemActions.searchForItemByType(map, ItemType.FOOD);
-                if (foodItem != null) {
+                if (foodItem != null)
                     itemActions.consumeFood(map, foodItem.getName());
-                }
                 break;
             case H:
-                itemActions.consumePotion(map, StringFactory.HEALING_POTION.message);
+                Item potionItem = itemActions.searchForPotion(map, PotionType.HEALING_POTION);
+                if (potionItem != null)
+                    itemActions.consumePotion(map, StringFactory.HEALING_POTION.message);
                 break;
             case G:
                 itemActions.consumePotion(map, StringFactory.STONE_SKIN_POTION.message);
