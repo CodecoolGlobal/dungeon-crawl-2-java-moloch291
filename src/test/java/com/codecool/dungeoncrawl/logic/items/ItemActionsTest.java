@@ -159,10 +159,20 @@ class ItemActionsTest {
     }
 
     @Test
-    void consumeAlcoholResultsInBeingDrunk() {
+    void consumingAlcoholResultsInBeingDrunk() {
         itemActions.consumeAlcohol(gameMap);
 
         assertTrue(player.isDrunk());
+    }
+
+    @Test
+    void consumingAlcoholIncreasesPlayerAttack() {
+        int expected = player.getAttack() + 3;
+
+        itemActions.consumeAlcohol(gameMap);
+        int result = player.getAttack();
+
+        assertEquals(expected, result);
     }
 
     @Test
