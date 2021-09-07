@@ -6,13 +6,16 @@ import com.codecool.dungeoncrawl.model.PlayerModel;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GameStateDaoJdbc implements GameStateDao {
 
     private DataSource dataSource;
+    private PlayerDao playerDao;
 
-    public GameStateDaoJdbc(DataSource dataSource) {
+    public GameStateDaoJdbc(DataSource dataSource, PlayerDao playerDao) {
+        this.playerDao = playerDao;
         this.dataSource = dataSource;
     }
 
@@ -50,7 +53,27 @@ public class GameStateDaoJdbc implements GameStateDao {
 
         @Override
         public GameState get(int id) {
-            return null;
+            try (Connection conn = dataSource.getConnection()) {
+                String sql = "SELECT current_map, saved_at, player_id FROM game_sate WHERE id = ?";
+                PreparedStatement st = conn.prepareStatement(sql);
+                st.setInt(1, id);
+                ResultSet rs = st.executeQuery();
+                if (!rs.next()) {
+                    return null;
+                }
+                String current_map = rs.getString(1);
+                java.sql.Date saved_at = rs.getDate(2);
+
+                int playerId = rs.getInt(3);
+                PlayerModel playerModel = playerDao.get(playerId);
+
+                // FINISH - create and return new Book class instance
+                GameState gameState = new GameState(current_map, saved_at, playerModel);
+                gameState.setId(id);
+                return gameState;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         @Override
