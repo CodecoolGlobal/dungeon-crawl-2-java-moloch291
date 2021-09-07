@@ -61,6 +61,5 @@ public class Player extends Actor {
 
     @Override
     public void monsterMove(Cell playerCell) {
-        System.out.println("Play monsterMove not implemented");
     }
 }
