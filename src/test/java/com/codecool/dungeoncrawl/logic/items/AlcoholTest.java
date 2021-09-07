@@ -14,7 +14,6 @@ class AlcoholTest {
 
     @BeforeAll
     static void setUpMessage() {
-
         System.out.println("Alcohol item test started...");
     }
 

@@ -4,13 +4,13 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 public class Food extends Item {
+
     private final FoodType foodType;
 
-    public Food(String name, Cell cell, ItemType itemType, FoodType foodType) {
-        super(name, cell, itemType);
-        if (foodType != null) {
-            this.foodType = foodType;
-        } else throw new IllegalArgumentException(StringFactory.IllegalArgumentError.message);
+    public Food(String name, Cell cell, FoodType foodType) {
+        super(name, cell, ItemType.FOOD);
+        if (foodType != null) this.foodType = foodType;
+        else throw new IllegalArgumentException(StringFactory.IllegalArgumentError.message);
     }
 
     @Override

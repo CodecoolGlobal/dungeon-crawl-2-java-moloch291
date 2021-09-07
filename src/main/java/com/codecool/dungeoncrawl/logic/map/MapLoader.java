@@ -123,35 +123,35 @@ public class MapLoader {
                             break;
                         case 'b':
                             cell.setType(CellType.FLOOR);
-                            new Food("Bread", cell, ItemType.FOOD, FoodType.BREAD);
+                            new Food(StringFactory.BREAD_CAP.message, cell, FoodType.BREAD);
                             break;
                         case 'c':
                             cell.setType(CellType.FLOOR);
-                            new Food("Cheese", cell, ItemType.FOOD, FoodType.CHEESE);
+                            new Food(StringFactory.CHEESE_CAP.message, cell, FoodType.CHEESE);
                             break;
                         case 'v':
                             cell.setType(CellType.FLOOR);
-                            new Food("Water bottle", cell, ItemType.FOOD, FoodType.WATER);
+                            new Food(StringFactory.WATER_BOTTLE.message, cell, FoodType.WATER);
                             break;
                         case 'n':
                             cell.setType(CellType.FLOOR);
-                            new Food("Apple", cell, ItemType.FOOD, FoodType.APPLE);
+                            new Food(StringFactory.APPLE_CAP.message, cell, FoodType.APPLE);
                             break;
                         case 'm':
                             cell.setType(CellType.FLOOR);
-                            new Food("Fish", cell, ItemType.FOOD, FoodType.FISH);
+                            new Food(StringFactory.FISH_CAP.message, cell, FoodType.FISH);
                             break;    
                         case 'h':
                             cell.setType(CellType.FLOOR);
-                            new Potion("Healing potion", cell, ItemType.POTION, PotionType.HEALING_POTION);
+                            new Potion(StringFactory.HEALING_POTION.message, cell, PotionType.HEALING_POTION);
                             break;
                         case 'g':
                             cell.setType(CellType.FLOOR);
-                            new Potion("Stone skin potion", cell, ItemType.POTION, PotionType.STONE_SKIN_POTION);
+                            new Potion(StringFactory.STONE_SKIN_POTION.message, cell, PotionType.STONE_SKIN_POTION);
                             break;
                         case 'j':
                             cell.setType(CellType.FLOOR);
-                            new Potion("Potion of might", cell, ItemType.POTION, PotionType.MIGHT_POTION);
+                            new Potion(StringFactory.MIGHT_POTION.message, cell, PotionType.MIGHT_POTION);
                             break;
                         case 'B':
                             cell.setType(CellType.WATER);

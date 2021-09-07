@@ -53,7 +53,7 @@ class PlayerTest {
     @Test
     void  addItemToInventory(){
         GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Item alcohol = new Alcohol("Alcohol",gameMap.getCell(1,1), ItemType.ALCOHOL);
+        Item alcohol = new Alcohol(gameMap.getCell(1,1));
         Player player = new Player(gameMap.getCell(1,1));
         player.addToInventory(alcohol,1);
         assertTrue(player.hasItem(ItemType.ALCOHOL));
@@ -62,7 +62,7 @@ class PlayerTest {
     @Test
     void removeFromInventory(){
         GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Item alcohol = new Alcohol("Alcohol",gameMap.getCell(1,1), ItemType.ALCOHOL);
+        Item alcohol = new Alcohol(gameMap.getCell(1,1));
         Player player = new Player(gameMap.getCell(1,1));
         player.addToInventory(alcohol,1);
         player.removeFromInventory(alcohol);

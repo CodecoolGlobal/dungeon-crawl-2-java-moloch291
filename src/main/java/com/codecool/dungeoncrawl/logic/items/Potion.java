@@ -5,8 +5,8 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 public class Potion extends Item {
     private final PotionType potionType;
 
-    public Potion(String name, Cell cell, ItemType itemType, PotionType potionType) {
-        super(name, cell, itemType);
+    public Potion(String name, Cell cell, PotionType potionType) {
+        super(name, cell, ItemType.POTION);
         this.potionType = potionType;
     }
 

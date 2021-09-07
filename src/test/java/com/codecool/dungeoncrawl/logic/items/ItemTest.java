@@ -56,7 +56,6 @@ class ItemTest {
                 () -> new Food(
                         null,
                         gameMap.getCell(0, 1),
-                        ItemType.FOOD,
                         FoodType.BREAD
                 )
             );
@@ -66,9 +65,8 @@ class ItemTest {
     void getCell() {
         Cell testCell = gameMap.getCell(0, 1);
         Potion testPotion = new Potion(
-                "Healing potion",
+                StringFactory.HEALING_POTION.message,
                 testCell,
-                ItemType.POTION,
                 PotionType.HEALING_POTION
         );
 
@@ -82,7 +80,6 @@ class ItemTest {
                 () -> new Food(
                         StringFactory.FISH.message,
                         null,
-                        ItemType.FOOD,
                         FoodType.FISH
                 )
         );
@@ -116,19 +113,6 @@ class ItemTest {
     }
 
     @Test
-    void setItemTypeAsNullVariable() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Food(
-                        StringFactory.CHEESE.message,
-                        gameMap.getCell(0, 0),
-                        null,
-                        FoodType.CHEESE
-                )
-        );
-    }
-
-    @Test
     void setItemType() {
         Boat testBoat = new Boat(
                 "Boat",
@@ -147,7 +131,6 @@ class ItemTest {
                 () -> new Food(
                         StringFactory.APPLE.message,
                         gameMap.getCell(0, 0),
-                        ItemType.FOOD,
                         null
                 )
         );

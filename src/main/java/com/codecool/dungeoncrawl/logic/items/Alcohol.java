@@ -10,5 +10,7 @@ public class Alcohol extends Item{
     }
 
     @Override
-    public String getTileName() { return StringFactory.BEER.message;}
+    public String getTileName() {
+        return StringFactory.BEER.message;
+    }
 }
