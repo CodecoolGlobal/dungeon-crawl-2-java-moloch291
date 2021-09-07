@@ -33,7 +33,6 @@ class ItemActionsTest {
 
     @Test
     void searchForItemByTypeWithSimilarTypes() {
-
         Food bread = new Food(
                 StringFactory.BREAD_CAP.message,
                 gameMap.getCell(0, 0),
@@ -53,7 +52,6 @@ class ItemActionsTest {
 
     @Test
     void searchForItemByTypeWithDifferentTypes() {
-
         Weapon sword = new Weapon(
                 StringFactory.SWORD_CAP.message,
                 gameMap.getCell(0, 0),
@@ -73,7 +71,6 @@ class ItemActionsTest {
 
     @Test
     void searchForItemByTypeWithNoneExistentType() {
-
         Weapon sword = new Weapon(
                 StringFactory.SWORD_CAP.message,
                 gameMap.getCell(0, 0),
@@ -162,7 +159,10 @@ class ItemActionsTest {
     }
 
     @Test
-    void consumeAlcohol() {
+    void consumeAlcoholResultsInBeingDrunk() {
+        itemActions.consumeAlcohol(gameMap, StringFactory.BREAD_CAP.message);
+
+        assertTrue(player.isDrunk());
     }
 
     @Test
