@@ -115,7 +115,9 @@ public class Game extends Application {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
+                    dbManager.saveGameState(map);
                     dbManager.savePlayer(map.getPlayer());
+                    dbManager.saveInventory();
                     modal.hide();
                 }
             };
