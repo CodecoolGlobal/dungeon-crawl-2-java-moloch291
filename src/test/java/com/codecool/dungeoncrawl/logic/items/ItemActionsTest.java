@@ -6,6 +6,9 @@ import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.util.StringFactory;
 import org.junit.jupiter.api.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemActionsTest {
@@ -129,6 +132,21 @@ class ItemActionsTest {
         assertEquals(expected, result);
     }
 
+    @Test
+    void consumptionDecrementsItemInInventory() {
+        Food cheese = new Food(
+                StringFactory.CHEESE_CAP.message,
+                gameMap.getCell(0, 0),
+                FoodType.CHEESE
+        );
+        player.addToInventory(cheese, 2);
+        int expectedAmount = 1;
+
+        itemActions.consumeFood(gameMap, StringFactory.CHEESE_CAP.message);
+        int result = player.getInventory().get(cheese);
+
+        assertEquals(expectedAmount, result);
+    }
     @Test
     void consumeAlcohol() {
     }
