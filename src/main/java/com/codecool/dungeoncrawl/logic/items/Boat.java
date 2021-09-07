@@ -5,8 +5,8 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 public class Boat extends Item{
 
-    public Boat(String name, Cell cell, ItemType itemType) {
-        super(name, cell, itemType);
+    public Boat(String name, Cell cell) {
+        super(name, cell, ItemType.BOAT);
     }
 
     @Override

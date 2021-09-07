@@ -155,7 +155,7 @@ public class MapLoader {
                             break;
                         case 'B':
                             cell.setType(CellType.WATER);
-                            new Boat("Boat", cell, ItemType.BOAT);
+                            new Boat(StringFactory.BOAT_CAP.message, cell);
                             break;
                         case 'd':
                             cell.setType(map.getExit());

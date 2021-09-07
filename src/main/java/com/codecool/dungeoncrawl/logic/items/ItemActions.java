@@ -84,7 +84,7 @@ public class ItemActions {
         player.removeFromInventory(boat);
         Cell playerCell = player.getCell();
         playerCell.setType(CellType.WATER);
-        new Boat(StringFactory.BOAT_CAP.message, playerCell, ItemType.BOAT);
+        new Boat(StringFactory.BOAT_CAP.message, playerCell);
     }
 
     public void equipArmor(GameMap map, String itemName) {

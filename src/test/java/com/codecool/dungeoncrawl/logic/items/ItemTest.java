@@ -115,8 +115,7 @@ class ItemTest {
     void setItemType() {
         Boat testBoat = new Boat(
                 "Boat",
-                gameMap.getCell(0, 1),
-                ItemType.BOAT
+                gameMap.getCell(0, 1)
         );
         testBoat.setItemType(ItemType.FOOD);
 
