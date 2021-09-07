@@ -59,7 +59,10 @@ public enum StringFactory {
     BOAT_CAP("Boat"),
     WATER_ITEM("water item"),
     BEER("beer"),
-    BEER_CAP("Beer");
+    BEER_CAP("Beer"),
+
+    // Errors
+    IllegalArgumentError("None of the constructor variables shall be null!");
 
     public final String message;
 

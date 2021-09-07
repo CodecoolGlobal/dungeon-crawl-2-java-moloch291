@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.util.StringFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,6 +52,19 @@ class ItemTest {
     }
 
     @Test
+    void setNameWithNullVariable() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Food(
+                        null,
+                        gameMap.getCell(0, 1),
+                        ItemType.FOOD,
+                        FoodType.BREAD
+                )
+            );
+    }
+
+    @Test
     void getCell() {
         Cell testCell = gameMap.getCell(0, 1);
         Potion testPotion = new Potion(
@@ -61,6 +75,19 @@ class ItemTest {
         );
 
         assertEquals(testCell, testPotion.getCell());
+    }
+
+    @Test
+    void setCellWithNullVariable() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Food(
+                        StringFactory.FISH.message,
+                        null,
+                        ItemType.FOOD,
+                        FoodType.FISH
+                )
+        );
     }
 
     @Test
@@ -100,5 +127,10 @@ class ItemTest {
         testBoat.setItemType(ItemType.FOOD);
 
         assertEquals(ItemType.FOOD, testBoat.getItemType());
+    }
+
+    @AfterAll
+    static void tearDown() {
+        System.out.println("Item abstract test finished!");
     }
 }

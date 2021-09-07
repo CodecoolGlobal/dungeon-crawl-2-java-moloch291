@@ -8,7 +8,9 @@ public class Food extends Item {
 
     public Food(String name, Cell cell, ItemType itemType, FoodType foodType) {
         super(name, cell, itemType);
-        this.foodType = foodType;
+        if (foodType != null) {
+            this.foodType = foodType;
+        } else throw new IllegalArgumentException(StringFactory.IllegalArgumentError.message);
     }
 
     @Override
