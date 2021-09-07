@@ -61,14 +61,14 @@ public class GameStateDaoJdbc implements GameStateDao {
                 if (!rs.next()) {
                     return null;
                 }
-                String current_map = rs.getString(1);
-                java.sql.Date saved_at = rs.getDate(2);
+                String currentMap = rs.getString(1);
+                java.sql.Date savedAt = rs.getDate(2);
 
                 int playerId = rs.getInt(3);
                 PlayerModel playerModel = playerDao.get(playerId);
 
                 // FINISH - create and return new Book class instance
-                GameState gameState = new GameState(current_map, saved_at, playerModel);
+                GameState gameState = new GameState(currentMap, savedAt, playerModel);
                 gameState.setId(id);
                 return gameState;
             } catch (SQLException e) {
@@ -78,7 +78,28 @@ public class GameStateDaoJdbc implements GameStateDao {
 
         @Override
         public List<GameState> getAll() {
-            return null;
+            try (Connection conn = dataSource.getConnection()) {
+                String sql = "SELECT id, current_map, saved_at, player_id FROM game_state";
+                ResultSet rs = conn.createStatement().executeQuery(sql);
+
+                List<GameState> result = new ArrayList<>();
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    String currentMap = rs.getString(2);
+                    java.sql.Date savedAt = rs.getDate(3);
+                    int playerId = rs.getInt(4);
+
+                    PlayerModel playerModel = playerDao.get(playerId);
+
+
+                    GameState gameState = new GameState(currentMap, savedAt, playerModel);
+                    gameState.setId(id);
+                    result.add(gameState);
+                }
+                return result;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 }
 
