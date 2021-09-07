@@ -43,7 +43,7 @@ class ArmorTest {
     }
 
     @Test
-    void testConstructorWithNullType() {
+    void constructorWithNullArmorType() {
             assertThrows(
                     IllegalArgumentException.class,
                     () -> new Armor(

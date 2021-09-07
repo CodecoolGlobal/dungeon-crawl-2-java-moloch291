@@ -43,7 +43,7 @@ class WeaponTest {
     }
 
     @Test
-    void testGetTileNameWithNullWeaponType() {
+    void constructorWithNullWeaponTypeThrowsError() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Weapon(

@@ -32,7 +32,7 @@ class PotionTest {
     }
 
     @Test
-    void testConstructorWithNullType() {
+    void constructorWithNullPotionTypeThrowsError() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Potion(

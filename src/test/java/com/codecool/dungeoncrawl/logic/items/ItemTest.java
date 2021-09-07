@@ -51,7 +51,7 @@ class ItemTest {
     }
 
     @Test
-    void setNameWithNullVariable() {
+    void constructorSetNameWithNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Food(
@@ -75,7 +75,7 @@ class ItemTest {
     }
 
     @Test
-    void setCellWithNullVariable() {
+    void constructorSetCellWithNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Food(
@@ -123,7 +123,7 @@ class ItemTest {
     }
 
     @Test
-    void setSubclassTypeAsNullVariable() {
+    void constructorSetSubclassTypeAsNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Food(

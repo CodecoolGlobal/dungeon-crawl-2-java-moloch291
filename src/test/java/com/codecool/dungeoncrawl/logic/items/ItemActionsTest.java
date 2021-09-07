@@ -1,13 +1,15 @@
 package com.codecool.dungeoncrawl.logic.items;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemActionsTest {
+
+    @BeforeAll
+    static void initTest() {
+        System.out.println("Testing ItemActions...");
+    }
 
     @BeforeEach
     void setUp() {

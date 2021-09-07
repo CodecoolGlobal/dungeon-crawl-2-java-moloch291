@@ -38,7 +38,7 @@ class KeyTest {
     }
 
     @Test
-    void testConstructorWithNullType() {
+    void constructorWithNullKeyTypeThrowsError() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Key(

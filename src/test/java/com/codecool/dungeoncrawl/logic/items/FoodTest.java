@@ -33,12 +33,12 @@ class FoodTest {
     }
 
     @Test
-    void negativeTestForGetTile() {
+    void getTileNameWithoutMatch() {
         assertNotEquals(StringFactory.FISH.message, testFood.getTileName());
     }
 
     @Test
-    void testConstructorWithNullType() {
+    void constructorWithNullFoodTypeThrowsError() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> new Food(
