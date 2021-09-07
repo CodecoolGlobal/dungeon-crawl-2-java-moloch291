@@ -9,8 +9,9 @@ public class PlayerModel extends BaseModel {
     private int y;
     private boolean drunk;
 
-    public PlayerModel(String playerName, int x, int y, boolean drunk) {
+    public PlayerModel(String playerName, int hp, int x, int y, boolean drunk) {
         this.playerName = playerName;
+        this.hp = hp;
         this.x = x;
         this.y = y;
         this.drunk = drunk;

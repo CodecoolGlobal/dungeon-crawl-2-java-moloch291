@@ -60,7 +60,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             if (!rs.next()) {
                 return null;
             }
-            PlayerModel playerModel = new PlayerModel(rs.getString(1), rs.getInt(2), rs.getInt(3), rs.getBoolean(5));
+            PlayerModel playerModel = new PlayerModel(rs.getString(1), rs.getInt(2), rs.getInt(3),rs.getInt(4), rs.getBoolean(5));
             playerModel.setId(id);
             return playerModel;
         } catch (SQLException e) {
@@ -71,13 +71,13 @@ public class PlayerDaoJdbc implements PlayerDao {
     @Override
     public List<PlayerModel> getAll() {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT id, first_name, last_name, birth_date FROM author";
+            String sql = "SELECT id, player_name, hp, x, y, drunk FROM player";
             ResultSet rs = conn.createStatement().executeQuery(sql);
-            List<Author> result = new ArrayList<>();
-            while (rs.next()) { // while result set pointer is positioned before or on last row read authors
-                Author author = new Author(rs.getString(2), rs.getString(3), rs.getDate(4));
-                author.setId(rs.getInt(1));
-                result.add(author);
+            List<PlayerModel> result = new ArrayList<>();
+            while (rs.next()) {
+                PlayerModel playerModel = new PlayerModel(rs.getString(2), rs.getInt(3), rs.getInt(4),rs.getInt(5), rs.getBoolean(6));
+                playerModel.setId(rs.getInt(1));
+                result.add(playerModel);
             }
             return result;
         } catch (SQLException e) {
