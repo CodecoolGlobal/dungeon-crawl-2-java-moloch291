@@ -1,5 +1,3 @@
-
-
 DROP TABLE IF EXISTS public.game_state;
 CREATE TABLE public.game_state (
     id serial NOT NULL PRIMARY KEY,
@@ -26,9 +24,9 @@ CREATE TABLE public.inventory_handler (
     item_name text NOT NULL
 );
 
-ALTER TABLE IF EXISTS ONLY public.players_inventor DROP CONSTRAINT IF EXISTS fk_player_id CASCADE;
-ALTER TABLE IF EXISTS ONLY public.players_inventor DROP CONSTRAINT IF EXISTS fk_item_id CASCADE;
 
+ALTER TABLE IF EXISTS ONLY public.players_inventory DROP CONSTRAINT IF EXISTS fk_player_id CASCADE;
+ALTER TABLE IF EXISTS ONLY public.players_inventory DROP CONSTRAINT IF EXISTS fk_item_id CASCADE;
 DROP TABLE IF EXISTS public.players_inventory CASCADE;
 CREATE TABLE public.players_inventory (
      id serial NOT NULL PRIMARY KEY,
@@ -36,6 +34,7 @@ CREATE TABLE public.players_inventory (
      item_id integer NOT NULL,
      amount integer NOT NULL
 );
+
 
 ALTER TABLE ONLY public.game_state
     ADD CONSTRAINT fk_player_id FOREIGN KEY (player_id) REFERENCES public.player(id);
@@ -45,6 +44,7 @@ ALTER TABLE ONLY public.players_inventory
 
 ALTER TABLE ONLY public.players_inventory
     ADD CONSTRAINT fk_item_id FOREIGN KEY (item_id) REFERENCES public.inventory_handler(id);
+
 
 INSERT INTO inventory_handler VALUES (1, 'Alcohol');
 INSERT INTO inventory_handler VALUES (2, 'Shield');
