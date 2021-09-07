@@ -17,7 +17,7 @@ class ItemTest {
 
     @BeforeAll
     static void beforeAll() {
-        System.out.println("Abstract item tests started...");
+        System.out.println("Abstract Item tests started...");
     }
 
     @BeforeEach
@@ -40,9 +40,7 @@ class ItemTest {
     @Test
     void setName() {
         Alcohol testBeer = new Alcohol(
-                StringFactory.BEER_CAP.message,
-                gameMap.getCell(0, 1),
-                ItemType.ALCOHOL
+                gameMap.getCell(0, 1)
         );
         String newName = "This is a beer!";
 
@@ -91,32 +89,6 @@ class ItemTest {
     }
 
     @Test
-    void setItemTypeAsNullVariable() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Food(
-                        StringFactory.CHEESE.message,
-                        gameMap.getCell(0, 0),
-                        null,
-                        FoodType.CHEESE
-                )
-        );
-    }
-
-    @Test
-    void setSubclassTypeAsNullVariable() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new Food(
-                        StringFactory.APPLE.message,
-                        gameMap.getCell(0, 0),
-                        ItemType.FOOD,
-                        null
-                )
-        );
-    }
-
-    @Test
     void setCell() {
         Armor testArmor = new Armor(
                 "Breastplate",
@@ -144,6 +116,19 @@ class ItemTest {
     }
 
     @Test
+    void setItemTypeAsNullVariable() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Food(
+                        StringFactory.CHEESE.message,
+                        gameMap.getCell(0, 0),
+                        null,
+                        FoodType.CHEESE
+                )
+        );
+    }
+
+    @Test
     void setItemType() {
         Boat testBoat = new Boat(
                 "Boat",
@@ -155,8 +140,21 @@ class ItemTest {
         assertEquals(ItemType.FOOD, testBoat.getItemType());
     }
 
+    @Test
+    void setSubclassTypeAsNullVariable() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Food(
+                        StringFactory.APPLE.message,
+                        gameMap.getCell(0, 0),
+                        ItemType.FOOD,
+                        null
+                )
+        );
+    }
+
     @AfterAll
     static void tearDown() {
-        System.out.println("Item abstract test finished!");
+        System.out.println("Abstract Item test finished!");
     }
 }

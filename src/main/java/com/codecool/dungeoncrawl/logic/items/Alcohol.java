@@ -5,8 +5,8 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 
 public class Alcohol extends Item{
 
-    public Alcohol(String name, Cell cell, ItemType itemType) {
-        super(name, cell, itemType);
+    public Alcohol(Cell cell) {
+        super(StringFactory.BEER.message, cell, ItemType.ALCOHOL);
     }
 
     @Override
