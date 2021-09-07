@@ -110,6 +110,16 @@ class ItemActionsTest {
     }
 
     @Test
+    void consumingStoneSkinPotionIncreasesDefense() {
+        int expected = player.getDefense() + PotionType.STONE_SKIN_POTION.effectValue;
+
+        itemActions.consumePotion(gameMap, StringFactory.STONE_SKIN_POTION.message);
+        int result = player.getDefense();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
     void consumeAlcohol() {
     }
 
