@@ -27,12 +27,12 @@ class AlcoholTest {
 
     @Test
     void getTileNameWithNonCapitalLetter() {
-        assertEquals("beer", testBeer.getTileName());
+        assertEquals(StringFactory.BEER.message, testBeer.getTileName());
     }
 
     @Test
     void getTileNameWithCapitalLetter() {
-        assertNotEquals("Beer", testBeer.getTileName());
+        assertNotEquals(StringFactory.BEER_CAP.message, testBeer.getTileName());
     }
 
     @AfterAll

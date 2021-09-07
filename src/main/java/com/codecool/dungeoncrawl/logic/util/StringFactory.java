@@ -4,6 +4,7 @@ public enum StringFactory {
 
     // Item types:
     KEY("key"),
+    KEY_CAP("Key"),
     WEAPON("weapon"),
     ARMOR("armor"),
     FOOD("food"),

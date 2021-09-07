@@ -6,8 +6,8 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 public class Weapon extends Item {
     private final WeaponType weaponType;
 
-    public Weapon(String name, Cell cell, ItemType itemType, WeaponType weaponType) {
-        super(name, cell, itemType);
+    public Weapon(String name, Cell cell, WeaponType weaponType) {
+        super(name, cell, ItemType.WEAPON);
         this.weaponType = weaponType;
     }
 

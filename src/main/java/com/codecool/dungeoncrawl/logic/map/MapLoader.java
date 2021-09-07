@@ -79,15 +79,15 @@ public class MapLoader {
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
-                            new Key("Key", cell, ItemType.KEY, KeyType.DOOR_KEY);
+                            new Key(StringFactory.KEY_CAP.message, cell, KeyType.DOOR_KEY);
                             break;
                         case 'K':
                             cell.setType(CellType.FLOOR);
-                            new Key("Bridge key", cell, ItemType.KEY, KeyType.BRIDGE_KEY);
+                            new Key("Bridge key", cell, KeyType.BRIDGE_KEY);
                             break;
                         case 'e':
                             cell.setType(CellType.FLOOR);
-                            new Key("Lock pick", cell, ItemType.KEY, KeyType.LOCK_PICK);
+                            new Key("Lock pick", cell, KeyType.LOCK_PICK);
                             break;
                         case 'S':
                             cell.setType(CellType.FLOOR);
@@ -111,15 +111,15 @@ public class MapLoader {
                             break;
                         case 'w':
                             cell.setType(CellType.FLOOR);
-                            new Weapon("Sword", cell, ItemType.WEAPON, WeaponType.SWORD);
+                            new Weapon(StringFactory.SWORD_CAP.message, cell, WeaponType.SWORD);
                             break;
                         case 'a':
                             cell.setType(CellType.FLOOR);
-                            new Weapon("Axe", cell, ItemType.WEAPON, WeaponType.AXE);
+                            new Weapon(StringFactory.AXE_CAP.message, cell, WeaponType.AXE);
                             break;
                         case 'p':
                             cell.setType(CellType.FLOOR);
-                            new Weapon("Pike", cell, ItemType.WEAPON, WeaponType.PIKE);
+                            new Weapon(StringFactory.PIKE_CAP.message, cell, WeaponType.PIKE);
                             break;
                         case 'b':
                             cell.setType(CellType.FLOOR);

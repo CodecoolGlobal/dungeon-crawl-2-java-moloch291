@@ -30,12 +30,13 @@ class ItemTest {
         Key testKey = new Key(
                 "Key",
                 gameMap.getCell(0, 1),
-                ItemType.KEY,
                 KeyType.DOOR_KEY
         );
 
         assertEquals("Key", testKey.getName());
     }
+
+
 
     @Test
     void setName() {
@@ -104,7 +105,6 @@ class ItemTest {
         Weapon testWeapon = new Weapon(
                 "Axe",
                 gameMap.getCell(0, 1),
-                ItemType.WEAPON,
                 WeaponType.AXE
         );
 
@@ -114,7 +114,7 @@ class ItemTest {
     @Test
     void setItemType() {
         Boat testBoat = new Boat(
-                "Boat",
+                StringFactory.BOAT_CAP.message,
                 gameMap.getCell(0, 1)
         );
         testBoat.setItemType(ItemType.FOOD);

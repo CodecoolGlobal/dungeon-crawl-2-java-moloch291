@@ -23,7 +23,7 @@ class BoatTest {
     }
 
     @Test
-    void getTileName() {
+    void getTileNameWithMatch() {
         assertEquals(StringFactory.BOAT.message, testBoat.getTileName());
     }
 
