@@ -4,16 +4,23 @@ import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.actors.Skeleton;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ActorTest {
-    GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
+    GameMap gameMap;
+    Player player;
+
+    @BeforeEach
+    void setFields(){
+        gameMap = new GameMap(3, 3, CellType.FLOOR);
+        player = new Player(gameMap.getCell(1, 1));
+    }
 
     @Test
-    void moveUpdatesCells() {
-        Player player = new Player(gameMap.getCell(1, 1));
+    void moveUpdatesCells() { ;
         player.move(1, 0);
 
         assertEquals(2, player.getX());
@@ -24,7 +31,6 @@ class ActorTest {
 
     @Test
     void healthStartsAt10(){
-        Player player = new Player(gameMap.getCell(1,1));
         int health = 10;
         int playerHealth = player.getHealth();
         assertEquals(health,playerHealth);
@@ -32,7 +38,6 @@ class ActorTest {
 
     @Test
     void attackStartsAt3(){
-        Player player = new Player(gameMap.getCell(1,1));
         int attack = 3;
         int playerAttack = player.getAttack();
         assertEquals(attack,playerAttack);
@@ -40,7 +45,6 @@ class ActorTest {
 
     @Test
     void defenseStartAt0(){
-        Player player = new Player(gameMap.getCell(1,1));
         int defense = 0;
         int playerDefense = player.getDefense();
         assertEquals(defense,playerDefense);
@@ -49,7 +53,6 @@ class ActorTest {
     @Test
     void cannotMoveIntoWall() {
         gameMap.getCell(2, 1).setType(CellType.WALL);
-        Player player = new Player(gameMap.getCell(1, 1));
         player.move(1, 0);
 
         assertEquals(1, player.getX());
@@ -60,7 +63,6 @@ class ActorTest {
 
     @Test
     void cannotMoveIntoAnotherActor() {
-        Player player = new Player(gameMap.getCell(1, 1));
         Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));
         player.move(1, 0);
 

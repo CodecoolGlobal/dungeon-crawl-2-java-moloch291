@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.logic.util.Direction;
 
 public class Orc extends Actor{
 
+
     Direction direction = Direction.NORTH;
 
     public Orc(Cell cell) {
@@ -36,5 +37,13 @@ public class Orc extends Actor{
     @Override
     public String getTileName() {
         return "orc";
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 }
