@@ -3,6 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.items.Alcohol;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import org.junit.jupiter.api.AfterEach;
@@ -77,4 +78,11 @@ class PlayerTest {
         assertThrows(IndexOutOfBoundsException.class,()->player.move(0,99));
     }
 
+
+    @Test
+    void playerDoesNotMoving(){
+        Cell originalCell = player.getCell();
+        player.monsterMove(player.getCell());
+        assertEquals(originalCell,player.getCell());
+    }
 }
