@@ -120,6 +120,16 @@ class ItemActionsTest {
     }
 
     @Test
+    void consumingMightPotionIncreasesAttack() {
+        int expected = player.getAttack() + PotionType.MIGHT_POTION.effectValue;
+
+        itemActions.consumePotion(gameMap, StringFactory.MIGHT_POTION.message);
+        int result = player.getAttack();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
     void consumeAlcohol() {
     }
 
