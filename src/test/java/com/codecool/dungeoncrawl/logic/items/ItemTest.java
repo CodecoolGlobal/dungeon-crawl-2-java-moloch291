@@ -90,7 +90,6 @@ class ItemTest {
         Armor testArmor = new Armor(
                 "Breastplate",
                 gameMap.getCell(0, 1),
-                ItemType.ARMOR,
                 ArmorType.BREASTPLATE
         );
 

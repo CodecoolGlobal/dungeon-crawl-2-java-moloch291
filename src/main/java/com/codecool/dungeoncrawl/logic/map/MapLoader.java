@@ -91,23 +91,23 @@ public class MapLoader {
                             break;
                         case 'S':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Shield", cell, ItemType.ARMOR, ArmorType.SHIELD);
+                            new Armor(StringFactory.SHIELD_CAP.message, cell, ArmorType.SHIELD);
                             break;
                         case 'P':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Helmet", cell, ItemType.ARMOR, ArmorType.HELMET);
+                            new Armor(StringFactory.HELMET_CAP.message, cell, ArmorType.HELMET);
                             break;
                         case 'C':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Breastplate", cell, ItemType.ARMOR, ArmorType.BREASTPLATE);
+                            new Armor(StringFactory.BREASTPLATE_CAP.message, cell, ArmorType.BREASTPLATE);
                             break;
                         case 'E':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Greaves", cell, ItemType.ARMOR, ArmorType.GREAVES);
+                            new Armor(StringFactory.GREAVES_CAP.message, cell, ArmorType.GREAVES);
                             break;
                         case 'G':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Gauntlets", cell, ItemType.ARMOR, ArmorType.GAUNTLETS);
+                            new Armor(StringFactory.GAUNTLETS_CAP.message, cell, ArmorType.GAUNTLETS);
                             break;
                         case 'w':
                             cell.setType(CellType.FLOOR);

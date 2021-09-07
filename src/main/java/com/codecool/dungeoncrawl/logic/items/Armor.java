@@ -6,8 +6,8 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 public class Armor extends Item {
     private final ArmorType armorType;
 
-    public Armor(String name, Cell cell, ItemType itemType, ArmorType armorType) {
-        super(name, cell, itemType);
+    public Armor(String name, Cell cell, ArmorType armorType) {
+        super(name, cell, ItemType.ARMOR);
         this.armorType = armorType;
     }
 
