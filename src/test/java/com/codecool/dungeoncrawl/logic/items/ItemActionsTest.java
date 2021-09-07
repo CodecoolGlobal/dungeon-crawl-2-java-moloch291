@@ -160,7 +160,7 @@ class ItemActionsTest {
 
     @Test
     void consumeAlcoholResultsInBeingDrunk() {
-        itemActions.consumeAlcohol(gameMap, StringFactory.BREAD_CAP.message);
+        itemActions.consumeAlcohol(gameMap);
 
         assertTrue(player.isDrunk());
     }
