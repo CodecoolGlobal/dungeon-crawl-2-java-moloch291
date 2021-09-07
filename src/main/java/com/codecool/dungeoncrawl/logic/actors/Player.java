@@ -17,6 +17,14 @@ public class Player extends Actor {
         this.name = "testname";
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getTileName() {
         return "player";
     }

@@ -7,6 +7,7 @@ public class PlayerModel extends BaseModel {
     private int hp;
     private int x;
     private int y;
+    private boolean isDrunk;
 
     public PlayerModel(String playerName, int x, int y) {
         this.playerName = playerName;
@@ -15,10 +16,10 @@ public class PlayerModel extends BaseModel {
     }
 
     public PlayerModel(Player player) {
-        //this.playerName = player.getName();
+        this.playerName = player.getName();
         this.x = player.getX();
         this.y = player.getY();
-
+        this.isDrunk = player.isDrunk();
         this.hp = player.getHealth();
 
     }
@@ -53,5 +54,13 @@ public class PlayerModel extends BaseModel {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean isDrunk() {
+        return isDrunk;
+    }
+
+    public void setDrunk(boolean drunk) {
+        isDrunk = drunk;
     }
 }
