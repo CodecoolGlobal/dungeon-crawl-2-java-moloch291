@@ -61,6 +61,6 @@ public class Player extends Actor {
 
     @Override
     public void monsterMove(Cell playerCell) {
-        throw new RuntimeException("Play monsterMove not implemented");
+        System.out.println("Play monsterMove not implemented");
     }
 }
