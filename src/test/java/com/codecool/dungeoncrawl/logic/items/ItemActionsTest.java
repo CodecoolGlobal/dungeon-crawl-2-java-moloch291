@@ -176,6 +176,17 @@ class ItemActionsTest {
     }
 
     @Test
+    void consumingAlcoholDecreasesPlayerDefense() {
+        int expected = 0;
+        player.setDefense(5);
+
+        itemActions.consumeAlcohol(gameMap);
+        int result = player.getDefense();
+
+        assertEquals(expected, result);
+    }
+
+    @Test
     void leaveBoat() {
     }
 
