@@ -30,7 +30,7 @@ public class GameDatabaseManager {
 
     }
 
-    public void saveInventory() {
+    public void saveInventory(GameMap map) {
 
     }
 

@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.dao.InventorySaveTest;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
@@ -10,6 +11,7 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.model.PlayersInventory;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
@@ -29,6 +31,7 @@ import javafx.stage.StageStyle;
 
 //import java.awt.event.ActionEvent;
 //import java.beans.EventHandler;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,8 @@ public class Game extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
 
     GameDatabaseManager dbManager = new GameDatabaseManager();
+
+    InventorySaveTest saveTest = new InventorySaveTest();
 
     Actions actions = new Actions();
     GameConditions gameConditions = new GameConditions();
@@ -117,7 +122,14 @@ public class Game extends Application {
                     }
                     dbManager.saveGameState(map);
                     dbManager.savePlayer(map.getPlayer());
-                    dbManager.saveInventory();
+                    dbManager.saveInventory(map);
+                    try {
+                        saveTest.saveInventory(map);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     modal.hide();
                 }
             };
@@ -128,6 +140,15 @@ public class Game extends Application {
             EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
+                    try {
+                        PlayersInventory loadedInventory = saveTest.loadInventory();
+                        System.out.println(loadedInventory);
+                        loadedInventory.printInventory();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     modal.hide();
                 }
             };

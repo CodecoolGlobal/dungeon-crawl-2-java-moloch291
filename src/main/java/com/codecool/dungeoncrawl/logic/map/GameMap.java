@@ -3,9 +3,10 @@ package com.codecool.dungeoncrawl.logic.map;
 import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.util.GameConditions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameMap {
+public class GameMap implements Serializable {
 
     private final int width;
     private final int height;

@@ -6,7 +6,9 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 
-public class GameConditions {
+import java.io.Serializable;
+
+public class GameConditions implements Serializable {
 
     public boolean checkFakeDoor(int playerX, int playerY, GameMap map) {
         return map.getCell(playerX, playerY)

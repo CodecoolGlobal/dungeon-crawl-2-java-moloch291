@@ -3,7 +3,9 @@ package com.codecool.dungeoncrawl.logic.items;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.Drawable;
 
-public abstract class Item implements Drawable {
+import java.io.Serializable;
+
+public abstract class Item implements Drawable, Serializable {
     private String name;
     private Cell cell;
     private ItemType itemType;
