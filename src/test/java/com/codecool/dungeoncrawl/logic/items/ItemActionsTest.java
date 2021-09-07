@@ -13,6 +13,7 @@ class ItemActionsTest {
     private GameMap gameMap;
     private Player player;
     private ItemActions itemActions;
+    private final int amountToAdd = 1;
 
     @BeforeAll
     static void initTest() {
@@ -41,8 +42,8 @@ class ItemActionsTest {
                 FoodType.CHEESE
         );
 
-        player.addToInventory(bread, 1);
-        player.addToInventory(cheese, 1);
+        player.addToInventory(bread, amountToAdd);
+        player.addToInventory(cheese, amountToAdd);
 
         assertEquals(cheese, itemActions.searchForItemByType(gameMap, ItemType.FOOD));
     }
@@ -61,8 +62,8 @@ class ItemActionsTest {
                 FoodType.CHEESE
         );
 
-        player.addToInventory(sword, 1);
-        player.addToInventory(cheese, 1);
+        player.addToInventory(sword, amountToAdd);
+        player.addToInventory(cheese, amountToAdd);
 
         assertEquals(cheese, itemActions.searchForItemByType(gameMap, ItemType.FOOD));
     }
@@ -81,18 +82,31 @@ class ItemActionsTest {
                 FoodType.CHEESE
         );
 
-        player.addToInventory(sword, 1);
-        player.addToInventory(cheese, 1);
+        player.addToInventory(sword, amountToAdd);
+        player.addToInventory(cheese, amountToAdd);
 
         assertNull(itemActions.searchForItemByType(gameMap, ItemType.KEY));
     }
 
     @Test
-    void consumeFood() {
+    void consumingFoodIncreasesPlayerHealth() {
+        int healthAddedAfterEating = 5;
+        int expected = player.getHealth() + healthAddedAfterEating;
+
+        itemActions.consumeFood(gameMap, StringFactory.CHEESE_CAP.message);
+        int result = player.getHealth();
+
+        assertEquals(expected, result);
     }
 
     @Test
-    void consumePotion() {
+    void consumingHealingPotionIncreasesHealth() {
+        int expected = player.getHealth() + PotionType.HEALING_POTION.effectValue;
+
+        itemActions.consumePotion(gameMap, StringFactory.HEALING_POTION.message);
+        int result = player.getHealth();
+
+        assertEquals(expected, result);
     }
 
     @Test
