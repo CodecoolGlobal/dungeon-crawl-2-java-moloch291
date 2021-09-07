@@ -206,7 +206,7 @@ public class MapLoader {
                             break;
                         case 'A':
                             cell.setType(CellType.FLOOR);
-                            new Alcohol(StringFactory.BEER_CAP.message, cell, ItemType.ALCOHOL);
+                            new Alcohol(cell);
                             break;
                         case 't':
                             cell.setType(CellType.TREE);
