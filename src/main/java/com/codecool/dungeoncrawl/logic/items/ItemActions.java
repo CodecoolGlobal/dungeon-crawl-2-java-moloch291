@@ -50,7 +50,7 @@ public class ItemActions {
         decrementItem(map, itemName);
     }
 
-    public void consumeAlcohol(GameMap map, String itemName) {
+    public void consumeAlcohol(GameMap map) {
         int defenseModifier = -5;
         int attackModifier = 3;
         map.getPlayer().setDrunk(true);
@@ -58,7 +58,7 @@ public class ItemActions {
             map.getPlayer().setDefense(map.getPlayer().getDefense() + defenseModifier);
         }
         map.getPlayer().setAttack(map.getPlayer().getAttack() + attackModifier);
-        decrementItem(map, itemName);
+        decrementItem(map, StringFactory.BEER_CAP.message);
     }
 
     private void decrementItem(GameMap map, String itemName) {

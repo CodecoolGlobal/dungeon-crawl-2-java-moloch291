@@ -192,7 +192,7 @@ public class Game extends Application {
                 break;
             case A:
                 if (map.getPlayer().hasItem((ItemType.ALCOHOL))) {
-                    itemActions.consumeAlcohol(map, StringFactory.BEER_CAP.message);
+                    itemActions.consumeAlcohol(map);
                 }
                 break;
         }
