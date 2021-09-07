@@ -17,11 +17,6 @@ class BoatTest {
         System.out.println("Testing the boat...");
     }
 
-    @AfterAll
-    static void tearDown() {
-        System.out.println("The boat is tested:");
-    }
-
     @Test
     void getTileNameWithMatch() {
         assertEquals(StringFactory.BOAT.message, testBoat.getTileName());
@@ -30,5 +25,10 @@ class BoatTest {
     @Test
     void getTileNameWithoutMatch() {
         assertNotEquals(StringFactory.CHEESE.message, testBoat.getTileName());
+    }
+
+    @AfterAll
+    static void tearDown() {
+        System.out.println("The boat is tested:");
     }
 }

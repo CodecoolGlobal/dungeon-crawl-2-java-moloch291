@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WeaponTest {
 
     private Weapon testWeapon;
+    private GameMap gameMap;
 
     @BeforeAll
     static void initTest() {
@@ -18,7 +19,7 @@ class WeaponTest {
 
     @BeforeEach
     void setUp() {
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
+        gameMap = new GameMap(3, 3, CellType.FLOOR);
         testWeapon = new Weapon(
                 StringFactory.SWORD_CAP.message,
                 gameMap.getCell(0, 0),
@@ -39,5 +40,17 @@ class WeaponTest {
     @Test
     void getTileNameWithoutMatch() {
         assertNotEquals(StringFactory.SWORD_CAP.message, testWeapon.getTileName());
+    }
+
+    @Test
+    void testGetTileNameWithNullWeaponType() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Weapon(
+                        StringFactory.SWORD_CAP.message,
+                        gameMap.getCell(0, 1),
+                        null
+                        )
+                );
     }
 }

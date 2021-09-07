@@ -37,8 +37,20 @@ class FoodTest {
         assertNotEquals(StringFactory.FISH.message, testFood.getTileName());
     }
 
-     @AfterAll
+    @Test
+    void testConstructorWithNullType() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Food(
+                        StringFactory.CHEESE_CAP.message,
+                        gameMap.getCell(0, 1),
+                        null
+                )
+        );
+    }
+
+    @AfterAll
     static void tearDown() {
-         System.out.println("Food tests done:");
-     }
+        System.out.println("Food tests done:");
+    }
 }

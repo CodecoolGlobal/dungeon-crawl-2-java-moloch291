@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.items;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,10 +11,6 @@ class ItemActionsTest {
 
     @BeforeEach
     void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     @Test
@@ -42,5 +39,10 @@ class ItemActionsTest {
 
     @Test
     void equipWeapon() {
+    }
+
+    @AfterAll
+    static void tearDown() {
+        System.out.println("ItemActions tested:");
     }
 }

@@ -8,7 +8,8 @@ public class Weapon extends Item {
 
     public Weapon(String name, Cell cell, WeaponType weaponType) {
         super(name, cell, ItemType.WEAPON);
-        this.weaponType = weaponType;
+        if (weaponType != null) this.weaponType = weaponType;
+        else throw new IllegalArgumentException("Weapon type should not be null");
     }
 
     @Override

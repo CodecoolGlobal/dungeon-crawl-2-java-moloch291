@@ -8,7 +8,8 @@ public class Key extends Item {
 
     public Key(String name, Cell cell, KeyType keyType) {
         super(name, cell, ItemType.KEY);
-        this.keyType = keyType;
+        if (keyType != null) this.keyType = keyType;
+        else throw new IllegalArgumentException("Key type must not be null!");
     }
 
     @Override

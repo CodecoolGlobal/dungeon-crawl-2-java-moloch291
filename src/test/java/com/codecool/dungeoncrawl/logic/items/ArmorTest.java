@@ -11,6 +11,7 @@ class ArmorTest {
 
     private Armor testArmor1;
     private Armor testArmor2;
+    private final GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
 
     @BeforeAll
     static void initTest() {
@@ -19,7 +20,6 @@ class ArmorTest {
 
     @BeforeEach
     void setUp() {
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
         testArmor1 = new Armor(
                 StringFactory.HELMET_CAP.message,
                 gameMap.getCell(0, 0),
@@ -40,6 +40,18 @@ class ArmorTest {
     @Test
     void getTileNameWithoutMatch() {
         assertNotEquals(StringFactory.GAUNTLETS.message, testArmor1.getTileName());
+    }
+
+    @Test
+    void testConstructorWithNullType() {
+            assertThrows(
+                    IllegalArgumentException.class,
+                    () -> new Armor(
+                            StringFactory.GAUNTLETS_CAP.message,
+                            gameMap.getCell(0, 2),
+                            null
+                    )
+            );
     }
 
     @AfterAll

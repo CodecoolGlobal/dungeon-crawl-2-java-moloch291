@@ -8,7 +8,8 @@ public class Armor extends Item {
 
     public Armor(String name, Cell cell, ArmorType armorType) {
         super(name, cell, ItemType.ARMOR);
-        this.armorType = armorType;
+        if (armorType != null) this.armorType = armorType;
+        else throw new IllegalArgumentException("Armor type must not be null!");
     }
 
 

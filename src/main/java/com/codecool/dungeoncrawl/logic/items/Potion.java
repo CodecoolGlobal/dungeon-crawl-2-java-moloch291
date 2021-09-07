@@ -7,7 +7,8 @@ public class Potion extends Item {
 
     public Potion(String name, Cell cell, PotionType potionType) {
         super(name, cell, ItemType.POTION);
-        this.potionType = potionType;
+        if (potionType != null) this.potionType = potionType;
+        else throw new IllegalArgumentException("Potion type must not be null!");
     }
 
     @Override
