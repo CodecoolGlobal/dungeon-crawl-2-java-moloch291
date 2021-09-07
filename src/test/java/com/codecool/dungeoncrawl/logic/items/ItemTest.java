@@ -91,6 +91,32 @@ class ItemTest {
     }
 
     @Test
+    void setItemTypeAsNullVariable() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Food(
+                        StringFactory.CHEESE.message,
+                        gameMap.getCell(0, 0),
+                        null,
+                        FoodType.CHEESE
+                )
+        );
+    }
+
+    @Test
+    void setSubclassTypeAsNullVariable() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new Food(
+                        StringFactory.APPLE.message,
+                        gameMap.getCell(0, 0),
+                        ItemType.FOOD,
+                        null
+                )
+        );
+    }
+
+    @Test
     void setCell() {
         Armor testArmor = new Armor(
                 "Breastplate",
