@@ -9,7 +9,12 @@ import java.util.ArrayList;
 
 public class Kraken extends Actor{
     private final GameMap map;
-    ArrayList<Cell> waterCells = new ArrayList<>();
+
+    public ArrayList<Cell> getWaterCells() {
+        return waterCells;
+    }
+
+    private final ArrayList<Cell> waterCells = new ArrayList<>();
     public Kraken(Cell cell, GameMap map) {
         super(cell);
         super.setAttack(0);
