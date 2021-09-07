@@ -16,11 +16,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerTest {
 
+    GameMap gameMap;
+    Player player;
+    Item alcohol;
+
+    @BeforeEach
+    void setFields(){
+        gameMap = new GameMap(3, 3, CellType.FLOOR);
+        player = new Player(gameMap.getCell(1,1));
+        alcohol = new Alcohol(gameMap.getCell(1,1));
+    }
+
 
     @Test
     void playerTileNameIsCorrect(){
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Player player = new Player(gameMap.getCell(1,1));
         String correctName = "player";
         String playerName = player.getTileName();
         assertEquals(correctName,playerName);
@@ -28,8 +37,6 @@ class PlayerTest {
 
     @Test
     void playerInventoryIsHashMap(){
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Player player = new Player(gameMap.getCell(1,1));
         Map<Item,Integer> hashMap = new HashMap<>();
         Map<Item,Integer> playerHashMap = player.getInventory();
         assertEquals(hashMap,playerHashMap);
@@ -37,33 +44,23 @@ class PlayerTest {
 
     @Test
     void playerIsNotDrunkONStart(){
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Player player = new Player(gameMap.getCell(1,1));
         assertFalse(player.isDrunk());
     }
 
     @Test
     void setPlayerToDrunk(){
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Player player = new Player(gameMap.getCell(1,1));
         player.setDrunk(true);
         assertTrue(player.isDrunk());
     }
 
     @Test
     void  addItemToInventory(){
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Item alcohol = new Alcohol(gameMap.getCell(1,1));
-        Player player = new Player(gameMap.getCell(1,1));
         player.addToInventory(alcohol,1);
         assertTrue(player.hasItem(ItemType.ALCOHOL));
     }
 
     @Test
     void removeFromInventory(){
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Item alcohol = new Alcohol(gameMap.getCell(1,1));
-        Player player = new Player(gameMap.getCell(1,1));
         player.addToInventory(alcohol,1);
         player.removeFromInventory(alcohol);
         assertFalse(player.hasItem(ItemType.ALCOHOL));
@@ -71,16 +68,12 @@ class PlayerTest {
 
     @Test
     void moveToNextCell(){
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Player player = new Player(gameMap.getCell(1,1));
         player.move(0,1);
         assertEquals(player.getY(),2);
     }
 
     @Test
     void moveThrowsWithBadInput(){
-        GameMap gameMap = new GameMap(3, 3, CellType.FLOOR);
-        Player player = new Player(gameMap.getCell(1,1));
         assertThrows(IndexOutOfBoundsException.class,()->player.move(0,99));
     }
 
