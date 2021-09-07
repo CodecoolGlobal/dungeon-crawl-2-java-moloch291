@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
@@ -28,6 +29,7 @@ import javafx.stage.StageStyle;
 
 //import java.awt.event.ActionEvent;
 //import java.beans.EventHandler;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +48,8 @@ public class Game extends Application {
             NumberParameters.TILE_WIDTH_MULTIPLIER_V1.getValue() * Tiles.TILE_WIDTH
     );
     GraphicsContext context = canvas.getGraphicsContext2D();
+
+    GameDatabaseManager dbManager = new GameDatabaseManager();
 
     Actions actions = new Actions();
     GameConditions gameConditions = new GameConditions();
@@ -106,6 +110,12 @@ public class Game extends Application {
             EventHandler<ActionEvent> saveEvent = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
+                    try {
+                        dbManager.setup();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    dbManager.savePlayer(map.getPlayer());
                     modal.hide();
                 }
             };

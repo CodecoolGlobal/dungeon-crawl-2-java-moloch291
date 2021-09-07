@@ -10,9 +10,11 @@ import java.util.Map;
 public class Player extends Actor {
     private final Map<Item, Integer> inventory = new HashMap<>();
     private boolean isDrunk = false;
+    private String name;
 
     public Player(Cell cell) {
         super(cell);
+        this.name = "testname";
     }
 
     public String getTileName() {
