@@ -14,13 +14,13 @@ import java.sql.SQLException;
 public class GameDatabaseManager {
     private PlayerDao playerDao;
     private GameStateDao gameStateDao;
-    private PlayersInventoryDao playersInventoryDao;
+    private PlayerInventoryDao playerInventoryDao;
 
     public void setup() throws SQLException {
         DataSource dataSource = connect();
         playerDao = new PlayerDaoJdbc(dataSource);
         gameStateDao = new GameStateDaoJdbc(dataSource, playerDao); //should it be separated
-        playersInventoryDao = new PlayersInventoryDaoJdbc(dataSource);
+        playerInventoryDao = new PlayerInventoryDaoJdbc(dataSource, playerDao);
     }
 
     public void savePlayer(Player player) {
