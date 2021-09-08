@@ -18,7 +18,7 @@ public class InventorySaveTest {
         PlayersInventory inventory = new PlayersInventory(map);
 
         FileOutputStream fileOutputStream
-                = new FileOutputStream("inventory.txt");
+                = new FileOutputStream("inventory.json");
         ObjectOutputStream objectOutputStream
                 = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(inventory);
@@ -30,7 +30,7 @@ public class InventorySaveTest {
             throws IOException, ClassNotFoundException {
 
         FileInputStream fileInputStream
-                = new FileInputStream("inventory.txt");
+                = new FileInputStream("inventory.json");
         ObjectInputStream objectInputStream
                 = new ObjectInputStream(fileInputStream);
         PlayersInventory loadedInventory = (PlayersInventory) objectInputStream.readObject();
