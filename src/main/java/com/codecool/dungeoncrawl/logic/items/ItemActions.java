@@ -13,9 +13,7 @@ public class ItemActions {
     public Item searchForItemByType(GameMap map, ItemType itemType) {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
         for (Item item : playerInventory.keySet()) {
-            if (item.getItemType().equals(itemType)) {
-                return item;
-            }
+            if (item.getItemType().equals(itemType)) return item;
         }
         return null;
     }
@@ -75,19 +73,15 @@ public class ItemActions {
     }
 
     private void handleInventory(GameMap map, Map<Item, Integer> playerInventory, int count, Item itemFromInventory) {
-        if (count > 1) {
+        if (count > 1)
             map.getPlayer().addToInventory(itemFromInventory, playerInventory.get(itemFromInventory) - 1);
-        } else {
-            map.getPlayer().removeFromInventory(itemFromInventory);
-        }
+        else map.getPlayer().removeFromInventory(itemFromInventory);
     }
 
     public void leaveBoat(Player player) {
         Item boat = null;
         for (Item item : player.getInventory().keySet()) {
-            if (item.getItemType().equals(ItemType.BOAT)) {
-                boat = item;
-            }
+            if (item.getItemType().equals(ItemType.BOAT)) boat = item;
         }
         player.removeFromInventory(boat);
         Cell playerCell = player.getCell();

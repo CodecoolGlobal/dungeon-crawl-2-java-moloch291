@@ -6,9 +6,6 @@ import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.util.StringFactory;
 import org.junit.jupiter.api.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemActionsTest {
@@ -66,7 +63,10 @@ class ItemActionsTest {
         player.addToInventory(sword, amountToAdd);
         player.addToInventory(cheese, amountToAdd);
 
-        assertEquals(cheese, itemActions.searchForItemByType(gameMap, ItemType.FOOD));
+        assertEquals(
+                cheese,
+                itemActions.searchForItemByType(gameMap, ItemType.FOOD)
+        );
     }
 
     @Test
@@ -191,11 +191,23 @@ class ItemActionsTest {
     }
 
     @Test
-    void equipArmor() {
+    void equipArmorIncreasesDefenseOfPlayer() {
+        int expected = player.getDefense() + ArmorType.SHIELD.defenseValue;
+
+        itemActions.equipArmor(gameMap, StringFactory.SHIELD_CAP.message);
+        int result = player.getDefense();
+
+        assertEquals(expected, result);
     }
 
     @Test
-    void equipWeapon() {
+    void equipWeaponIncreasesAttackOfPlayer() {
+        int expected = player.getAttack() + WeaponType.AXE.attackValue;
+
+        itemActions.equipWeapon(gameMap, StringFactory.AXE_CAP.message);
+        int result = player.getAttack();
+
+        assertEquals(expected, result);
     }
 
     @AfterAll
