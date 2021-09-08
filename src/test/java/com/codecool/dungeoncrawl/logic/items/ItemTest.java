@@ -48,16 +48,20 @@ class ItemTest {
     void constructorSetNameWithNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Food(
+                () -> Mockito.spy(new Item(
                         null,
-                        gameMap.getCell(0, 1),
-                        FoodType.BREAD
-                )
-            );
+                        new Cell(gameMap, 0, 0, CellType.FLOOR),
+                        ItemType.FOOD
+                ) {
+                    @Override
+                    public String getTileName() {
+                        return null;
+                    }
+                }));
     }
 
     @Test
-    void constructorSetTypeWithMockObject() {
+    void constructorThrowsErrorOnMockInstance() {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> Mockito.spy(new Item(
@@ -83,12 +87,16 @@ class ItemTest {
     void constructorSetCellWithNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Food(
-                        StringFactory.FISH.message,
+                () -> Mockito.spy(new Item(
+                        mockName,
                         null,
-                        FoodType.FISH
-                )
-        );
+                        ItemType.FOOD
+                ) {
+                    @Override
+                    public String getTileName() {
+                        return null;
+                    }
+                }));
     }
 
     @Test
@@ -107,25 +115,25 @@ class ItemTest {
 
     @Test
     void getItemType() {
-        Weapon testWeapon = new Weapon(
-                "Axe",
-                gameMap.getCell(0, 1),
-                WeaponType.AXE
-        );
+        ItemType expected = ItemType.FOOD;
 
-        assertEquals(ItemType.WEAPON, testWeapon.getItemType());
+        Mockito.when(mockItem.getItemType()).thenReturn(expected);
     }
 
     @Test
     void constructorSetSubclassTypeAsNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> new Food(
-                        StringFactory.APPLE.message,
-                        gameMap.getCell(0, 0),
+                () -> Mockito.spy(new Item(
+                        mockName,
+                        new Cell(gameMap, 0, 0, CellType.FLOOR),
                         null
-                )
-        );
+                ) {
+                    @Override
+                    public String getTileName() {
+                        return null;
+                    }
+                }));
     }
 
     @AfterAll
