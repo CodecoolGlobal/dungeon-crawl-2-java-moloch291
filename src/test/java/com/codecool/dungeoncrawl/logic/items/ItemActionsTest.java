@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.util.StringFactory;
@@ -187,7 +188,23 @@ class ItemActionsTest {
     }
 
     @Test
-    void leaveBoat() {
+    void leaveBoatLeavesBoatOnPlayerPosition() {
+        String expected = StringFactory.BOAT.message;
+        player.addToInventory(
+                new Boat(
+                        StringFactory.BOAT_CAP.message,
+                        player.getCell()
+                ),
+                1
+        );
+
+        player.setCell(gameMap.getCell(1, 1));
+        itemActions.leaveBoat(player);
+        String result = gameMap.getCell(1, 1)
+                .getItem()
+                .getTileName();
+
+        assertEquals(expected, result);
     }
 
     @Test
