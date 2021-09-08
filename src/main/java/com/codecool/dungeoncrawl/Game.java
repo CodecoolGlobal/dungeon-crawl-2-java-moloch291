@@ -31,6 +31,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StreamCorruptedException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +95,7 @@ public class Game extends Application {
         menuModal.initOwner(primaryStage);
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
-        setUpModal(errorModal, "Error");
+        setUpModal(errorModal, "Ok");
         setupMenu(menuModal);
         importWindow.setTitle("Select exported game");
         exportWindow.setTitle("Export game as");
@@ -149,7 +150,7 @@ public class Game extends Application {
                 }
             };
             actionButton.setOnAction(loadEvent);
-        } else if (buttonText.equals("Error")) {
+        } else if (buttonText.equals("Ok")) {
             EventHandler<ActionEvent> errorEvent = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
@@ -183,17 +184,24 @@ public class Game extends Application {
                 String path = "";
                 if (file != null) {
                     path = file.getPath();
+                    if (!path.contains(".json")) {
+                        errorModal.show();
+                    } else {
+                        try {
+                            GameMap loadedMap = gameMapIO.loadGameMap(path);
+                            map = loadedMap;
+                            refresh(map.getPlayer().getX(), map.getPlayer().getY());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        modal.hide();
+                    }
+                } else {
+                    modal.hide();
                 }
-                try {
-                    GameMap loadedMap = gameMapIO.loadGameMap(path);
-                    map = loadedMap;
-                    refresh(map.getPlayer().getX(), map.getPlayer().getY());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                modal.hide();
+
 
             }
         };
@@ -205,15 +213,17 @@ public class Game extends Application {
                 String path = "";
                 if (file != null) {
                     path = file.getPath();
+                    try {
+                        gameMapIO.saveGameMap(map, path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    modal.hide();
+                } else {
+                    modal.hide();
                 }
-                try {
-                    gameMapIO.saveGameMap(map, path);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                modal.hide();
             }
         };
         exportButton.setOnAction(exportEvent);

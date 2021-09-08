@@ -13,7 +13,7 @@ public class GameMapIO {
             throws IOException, ClassNotFoundException {
 
         FileOutputStream fileOutputStream
-                = new FileOutputStream(saveName);
+                = new FileOutputStream(saveName +".json");
         ObjectOutputStream objectOutputStream
                 = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(map);
