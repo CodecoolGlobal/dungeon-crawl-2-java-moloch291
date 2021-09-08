@@ -9,7 +9,7 @@ import java.io.Serializable;
 public abstract class Item implements Drawable, Serializable {
     private final String name;
     private Cell cell;
-    private ItemType itemType;
+    private final ItemType itemType;
 
 
 
