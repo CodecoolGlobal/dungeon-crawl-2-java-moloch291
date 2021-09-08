@@ -44,6 +44,7 @@ public class Game extends Application {
     Stage saveModal = new Stage();
     Stage loadModal = new Stage();
     Stage menuModal = new Stage();
+    Stage errorModal = new Stage();
     FileChooser importWindow = new FileChooser();
     FileChooser exportWindow = new FileChooser();
 
@@ -93,9 +94,12 @@ public class Game extends Application {
         menuModal.initOwner(primaryStage);
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
+        setUpModal(errorModal, "Error");
         setupMenu(menuModal);
         importWindow.setTitle("Select exported game");
         exportWindow.setTitle("Export game as");
+        errorModal.initModality(Modality.WINDOW_MODAL);
+        errorModal.initOwner(menuModal);
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -103,6 +107,7 @@ public class Game extends Application {
 
     private void setUpModal (Stage modal, String buttonText) {
         Label saveGame = new Label();
+        Label error = new Label();
         TextField saveName = new TextField();
         Button actionButton = new Button();
         actionButton.setText(buttonText);
@@ -144,6 +149,17 @@ public class Game extends Application {
                 }
             };
             actionButton.setOnAction(loadEvent);
+        } else if (buttonText.equals("Error")) {
+            EventHandler<ActionEvent> errorEvent = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    modal.hide();
+                    menuModal.hide();
+                }
+            };
+            actionButton.setOnAction(errorEvent);
+            error.setText("IMPORT ERROR! Unfortunately the given file is in wrong format. Please try another one!");
+            vBox.getChildren().add(error);
         }
         vBox.getChildren().addAll(actionButton, cancelButton);
         Scene modalScene = new Scene(vBox);
