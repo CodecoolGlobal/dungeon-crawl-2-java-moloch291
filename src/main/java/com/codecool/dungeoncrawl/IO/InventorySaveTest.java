@@ -1,4 +1,4 @@
-package com.codecool.dungeoncrawl.dao;
+package com.codecool.dungeoncrawl.IO;
 
 import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.logic.map.GameMap;

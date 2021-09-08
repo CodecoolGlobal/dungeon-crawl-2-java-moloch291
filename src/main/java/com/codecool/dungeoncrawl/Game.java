@@ -2,7 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.dao.InventorySaveTest;
+import com.codecool.dungeoncrawl.IO.InventorySaveTest;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
@@ -28,7 +28,6 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 //import java.awt.event.ActionEvent;
 //import java.beans.EventHandler;
@@ -46,6 +45,7 @@ public class Game extends Application {
     Stage saveModal = new Stage();
     Stage loadModal = new Stage();
     Stage menuModal = new Stage();
+    Stage exportModal = new Stage();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -92,6 +92,8 @@ public class Game extends Application {
         loadModal.initOwner(primaryStage);
         menuModal.initModality(Modality.WINDOW_MODAL);
         menuModal.initOwner(primaryStage);
+        exportModal.initModality(Modality.WINDOW_MODAL);
+        exportModal.initOwner(primaryStage);
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
         setupMenu(menuModal);
