@@ -187,7 +187,7 @@ public class Game extends Application {
     private void setupGameManual(Stage modal) {
         Label controls = new Label();
         controls.setText(util.getGameManual());
-        controls.setTextAlignment(TextAlignment.CENTER);
+        controls.setTextAlignment(TextAlignment.JUSTIFY);
         Button closeButton = new Button();
         closeButton.setText("Close");
         VBox vBox = new VBox();
