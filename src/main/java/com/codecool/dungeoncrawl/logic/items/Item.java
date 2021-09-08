@@ -14,7 +14,7 @@ public abstract class Item implements Drawable, Serializable {
 
 
     public Item(String name, Cell cell, ItemType itemType) {
-        if (name == null || cell == null || itemType == null)
+        if ((name == null || cell == null || itemType == null))
             throw new IllegalArgumentException(StringFactory.IllegalArgumentError.message);
         this.name = name;
         this.cell = cell;

@@ -13,7 +13,6 @@ import org.mockito.Mockito;
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
-
     public static GameMap gameMap;
     public static Item mockItem;
     public static String mockName = "mock";
@@ -55,6 +54,22 @@ class ItemTest {
                         FoodType.BREAD
                 )
             );
+    }
+
+    @Test
+    void constructorSetTypeWithMockObject() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> Mockito.spy(new Item(
+                        mockName,
+                        new Cell(gameMap, 0, 0, CellType.FLOOR),
+                        ItemType.FOOD
+                ) {
+                    @Override
+                    public String getTileName() {
+                        return null;
+                    }
+                }));
     }
 
     @Test
