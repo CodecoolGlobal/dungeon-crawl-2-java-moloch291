@@ -98,6 +98,7 @@ public class Game extends Application {
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
         setupMenu(menuModal);
+        setUpExportModal(exportModal);
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -203,14 +204,7 @@ public class Game extends Application {
         EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try {
-                    gameMapIO.saveGameMap(map);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                modal.hide();
+                    exportModal.show();
             }
         };
         exportButton.setOnAction(exportEvent);
@@ -222,6 +216,45 @@ public class Game extends Application {
         };
         cancelButton.setOnAction(cancelEvent);
         vBox.getChildren().addAll(importButton, exportButton, cancelButton);
+        Scene modalScene = new Scene(vBox);
+        modal.setScene(modalScene);
+    }
+
+    private void setUpExportModal(Stage modal) {
+        Label exportGameAs = new Label();
+        exportGameAs.setText("Export game as:");
+        TextField exportName = new TextField();
+        Button exportButton = new Button();
+        exportButton.setText("Export");
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(8);
+        EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    String input = exportName.getText();
+                    gameMapIO.saveGameMap(map, input);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                modal.hide();
+                menuModal.hide();
+            }
+        };
+        exportButton.setOnAction(exportEvent);
+        EventHandler<ActionEvent> cancelEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        cancelButton.setOnAction(cancelEvent);
+        vBox.getChildren().addAll(exportGameAs, exportName, exportButton, cancelButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }
