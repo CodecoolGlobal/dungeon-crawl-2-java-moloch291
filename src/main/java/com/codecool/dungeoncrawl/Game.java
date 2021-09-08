@@ -201,6 +201,7 @@ public class Game extends Application {
                             GameMap loadedMap = gameMapIO.loadGameMap(path);
                             map = loadedMap;
                             refresh(map.getPlayer().getX(), map.getPlayer().getY());
+                            actionLabel.setText("");
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (ClassNotFoundException e) {
