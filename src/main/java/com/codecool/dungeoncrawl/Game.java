@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.IO.InventorySaveTest;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
@@ -13,7 +12,6 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.model.PlayersInventory;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
@@ -53,7 +51,6 @@ public class Game extends Application {
     Stage saveModal = new Stage();
     Stage loadModal = new Stage();
     Stage menuModal = new Stage();
-    Stage exportModal = new Stage();
     FileChooser importWindow = new FileChooser();
     FileChooser exportWindow = new FileChooser();
 
@@ -101,12 +98,9 @@ public class Game extends Application {
         loadModal.initOwner(primaryStage);
         menuModal.initModality(Modality.WINDOW_MODAL);
         menuModal.initOwner(primaryStage);
-        exportModal.initModality(Modality.WINDOW_MODAL);
-        exportModal.initOwner(primaryStage);
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
         setupMenu(menuModal);
-        setUpExportModal(exportModal);
         importWindow.setTitle("Select exported game");
         exportWindow.setTitle("Export game as");
 
@@ -177,7 +171,10 @@ public class Game extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 File file = importWindow.showOpenDialog(modal);
-                String path = file.getPath();
+                String path = "";
+                if (file != null) {
+                    path = file.getPath();
+                }
                 try {
                     GameMap loadedMap = gameMapIO.loadGameMap(path);
                     map = loadedMap;
@@ -195,7 +192,19 @@ public class Game extends Application {
         EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                    exportModal.show();
+                File file = exportWindow.showSaveDialog(modal);
+                String path = "";
+                if (file != null) {
+                    path = file.getPath();
+                }
+                try {
+                    gameMapIO.saveGameMap(map, path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                modal.hide();
             }
         };
         exportButton.setOnAction(exportEvent);
@@ -207,45 +216,6 @@ public class Game extends Application {
         };
         cancelButton.setOnAction(cancelEvent);
         vBox.getChildren().addAll(importButton, exportButton, cancelButton);
-        Scene modalScene = new Scene(vBox);
-        modal.setScene(modalScene);
-    }
-
-    private void setUpExportModal(Stage modal) {
-        Button exportButton = new Button();
-        exportButton.setText("Export");
-        Button cancelButton = new Button();
-        cancelButton.setText("Cancel");
-        VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10));
-        vBox.setSpacing(8);
-        EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                File file = exportWindow.showSaveDialog(modal);
-                String fileName = file.getName();
-                String path = file.getPath();
-                System.out.println(path);
-                try {
-                    gameMapIO.saveGameMap(map, path);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                modal.hide();
-                menuModal.hide();
-            }
-        };
-        exportButton.setOnAction(exportEvent);
-        EventHandler<ActionEvent> cancelEvent = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                modal.hide();
-            }
-        };
-        cancelButton.setOnAction(cancelEvent);
-        vBox.getChildren().addAll(exportButton, cancelButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }
