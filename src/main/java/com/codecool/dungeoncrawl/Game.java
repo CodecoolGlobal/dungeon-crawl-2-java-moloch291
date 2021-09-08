@@ -47,8 +47,6 @@ import java.util.logging.Logger;
 
 public class Game extends Application {
 
-    Desktop desktop = Desktop.getDesktop();
-
     int mapCounter = 1;
 
     Scene scene;
@@ -68,7 +66,6 @@ public class Game extends Application {
 
     GameDatabaseManager dbManager = new GameDatabaseManager();
 
-    InventorySaveTest saveTest = new InventorySaveTest();
     GameMapIO gameMapIO = new GameMapIO();
 
     Actions actions = new Actions();
@@ -146,13 +143,6 @@ public class Game extends Application {
                     //dbManager.saveGameState(map);
                     dbManager.savePlayer(map.getPlayer());
                     //dbManager.saveInventory(map);
-                    try {
-                        saveTest.saveInventory(map);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
                     modal.hide();
                 }
             };
@@ -163,15 +153,6 @@ public class Game extends Application {
             EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    try {
-                        PlayersInventory loadedInventory = saveTest.loadInventory();
-                        System.out.println(loadedInventory);
-                        loadedInventory.printInventory();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
                     modal.hide();
                 }
             };
@@ -199,11 +180,6 @@ public class Game extends Application {
                 String path = file.getPath();
                 try {
                     GameMap loadedMap = gameMapIO.loadGameMap(path);
-                    System.out.println(loadedMap);
-                    System.out.println(loadedMap.getPlayer().getInventory().keySet());
-                    System.out.println(loadedMap.getSkeletons());
-                    //String mapName = loadedMap.getMapName().toString();
-                    //setUpSecondScene(mapName, loadedMap);
                     map = loadedMap;
                     refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 } catch (IOException e) {
@@ -272,17 +248,6 @@ public class Game extends Application {
         vBox.getChildren().addAll(exportButton, cancelButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
-    }
-
-    private void openFile(File file) {
-        try {
-            desktop.open(file);
-        } catch (IOException ex) {
-            Logger.getLogger(
-                    FileChooser.class.getName()).log(
-                    Level.SEVERE, null, ex
-            );
-        }
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
