@@ -61,22 +61,6 @@ class ItemTest {
     }
 
     @Test
-    void constructorThrowsErrorOnMockInstance() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> Mockito.spy(new Item(
-                        mockName,
-                        new Cell(gameMap, 0, 0, CellType.FLOOR),
-                        ItemType.FOOD
-                ) {
-                    @Override
-                    public String getTileName() {
-                        return null;
-                    }
-                }));
-    }
-
-    @Test
     void getCell() {
         Cell testCell = gameMap.getCell(0, 0);
         // Assert abstractGetCell:
@@ -101,16 +85,10 @@ class ItemTest {
 
     @Test
     void setCell() {
-        Armor testArmor = new Armor(
-                "Breastplate",
-                gameMap.getCell(0, 1),
-                ArmorType.BREASTPLATE
-        );
-
         Cell newCell = gameMap.getCell(1, 1);
-        testArmor.setCell(newCell);
 
-        assertEquals(newCell, testArmor.getCell());
+        mockItem.setCell(newCell);
+        assertEquals(newCell, mockItem.getCell());
     }
 
     @Test
