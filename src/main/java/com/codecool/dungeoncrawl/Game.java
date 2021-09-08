@@ -195,9 +195,10 @@ public class Game extends Application {
         EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String fileName = importWindow.showOpenDialog(modal).getName();
+                File file = importWindow.showOpenDialog(modal);
+                String path = file.getPath();
                 try {
-                    GameMap loadedMap = gameMapIO.loadGameMap(fileName);
+                    GameMap loadedMap = gameMapIO.loadGameMap(path);
                     System.out.println(loadedMap);
                     System.out.println(loadedMap.getPlayer().getInventory().keySet());
                     System.out.println(loadedMap.getSkeletons());
@@ -235,9 +236,6 @@ public class Game extends Application {
     }
 
     private void setUpExportModal(Stage modal) {
-        Label exportGameAs = new Label();
-        exportGameAs.setText("Export game as:");
-        TextField exportName = new TextField();
         Button exportButton = new Button();
         exportButton.setText("Export");
         Button cancelButton = new Button();
@@ -248,10 +246,12 @@ public class Game extends Application {
         EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String fileName = exportWindow.showSaveDialog(modal).getName();
+                File file = exportWindow.showSaveDialog(modal);
+                String fileName = file.getName();
+                String path = file.getPath();
+                System.out.println(path);
                 try {
-                    //String input = exportName.getText();
-                    gameMapIO.saveGameMap(map, fileName);
+                    gameMapIO.saveGameMap(map, path);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -269,7 +269,7 @@ public class Game extends Application {
             }
         };
         cancelButton.setOnAction(cancelEvent);
-        vBox.getChildren().addAll(exportGameAs, exportName, exportButton, cancelButton);
+        vBox.getChildren().addAll(exportButton, cancelButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }
