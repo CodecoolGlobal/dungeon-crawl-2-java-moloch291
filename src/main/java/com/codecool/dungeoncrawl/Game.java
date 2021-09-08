@@ -13,7 +13,6 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.model.PlayersInventory;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
@@ -132,13 +131,6 @@ public class Game extends Application {
                     //dbManager.saveGameState(map);
                     dbManager.savePlayer(map.getPlayer());
                     //dbManager.saveInventory(map);
-                    try {
-                        saveTest.saveInventory(map);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
                     modal.hide();
                 }
             };
@@ -149,15 +141,6 @@ public class Game extends Application {
             EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    try {
-                        PlayersInventory loadedInventory = saveTest.loadInventory();
-                        System.out.println(loadedInventory);
-                        loadedInventory.printInventory();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
                     modal.hide();
                 }
             };
