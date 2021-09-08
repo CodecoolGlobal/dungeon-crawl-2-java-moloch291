@@ -176,6 +176,15 @@ public class Game extends Application {
         EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                try {
+                    PlayersInventory loadedInventory = saveTest.loadInventory();
+                    System.out.println(loadedInventory);
+                    loadedInventory.printInventory();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 modal.hide();
             }
         };
@@ -183,6 +192,13 @@ public class Game extends Application {
         EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                try {
+                    saveTest.saveInventory(map);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
                 modal.hide();
             }
         };
