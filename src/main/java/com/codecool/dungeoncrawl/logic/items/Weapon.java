@@ -6,9 +6,10 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 public class Weapon extends Item {
     private final WeaponType weaponType;
 
-    public Weapon(String name, Cell cell, ItemType itemType, WeaponType weaponType) {
-        super(name, cell, itemType);
-        this.weaponType = weaponType;
+    public Weapon(String name, Cell cell, WeaponType weaponType) {
+        super(name, cell, ItemType.WEAPON);
+        if (weaponType != null) this.weaponType = weaponType;
+        else throw new IllegalArgumentException("Weapon type should not be null");
     }
 
     @Override

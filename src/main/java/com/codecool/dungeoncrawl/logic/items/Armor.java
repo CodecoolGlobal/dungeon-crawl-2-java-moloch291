@@ -6,9 +6,10 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 public class Armor extends Item {
     private final ArmorType armorType;
 
-    public Armor(String name, Cell cell, ItemType itemType, ArmorType armorType) {
-        super(name, cell, itemType);
-        this.armorType = armorType;
+    public Armor(String name, Cell cell, ArmorType armorType) {
+        super(name, cell, ItemType.ARMOR);
+        if (armorType != null) this.armorType = armorType;
+        else throw new IllegalArgumentException("Armor type must not be null!");
     }
 
 

@@ -6,9 +6,10 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 public class Key extends Item {
     private final KeyType keyType;
 
-    public Key(String name, Cell cell, ItemType itemType, KeyType keyType) {
-        super(name, cell, itemType);
-        this.keyType = keyType;
+    public Key(String name, Cell cell, KeyType keyType) {
+        super(name, cell, ItemType.KEY);
+        if (keyType != null) this.keyType = keyType;
+        else throw new IllegalArgumentException("Key type must not be null!");
     }
 
     @Override
