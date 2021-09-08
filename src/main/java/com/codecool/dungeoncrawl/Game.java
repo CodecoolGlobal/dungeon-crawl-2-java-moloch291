@@ -26,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -47,6 +48,7 @@ public class Game extends Application {
     Stage loadModal = new Stage();
     Stage menuModal = new Stage();
     Stage errorModal = new Stage();
+    Stage manualModal = new Stage();
     FileChooser importWindow = new FileChooser();
     FileChooser exportWindow = new FileChooser();
 
@@ -60,6 +62,7 @@ public class Game extends Application {
     GameDatabaseManager dbManager = new GameDatabaseManager();
 
     GameMapIO gameMapIO = new GameMapIO();
+    Util util = new Util();
 
     Actions actions = new Actions();
     GameConditions gameConditions = new GameConditions();
@@ -101,10 +104,14 @@ public class Game extends Application {
         errorModal.initModality(Modality.WINDOW_MODAL);
         errorModal.initOwner(menuModal);
         errorModal.setTitle("File format error");
+        manualModal.initModality(Modality.WINDOW_MODAL);
+        manualModal.initOwner(primaryStage);
+        manualModal.setTitle("Game manual");
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
         setUpModal(errorModal, "Ok");
         setupMenu(menuModal);
+        setupGameManual(manualModal);
         importWindow.setTitle("Select exported game");
         exportWindow.setTitle("Export game as");
 
@@ -173,6 +180,28 @@ public class Game extends Application {
             vBox.getChildren().add(error);
         }
         vBox.getChildren().addAll(actionButton, cancelButton);
+        Scene modalScene = new Scene(vBox);
+        modal.setScene(modalScene);
+    }
+
+    private void setupGameManual(Stage modal) {
+        Label controls = new Label();
+        controls.setText(util.getGameManual());
+        controls.setTextAlignment(TextAlignment.CENTER);
+        Button closeButton = new Button();
+        closeButton.setText("Close");
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(40));
+        vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
+        EventHandler<ActionEvent> closeEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        closeButton.setOnAction(closeEvent);
+        vBox.getChildren().addAll(controls, closeButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }
@@ -280,7 +309,7 @@ public class Game extends Application {
         lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
         lineBreak3.minHeightProperty().bind(inventoryLabel.heightProperty());
         setLabels(ui);
-        pickUpInfo.setText(StringFactory.PICK_UP_ITEMS.message);
+        pickUpInfo.setText(StringFactory.MANUAL.message);
         pickUpInfo.setWrapText(true);
         quitLabel.setWrapText(true);
     }
@@ -386,6 +415,9 @@ public class Game extends Application {
                 break;
             case M:
                 menuModal.show();
+                break;
+            case ESCAPE:
+                manualModal.show();
                 break;
         }
     }
