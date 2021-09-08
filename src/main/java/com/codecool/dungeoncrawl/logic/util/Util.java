@@ -6,9 +6,9 @@ import com.codecool.dungeoncrawl.logic.map.GameMap;
 import java.io.Serializable;
 
 public class Util implements Serializable {
-    private final String[] redbrickRefs = {"redbrick", "redbrick alter"};
-    private final String[] houseRefs = {"house", "house alter", "house alter 2", "house alter 3"};
-    private final String[] lakeHouseRefs = {"lake house", "lake house alter"};
+    private static final String[] redbrickRefs = {"redbrick", "redbrick alter"};
+    private static final String[] houseRefs = {"house", "house alter", "house alter 2", "house alter 3"};
+    private static final String[] lakeHouseRefs = {"lake house", "lake house alter"};
     
 
     public static int getAttackerHit(Actor attacker, Actor defender) {
@@ -23,11 +23,11 @@ public class Util implements Serializable {
     }
 
     public static int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
+        return (int) (Math.random() * (max - min)) + min;
     }
 
 
-    public String getRandomTile(String tileName, GameMap map) {
+    public static String getRandomTile(String tileName, GameMap map) {
         String actualTileName = tileName;
         if (map.getPlayer().isDrunk()) {
             switch (tileName) {

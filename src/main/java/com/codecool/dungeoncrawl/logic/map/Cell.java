@@ -14,8 +14,6 @@ public class Cell implements Drawable, Serializable {
     private final int x;
     private final int y;
 
-    Util util = new Util();
-
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
         this.x = x;
@@ -33,7 +31,7 @@ public class Cell implements Drawable, Serializable {
 
     @Override
     public String getTileName() {
-        return util.getRandomTile(type.getTileName(), gameMap);
+        return Util.getRandomTile(type.getTileName(), gameMap);
     }
 
     public int getX() {
