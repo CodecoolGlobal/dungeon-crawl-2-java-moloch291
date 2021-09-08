@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.dao.InventorySaveTest;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
@@ -56,6 +57,7 @@ public class Game extends Application {
     GameDatabaseManager dbManager = new GameDatabaseManager();
 
     InventorySaveTest saveTest = new InventorySaveTest();
+    GameMapIO gameMapIO = new GameMapIO();
 
     Actions actions = new Actions();
     GameConditions gameConditions = new GameConditions();
@@ -177,15 +179,21 @@ public class Game extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    PlayersInventory loadedInventory = saveTest.loadInventory();
-                    System.out.println(loadedInventory);
-                    loadedInventory.printInventory();
+                    GameMap loadedMap = gameMapIO.loadGameMap();
+                    System.out.println(loadedMap);
+                    System.out.println(loadedMap.getPlayer().getInventory().keySet());
+                    System.out.println(loadedMap.getSkeletons());
+                    //String mapName = loadedMap.getMapName().toString();
+                    //setUpSecondScene(mapName, loadedMap);
+                    map = loadedMap;
+                    refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 modal.hide();
+
             }
         };
         importButton.setOnAction(importEvent);
@@ -193,7 +201,7 @@ public class Game extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    saveTest.saveInventory(map);
+                    gameMapIO.saveGameMap(map);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
@@ -224,6 +232,7 @@ public class Game extends Application {
         primaryStage.setScene(scene);
         int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
         map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
+        map.setMapName(MapName.MAP1);
         refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle(StringFactory.TITLE.message);
@@ -407,21 +416,25 @@ public class Game extends Application {
                 case 1:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP2);
+                    map.setMapName(MapName.MAP2);
                     mapCounter++;
                     break;
                 case 2:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP3);
+                    map.setMapName(MapName.MAP3);
                     mapCounter++;
                     break;
                 case 3:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP4);
+                    map.setMapName(MapName.MAP4);
                     mapCounter++;
                     break;
                 case 4:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP5);
+                    map.setMapName(MapName.MAP5);
                     mapCounter++;
                     break;
             }

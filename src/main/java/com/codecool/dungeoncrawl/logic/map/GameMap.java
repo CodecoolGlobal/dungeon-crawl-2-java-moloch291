@@ -19,6 +19,8 @@ public class GameMap implements Serializable {
     private final ArrayList<Actor> ghosts = new ArrayList<>();
     private Player player;
     private CellType exit;
+    private char[] mapAsCharArray;
+    private MapName mapName;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -108,6 +110,22 @@ public class GameMap implements Serializable {
         this.undeads.remove(index);
     }
 
+    public char[] getMapAsCharArray() {
+        return mapAsCharArray;
+    }
+
+    public void setMapAsCharArray(char[] mapAsCharArray) {
+        this.mapAsCharArray = mapAsCharArray;
+    }
+
+    public MapName getMapName() {
+        return mapName;
+    }
+
+    public void setMapName(MapName mapName) {
+        this.mapName = mapName;
+    }
+
     private Cell[][] defineCells(int width, int height, CellType defaultCellType) {
         final Cell[][] cells;
         cells = new Cell[width][height];
@@ -128,4 +146,8 @@ public class GameMap implements Serializable {
             }
         }
     }
+
+    /*public char[] gameMapToString(Cell[][] cells) {
+        char[]
+    }*/
 }
