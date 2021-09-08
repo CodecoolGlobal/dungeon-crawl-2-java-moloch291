@@ -66,6 +66,12 @@ public enum StringFactory {
     WATER_BOTTLE("Water bottle"),
     BEER("beer"),
     BEER_CAP("Beer"),
+    MAP1("/map1.txt"),
+    MAP2("/map2.txt"),
+    MAP3("/map3.txt"),
+    MAP4("/map4.txt"),
+    MAP5("/map5.txt"),
+    DEAD("/dead.txt"),
 
     // Errors
     IllegalArgumentError("None of the constructor variables shall be null!");

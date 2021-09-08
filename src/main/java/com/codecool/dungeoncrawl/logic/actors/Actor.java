@@ -4,7 +4,9 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.Drawable;
 import com.codecool.dungeoncrawl.logic.util.GameConditions;
 
-public abstract class Actor implements Drawable {
+import java.io.Serializable;
+
+public abstract class Actor implements Drawable, Serializable {
 
     private Cell cell;
     private int health = 10;
