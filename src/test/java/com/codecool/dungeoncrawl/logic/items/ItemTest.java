@@ -8,12 +8,15 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ItemTest {
 
     public static GameMap gameMap;
+    public static Item mockItem;
+    public static String mockName = "mock";
 
     @BeforeAll
     static void beforeAll() {
@@ -23,17 +26,28 @@ class ItemTest {
     @BeforeEach
     public void setUp() {
         gameMap = new GameMap(3, 3, CellType.FLOOR);
+        mockItem = Mockito.spy(new Item(
+                mockName,
+                new Cell(gameMap, 0, 0, CellType.FLOOR),
+                ItemType.FOOD
+        ) {
+            @Override
+            public String getTileName() {
+                return null;
+            }
+        });
     }
 
     @Test
     void getName() {
-        Key testKey = new Key(
+        /*Key testKey = new Key(
                 "Key",
                 gameMap.getCell(0, 1),
                 KeyType.DOOR_KEY
         );
 
-        assertEquals("Key", testKey.getName());
+        assertEquals("Key", testKey.getName());*/
+        Mockito.when(mockItem.getName()).thenReturn(mockName);
     }
 
     @Test
@@ -50,14 +64,9 @@ class ItemTest {
 
     @Test
     void getCell() {
-        Cell testCell = gameMap.getCell(0, 1);
-        Potion testPotion = new Potion(
-                StringFactory.HEALING_POTION.message,
-                testCell,
-                PotionType.HEALING_POTION
-        );
+        Cell testCell = gameMap.getCell(0, 0);
 
-        assertEquals(testCell, testPotion.getCell());
+        Mockito.when(mockItem.getCell()).thenReturn(testCell);
     }
 
     @Test
