@@ -25,12 +25,13 @@ class ItemTest {
 
     @BeforeEach
     public void setUp() {
+        // Test map:
         gameMap = new GameMap(3, 3, CellType.FLOOR);
         mockItem = Mockito.spy(new Item(
                 mockName,
                 new Cell(gameMap, 0, 0, CellType.FLOOR),
                 ItemType.FOOD
-        ) {
+        ) { // Override method implementation:
             @Override
             public String getTileName() {
                 return null;
@@ -40,13 +41,7 @@ class ItemTest {
 
     @Test
     void getName() {
-        /*Key testKey = new Key(
-                "Key",
-                gameMap.getCell(0, 1),
-                KeyType.DOOR_KEY
-        );
-
-        assertEquals("Key", testKey.getName());*/
+        // Assert getName abstract method:
         Mockito.when(mockItem.getName()).thenReturn(mockName);
     }
 
@@ -65,7 +60,7 @@ class ItemTest {
     @Test
     void getCell() {
         Cell testCell = gameMap.getCell(0, 0);
-
+        // Assert abstractGetCell:
         Mockito.when(mockItem.getCell()).thenReturn(testCell);
     }
 
