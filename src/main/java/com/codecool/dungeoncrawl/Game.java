@@ -75,6 +75,7 @@ public class Game extends Application {
 
     Pane lineBreak = new Pane();
     Pane lineBreak2 = new Pane();
+    Pane lineBreak3 = new Pane();
 
     public static void main(String[] args) {
         launch(args);
@@ -277,6 +278,7 @@ public class Game extends Application {
         ui.setPadding(new Insets(10));
         lineBreak.minHeightProperty().bind(inventoryLabel.heightProperty());
         lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
+        lineBreak3.minHeightProperty().bind(inventoryLabel.heightProperty());
         setLabels(ui);
         pickUpInfo.setText(StringFactory.PICK_UP_ITEMS.message);
         pickUpInfo.setWrapText(true);
@@ -291,13 +293,14 @@ public class Game extends Application {
         ui.add(new Label(StringFactory.ATTACK_LABEL.message), 0, 2);
         ui.add(attackLabel, 1, 2);
         ui.add(new Label(StringFactory.ACTION_LABEL.message), 0, 3);
-        ui.add(actionLabel, 1, 3);
-        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 4);
-        ui.add(inventoryLabel, 1, 4);
-        ui.add(quitLabel, 0, 8, 2, 1);
-        ui.add(lineBreak, 0, 5);
-        ui.add(pickUpInfo, 0, 6, 2, 1);
-        ui.add(lineBreak2, 0, 7);
+        ui.add(actionLabel, 0, 4, 2, 1);
+        ui.add(lineBreak3, 0, 5);
+        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 6);
+        ui.add(inventoryLabel, 0, 7, 2, 1);
+        ui.add(lineBreak, 0, 8);
+        ui.add(pickUpInfo, 0, 9, 2, 1);
+        ui.add(lineBreak2, 0, 10);
+        ui.add(quitLabel, 0, 11, 2, 1);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
