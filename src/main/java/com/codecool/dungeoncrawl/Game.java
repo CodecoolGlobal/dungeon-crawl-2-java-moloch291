@@ -57,6 +57,7 @@ public class Game extends Application {
     Stage menuModal = new Stage();
     Stage exportModal = new Stage();
     FileChooser importWindow = new FileChooser();
+    FileChooser exportWindow = new FileChooser();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -110,6 +111,7 @@ public class Game extends Application {
         setupMenu(menuModal);
         setUpExportModal(exportModal);
         importWindow.setTitle("Select exported game");
+        exportWindow.setTitle("Export game as");
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -246,9 +248,10 @@ public class Game extends Application {
         EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                String fileName = exportWindow.showSaveDialog(modal).getName();
                 try {
-                    String input = exportName.getText();
-                    gameMapIO.saveGameMap(map, input);
+                    //String input = exportName.getText();
+                    gameMapIO.saveGameMap(map, fileName);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
