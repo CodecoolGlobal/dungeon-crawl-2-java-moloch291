@@ -79,83 +79,83 @@ public class MapLoader {
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
-                            new Key("Key", cell, ItemType.KEY, KeyType.DOOR_KEY);
+                            new Key(StringFactory.KEY_CAP.message, cell, KeyType.DOOR_KEY);
                             break;
                         case 'K':
                             cell.setType(CellType.FLOOR);
-                            new Key("Bridge key", cell, ItemType.KEY, KeyType.BRIDGE_KEY);
+                            new Key("Bridge key", cell, KeyType.BRIDGE_KEY);
                             break;
                         case 'e':
                             cell.setType(CellType.FLOOR);
-                            new Key("Lock pick", cell, ItemType.KEY, KeyType.LOCK_PICK);
+                            new Key("Lock pick", cell, KeyType.LOCK_PICK);
                             break;
                         case 'S':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Shield", cell, ItemType.ARMOR, ArmorType.SHIELD);
+                            new Armor(StringFactory.SHIELD_CAP.message, cell, ArmorType.SHIELD);
                             break;
                         case 'P':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Helmet", cell, ItemType.ARMOR, ArmorType.HELMET);
+                            new Armor(StringFactory.HELMET_CAP.message, cell, ArmorType.HELMET);
                             break;
                         case 'C':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Breastplate", cell, ItemType.ARMOR, ArmorType.BREASTPLATE);
+                            new Armor(StringFactory.BREASTPLATE_CAP.message, cell, ArmorType.BREASTPLATE);
                             break;
                         case 'E':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Greaves", cell, ItemType.ARMOR, ArmorType.GREAVES);
+                            new Armor(StringFactory.GREAVES_CAP.message, cell, ArmorType.GREAVES);
                             break;
                         case 'G':
                             cell.setType(CellType.FLOOR);
-                            new Armor("Gauntlets", cell, ItemType.ARMOR, ArmorType.GAUNTLETS);
+                            new Armor(StringFactory.GAUNTLETS_CAP.message, cell, ArmorType.GAUNTLETS);
                             break;
                         case 'w':
                             cell.setType(CellType.FLOOR);
-                            new Weapon("Sword", cell, ItemType.WEAPON, WeaponType.SWORD);
+                            new Weapon(StringFactory.SWORD_CAP.message, cell, WeaponType.SWORD);
                             break;
                         case 'a':
                             cell.setType(CellType.FLOOR);
-                            new Weapon("Axe", cell, ItemType.WEAPON, WeaponType.AXE);
+                            new Weapon(StringFactory.AXE_CAP.message, cell, WeaponType.AXE);
                             break;
                         case 'p':
                             cell.setType(CellType.FLOOR);
-                            new Weapon("Pike", cell, ItemType.WEAPON, WeaponType.PIKE);
+                            new Weapon(StringFactory.PIKE_CAP.message, cell, WeaponType.PIKE);
                             break;
                         case 'b':
                             cell.setType(CellType.FLOOR);
-                            new Food("Bread", cell, ItemType.FOOD, FoodType.BREAD);
+                            new Food(StringFactory.BREAD_CAP.message, cell, FoodType.BREAD);
                             break;
                         case 'c':
                             cell.setType(CellType.FLOOR);
-                            new Food("Cheese", cell, ItemType.FOOD, FoodType.CHEESE);
+                            new Food(StringFactory.CHEESE_CAP.message, cell, FoodType.CHEESE);
                             break;
                         case 'v':
                             cell.setType(CellType.FLOOR);
-                            new Food("Water bottle", cell, ItemType.FOOD, FoodType.WATER);
+                            new Food(StringFactory.WATER_BOTTLE.message, cell, FoodType.WATER);
                             break;
                         case 'n':
                             cell.setType(CellType.FLOOR);
-                            new Food("Apple", cell, ItemType.FOOD, FoodType.APPLE);
+                            new Food(StringFactory.APPLE_CAP.message, cell, FoodType.APPLE);
                             break;
                         case 'm':
                             cell.setType(CellType.FLOOR);
-                            new Food("Fish", cell, ItemType.FOOD, FoodType.FISH);
+                            new Food(StringFactory.FISH_CAP.message, cell, FoodType.FISH);
                             break;    
                         case 'h':
                             cell.setType(CellType.FLOOR);
-                            new Potion("Healing potion", cell, ItemType.POTION, PotionType.HEALING_POTION);
+                            new Potion(StringFactory.HEALING_POTION.message, cell, PotionType.HEALING_POTION);
                             break;
                         case 'g':
                             cell.setType(CellType.FLOOR);
-                            new Potion("Stone skin potion", cell, ItemType.POTION, PotionType.STONE_SKIN_POTION);
+                            new Potion(StringFactory.STONE_SKIN_POTION.message, cell, PotionType.STONE_SKIN_POTION);
                             break;
                         case 'j':
                             cell.setType(CellType.FLOOR);
-                            new Potion("Potion of might", cell, ItemType.POTION, PotionType.MIGHT_POTION);
+                            new Potion(StringFactory.MIGHT_POTION.message, cell, PotionType.MIGHT_POTION);
                             break;
                         case 'B':
                             cell.setType(CellType.WATER);
-                            new Boat("Boat", cell, ItemType.BOAT);
+                            new Boat(StringFactory.BOAT_CAP.message, cell);
                             break;
                         case 'd':
                             cell.setType(map.getExit());
@@ -206,7 +206,7 @@ public class MapLoader {
                             break;
                         case 'A':
                             cell.setType(CellType.FLOOR);
-                            new Alcohol(StringFactory.BEER_CAP.message, cell, ItemType.ALCOHOL);
+                            new Alcohol(cell);
                             break;
                         case 't':
                             cell.setType(CellType.TREE);

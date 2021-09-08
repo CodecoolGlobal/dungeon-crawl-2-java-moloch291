@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerDaoJdbc implements PlayerDao {
@@ -22,7 +23,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.setInt(2, player.getHp());
             statement.setInt(3, player.getX());
             statement.setInt(4, player.getY());
-            statement.setBoolean(5, player.isDrunk());
+            statement.setBoolean(5, player.getDrunk());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -34,16 +35,53 @@ public class PlayerDaoJdbc implements PlayerDao {
 
     @Override
     public void update(PlayerModel player) {
-
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "UPDATE player SET player_name = ?, hp = ?, x = ?, y = ?, drunk = ? WHERE id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, player.getPlayerName());
+            st.setInt(2, player.getHp());
+            st.setInt(3, player.getX());
+            st.setInt(4, player.getY());
+            st.setBoolean(5, player.getDrunk());
+            st.setInt(6, player.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public PlayerModel get(int id) {
-        return null;
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT player_name, hp, x, y, drunk FROM player WHERE id = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next()) {
+                return null;
+            }
+            PlayerModel playerModel = new PlayerModel(rs.getString(1), rs.getInt(2), rs.getInt(3),rs.getInt(4), rs.getBoolean(5));
+            playerModel.setId(id);
+            return playerModel;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading author with id: " + id, e);
+        }
     }
 
     @Override
     public List<PlayerModel> getAll() {
-        return null;
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id, player_name, hp, x, y, drunk FROM player";
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            List<PlayerModel> result = new ArrayList<>();
+            while (rs.next()) {
+                PlayerModel playerModel = new PlayerModel(rs.getString(2), rs.getInt(3), rs.getInt(4),rs.getInt(5), rs.getBoolean(6));
+                playerModel.setId(rs.getInt(1));
+                result.add(playerModel);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException("Error while reading all authors", e);
+        }
     }
 }

@@ -7,20 +7,22 @@ public class PlayerModel extends BaseModel {
     private int hp;
     private int x;
     private int y;
-    private boolean isDrunk;
+    private boolean drunk;
 
-    public PlayerModel(String playerName, int x, int y) {
+    public PlayerModel(String playerName, int hp, int x, int y, boolean drunk) {
         this.playerName = playerName;
+        this.hp = hp;
         this.x = x;
         this.y = y;
+        this.drunk = drunk;
     }
 
     public PlayerModel(Player player) {
         this.playerName = player.getName();
         this.x = player.getX();
         this.y = player.getY();
-        this.isDrunk = player.isDrunk();
         this.hp = player.getHealth();
+        this.drunk = player.isDrunk();
 
     }
 
@@ -56,11 +58,14 @@ public class PlayerModel extends BaseModel {
         this.y = y;
     }
 
-    public boolean isDrunk() {
-        return isDrunk;
+    public boolean getDrunk() { return drunk; }
+
+    public void setDrunk() { this.drunk = drunk;}
+
+    @Override
+    public String toString() {
+        return String.format("Player %d -> Name: %s, HP: %d, Position: %d:%d, Is he drunk: %s",
+                             id, playerName, hp, x, y, drunk);
     }
 
-    public void setDrunk(boolean drunk) {
-        isDrunk = drunk;
-    }
 }

@@ -5,9 +5,10 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 public class Potion extends Item {
     private final PotionType potionType;
 
-    public Potion(String name, Cell cell, ItemType itemType, PotionType potionType) {
-        super(name, cell, itemType);
-        this.potionType = potionType;
+    public Potion(String name, Cell cell, PotionType potionType) {
+        super(name, cell, ItemType.POTION);
+        if (potionType != null) this.potionType = potionType;
+        else throw new IllegalArgumentException("Potion type must not be null!");
     }
 
     @Override
@@ -21,5 +22,9 @@ public class Potion extends Item {
             actualType = "might potion";
         }
         return actualType;
+    }
+
+    public PotionType getPotionType() {
+        return this.potionType;
     }
 }

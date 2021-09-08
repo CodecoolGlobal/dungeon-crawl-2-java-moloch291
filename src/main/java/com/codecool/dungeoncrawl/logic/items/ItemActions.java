@@ -12,13 +12,19 @@ public class ItemActions {
 
     public Item searchForItemByType(GameMap map, ItemType itemType) {
         Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-        Item itemInInventory = null;
         for (Item item : playerInventory.keySet()) {
-            if (item.getItemType().equals(itemType)) {
-                itemInInventory = item;
-            }
+            if (item.getItemType().equals(itemType)) return item;
         }
-        return itemInInventory;
+        return null;
+    }
+
+    public Item searchForPotion(GameMap map, PotionType potionType) {
+        Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
+        for (Item item : playerInventory.keySet()) {
+            if (item instanceof Potion && ((Potion) item).getPotionType().equals(potionType))
+                return item;
+        }
+        return null;
     }
 
     public void consumeFood(GameMap map, String itemName) {
@@ -42,7 +48,7 @@ public class ItemActions {
         decrementItem(map, itemName);
     }
 
-    public void consumeAlcohol(GameMap map, String itemName) {
+    public void consumeAlcohol(GameMap map) {
         int defenseModifier = -5;
         int attackModifier = 3;
         map.getPlayer().setDrunk(true);
@@ -50,7 +56,7 @@ public class ItemActions {
             map.getPlayer().setDefense(map.getPlayer().getDefense() + defenseModifier);
         }
         map.getPlayer().setAttack(map.getPlayer().getAttack() + attackModifier);
-        decrementItem(map, itemName);
+        decrementItem(map, StringFactory.BEER_CAP.message);
     }
 
     private void decrementItem(GameMap map, String itemName) {
@@ -67,24 +73,20 @@ public class ItemActions {
     }
 
     private void handleInventory(GameMap map, Map<Item, Integer> playerInventory, int count, Item itemFromInventory) {
-        if (count > 1) {
+        if (count > 1)
             map.getPlayer().addToInventory(itemFromInventory, playerInventory.get(itemFromInventory) - 1);
-        } else {
-            map.getPlayer().removeFromInventory(itemFromInventory);
-        }
+        else map.getPlayer().removeFromInventory(itemFromInventory);
     }
 
     public void leaveBoat(Player player) {
         Item boat = null;
         for (Item item : player.getInventory().keySet()) {
-            if (item.getItemType().equals(ItemType.BOAT)) {
-                boat = item;
-            }
+            if (item.getItemType().equals(ItemType.BOAT)) boat = item;
         }
         player.removeFromInventory(boat);
         Cell playerCell = player.getCell();
         playerCell.setType(CellType.WATER);
-        new Boat(StringFactory.BOAT_CAP.message, playerCell, ItemType.BOAT);
+        new Boat(StringFactory.BOAT_CAP.message, playerCell);
     }
 
     public void equipArmor(GameMap map, String itemName) {

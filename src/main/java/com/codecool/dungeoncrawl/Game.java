@@ -5,6 +5,7 @@ import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.IO.InventorySaveTest;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
+import com.codecool.dungeoncrawl.logic.items.PotionType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
 import com.codecool.dungeoncrawl.logic.map.*;
 import com.codecool.dungeoncrawl.logic.util.*;
@@ -322,18 +323,23 @@ public class Game extends Application {
                 break;
             case F:
                 Item foodItem = itemActions.searchForItemByType(map, ItemType.FOOD);
-                if (foodItem != null) {
+                if (foodItem != null)
                     itemActions.consumeFood(map, foodItem.getName());
-                }
                 break;
             case H:
-                itemActions.consumePotion(map, StringFactory.HEALING_POTION.message);
+                Item potionItem = itemActions.searchForPotion(map, PotionType.HEALING_POTION);
+                if (potionItem != null)
+                    itemActions.consumePotion(map, StringFactory.HEALING_POTION.message);
                 break;
             case G:
-                itemActions.consumePotion(map, StringFactory.STONE_SKIN_POTION.message);
+                Item potionItem2 = itemActions.searchForPotion(map, PotionType.STONE_SKIN_POTION);
+                if (potionItem2 != null)
+                    itemActions.consumePotion(map, StringFactory.STONE_SKIN_POTION.message);
                 break;
             case J:
-                itemActions.consumePotion(map, StringFactory.MIGHT_POTION.message);
+                Item potionItem3 = itemActions.searchForPotion(map, PotionType.MIGHT_POTION);
+                if (potionItem3 != null)
+                    itemActions.consumePotion(map, StringFactory.MIGHT_POTION.message);
                 break;
             case B:
                 if (map.getPlayer().hasItem(ItemType.BOAT)) {
@@ -342,7 +348,7 @@ public class Game extends Application {
                 break;
             case A:
                 if (map.getPlayer().hasItem((ItemType.ALCOHOL))) {
-                    itemActions.consumeAlcohol(map, StringFactory.BEER_CAP.message);
+                    itemActions.consumeAlcohol(map);
                 }
                 break;
             case S:
