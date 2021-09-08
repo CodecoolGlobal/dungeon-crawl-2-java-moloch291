@@ -27,18 +27,27 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 //import java.awt.event.ActionEvent;
 //import java.beans.EventHandler;
+import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Game extends Application {
+
+    Desktop desktop = Desktop.getDesktop();
 
     int mapCounter = 1;
 
@@ -47,6 +56,7 @@ public class Game extends Application {
     Stage loadModal = new Stage();
     Stage menuModal = new Stage();
     Stage exportModal = new Stage();
+    FileChooser importWindow = new FileChooser();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -99,6 +109,7 @@ public class Game extends Application {
         setUpModal(loadModal, "Load");
         setupMenu(menuModal);
         setUpExportModal(exportModal);
+        importWindow.setTitle("Select exported game");
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -182,8 +193,9 @@ public class Game extends Application {
         EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                String fileName = importWindow.showOpenDialog(modal).getName();
                 try {
-                    GameMap loadedMap = gameMapIO.loadGameMap();
+                    GameMap loadedMap = gameMapIO.loadGameMap(fileName);
                     System.out.println(loadedMap);
                     System.out.println(loadedMap.getPlayer().getInventory().keySet());
                     System.out.println(loadedMap.getSkeletons());
@@ -257,6 +269,17 @@ public class Game extends Application {
         vBox.getChildren().addAll(exportGameAs, exportName, exportButton, cancelButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
+    }
+
+    private void openFile(File file) {
+        try {
+            desktop.open(file);
+        } catch (IOException ex) {
+            Logger.getLogger(
+                    FileChooser.class.getName()).log(
+                    Level.SEVERE, null, ex
+            );
+        }
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
