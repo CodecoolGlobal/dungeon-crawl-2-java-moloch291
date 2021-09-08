@@ -6,22 +6,22 @@ import java.sql.Date;
 import java.util.List;
 
 public class GameState extends BaseModel {
-    private LocalDateTime savedAt;
+    private Date savedAt;
     private String currentMap;
     private List<String> discoveredMaps = new ArrayList<>();
     private PlayerModel player;
 
     public GameState(String currentMap, Date savedAt, PlayerModel player) {
         this.currentMap = currentMap;
-        this.savedAt = LocalDateTime.now();
+        this.savedAt = savedAt;
         this.player = player;
     }
 
-    public LocalDateTime getSavedAt() {
+    public Date getSavedAt() {
         return savedAt;
     }
 
-    public void setSavedAt(LocalDateTime savedAt) {
+    public void setSavedAt(Date savedAt) {
         this.savedAt = savedAt;
     }
 
