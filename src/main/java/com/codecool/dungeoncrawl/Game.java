@@ -16,6 +16,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -89,18 +90,23 @@ public class Game extends Application {
 
         saveModal.initModality(Modality.WINDOW_MODAL);
         saveModal.initOwner(primaryStage);
+        saveModal.setTitle("Save Game");
         loadModal.initModality(Modality.WINDOW_MODAL);
         loadModal.initOwner(primaryStage);
+        loadModal.setTitle("Load Game");
         menuModal.initModality(Modality.WINDOW_MODAL);
         menuModal.initOwner(primaryStage);
+        menuModal.setTitle("Export/Import Game");
+        errorModal.initModality(Modality.WINDOW_MODAL);
+        errorModal.initOwner(menuModal);
+        errorModal.setTitle("File format error");
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
         setUpModal(errorModal, "Ok");
         setupMenu(menuModal);
         importWindow.setTitle("Select exported game");
         exportWindow.setTitle("Export game as");
-        errorModal.initModality(Modality.WINDOW_MODAL);
-        errorModal.initOwner(menuModal);
+
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -118,12 +124,16 @@ public class Game extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 modal.hide();
+                if (buttonText.equals("Ok")) {
+                    menuModal.hide();
+                }
             }
         };
         cancelButton.setOnAction(cancelEvent);
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10));
+        vBox.setPadding(new Insets(30));
         vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
         if (buttonText.equals("Save")) {
             EventHandler<ActionEvent> saveEvent = new EventHandler<ActionEvent>() {
                 @Override
@@ -155,7 +165,6 @@ public class Game extends Application {
                 @Override
                 public void handle(ActionEvent actionEvent) {
                     modal.hide();
-                    menuModal.hide();
                 }
             };
             actionButton.setOnAction(errorEvent);
@@ -175,8 +184,9 @@ public class Game extends Application {
         exportButton.setText("Export game");
         cancelButton.setText("Cancel");
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10));
+        vBox.setPadding(new Insets(40));
         vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
         EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
