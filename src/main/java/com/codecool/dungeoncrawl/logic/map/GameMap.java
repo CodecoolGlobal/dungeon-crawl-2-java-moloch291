@@ -3,9 +3,10 @@ package com.codecool.dungeoncrawl.logic.map;
 import com.codecool.dungeoncrawl.logic.actors.*;
 import com.codecool.dungeoncrawl.logic.util.GameConditions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameMap {
+public class GameMap implements Serializable {
 
     private final int width;
     private final int height;
@@ -18,6 +19,8 @@ public class GameMap {
     private final ArrayList<Actor> ghosts = new ArrayList<>();
     private Player player;
     private CellType exit;
+    private char[] mapAsCharArray;
+    private MapName mapName;
 
     public GameMap(int width, int height, CellType defaultCellType) {
         this.width = width;
@@ -107,6 +110,22 @@ public class GameMap {
         this.undeads.remove(index);
     }
 
+    public char[] getMapAsCharArray() {
+        return mapAsCharArray;
+    }
+
+    public void setMapAsCharArray(char[] mapAsCharArray) {
+        this.mapAsCharArray = mapAsCharArray;
+    }
+
+    public MapName getMapName() {
+        return mapName;
+    }
+
+    public void setMapName(MapName mapName) {
+        this.mapName = mapName;
+    }
+
     private Cell[][] defineCells(int width, int height, CellType defaultCellType) {
         final Cell[][] cells;
         cells = new Cell[width][height];
@@ -127,4 +146,8 @@ public class GameMap {
             }
         }
     }
+
+    /*public char[] gameMapToString(Cell[][] cells) {
+        char[]
+    }*/
 }

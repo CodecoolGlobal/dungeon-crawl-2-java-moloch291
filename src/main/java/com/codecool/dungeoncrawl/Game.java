@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.IO.InventorySaveTest;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
@@ -11,6 +13,7 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.model.PlayersInventory;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
@@ -26,10 +29,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 //import java.awt.event.ActionEvent;
 //import java.beans.EventHandler;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,8 @@ public class Game extends Application {
     Scene scene;
     Stage saveModal = new Stage();
     Stage loadModal = new Stage();
+    Stage menuModal = new Stage();
+    Stage exportModal = new Stage();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -51,6 +56,9 @@ public class Game extends Application {
     GraphicsContext context = canvas.getGraphicsContext2D();
 
     GameDatabaseManager dbManager = new GameDatabaseManager();
+
+    InventorySaveTest saveTest = new InventorySaveTest();
+    GameMapIO gameMapIO = new GameMapIO();
 
     Actions actions = new Actions();
     GameConditions gameConditions = new GameConditions();
@@ -83,8 +91,13 @@ public class Game extends Application {
         saveModal.initOwner(primaryStage);
         loadModal.initModality(Modality.WINDOW_MODAL);
         loadModal.initOwner(primaryStage);
+        menuModal.initModality(Modality.WINDOW_MODAL);
+        menuModal.initOwner(primaryStage);
+        exportModal.initModality(Modality.WINDOW_MODAL);
+        exportModal.initOwner(primaryStage);
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
+        setupMenu(menuModal);
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -116,7 +129,16 @@ public class Game extends Application {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
+                    dbManager.saveGameState(map);
                     dbManager.savePlayer(map.getPlayer());
+                    dbManager.saveInventory(map);
+                    try {
+                        saveTest.saveInventory(map);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     modal.hide();
                 }
             };
@@ -127,12 +149,79 @@ public class Game extends Application {
             EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
+                    try {
+                        PlayersInventory loadedInventory = saveTest.loadInventory();
+                        System.out.println(loadedInventory);
+                        loadedInventory.printInventory();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
                     modal.hide();
                 }
             };
             actionButton.setOnAction(loadEvent);
         }
         vBox.getChildren().addAll(actionButton, cancelButton);
+        Scene modalScene = new Scene(vBox);
+        modal.setScene(modalScene);
+    }
+
+    private void setupMenu(Stage modal) {
+        Button importButton = new Button();
+        Button exportButton = new Button();
+        Button cancelButton = new Button();
+        importButton.setText("Import game");
+        exportButton.setText("Export game");
+        cancelButton.setText("Cancel");
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(8);
+        EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    GameMap loadedMap = gameMapIO.loadGameMap();
+                    System.out.println(loadedMap);
+                    System.out.println(loadedMap.getPlayer().getInventory().keySet());
+                    System.out.println(loadedMap.getSkeletons());
+                    //String mapName = loadedMap.getMapName().toString();
+                    //setUpSecondScene(mapName, loadedMap);
+                    map = loadedMap;
+                    refresh(map.getPlayer().getX(), map.getPlayer().getY());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                modal.hide();
+
+            }
+        };
+        importButton.setOnAction(importEvent);
+        EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    gameMapIO.saveGameMap(map);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                modal.hide();
+            }
+        };
+        exportButton.setOnAction(exportEvent);
+        EventHandler<ActionEvent> cancelEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        cancelButton.setOnAction(cancelEvent);
+        vBox.getChildren().addAll(importButton, exportButton, cancelButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }
@@ -146,6 +235,7 @@ public class Game extends Application {
         primaryStage.setScene(scene);
         int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
         map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
+        map.setMapName(MapName.MAP1);
         refresh(coordinates[1], coordinates[0]);
         scene.setOnKeyPressed(this::onKeyPressed);
         primaryStage.setTitle(StringFactory.TITLE.message);
@@ -267,6 +357,9 @@ public class Game extends Application {
             case L:
                 loadModal.show();
                 break;
+            case M:
+                menuModal.show();
+                break;
         }
     }
 
@@ -331,21 +424,25 @@ public class Game extends Application {
                 case 1:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP2);
+                    map.setMapName(MapName.MAP2);
                     mapCounter++;
                     break;
                 case 2:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP3);
+                    map.setMapName(MapName.MAP3);
                     mapCounter++;
                     break;
                 case 3:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP4);
+                    map.setMapName(MapName.MAP4);
                     mapCounter++;
                     break;
                 case 4:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP5);
+                    map.setMapName(MapName.MAP5);
                     mapCounter++;
                     break;
             }

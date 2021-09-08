@@ -3,7 +3,9 @@ package com.codecool.dungeoncrawl.logic.util;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 
-public class Util {
+import java.io.Serializable;
+
+public class Util implements Serializable {
     private final String[] redbrickRefs = {"redbrick", "redbrick alter"};
     private final String[] houseRefs = {"house", "house alter", "house alter 2", "house alter 3"};
     private final String[] lakeHouseRefs = {"lake house", "lake house alter"};
