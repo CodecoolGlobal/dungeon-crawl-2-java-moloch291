@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.IO.InventorySaveTest;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
@@ -13,6 +12,10 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
@@ -33,9 +36,6 @@ import javafx.stage.Stage;
 //import java.beans.EventHandler;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class Game extends Application {
 
@@ -56,7 +56,6 @@ public class Game extends Application {
 
     GameDatabaseManager dbManager = new GameDatabaseManager();
 
-    InventorySaveTest saveTest = new InventorySaveTest();
     GameMapIO gameMapIO = new GameMapIO();
 
     Actions actions = new Actions();
@@ -128,8 +127,13 @@ public class Game extends Application {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-                    //dbManager.saveGameState(map);
-                    dbManager.savePlayer(map.getPlayer());
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+                    System.out.println(map.toString());
+                    System.out.println(map);
+
+                    PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
+                    dbManager.saveGameStat(map.toString(), formatter.format(date), currentPlayer);
                     //dbManager.saveInventory(map);
                     modal.hide();
                 }

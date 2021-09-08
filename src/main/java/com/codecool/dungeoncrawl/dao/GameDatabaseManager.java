@@ -1,8 +1,6 @@
 package com.codecool.dungeoncrawl.dao;
 
 import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.map.GameMap;
-import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -23,12 +21,13 @@ public class GameDatabaseManager {
         playerInventoryDao = new PlayerInventoryDaoJdbc(dataSource, playerDao);
     }
 
-    public void savePlayer(Player player) {
+    public PlayerModel savePlayer(Player player) {
         PlayerModel model = new PlayerModel(player);
         playerDao.add(model);
+        return model;
     }
 
-    public void saveGameStat(String currentMap, Date savedAt, PlayerModel player) {
+    public void saveGameStat(String currentMap, String savedAt, PlayerModel player) {
         GameState model = new GameState(currentMap, savedAt, player);
         gameStateDao.add(model);
     }

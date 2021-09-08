@@ -25,7 +25,7 @@ public class GameStateDaoJdbc implements GameStateDao {
             String sql = "INSERT INTO game_state (current_map, saved_at, player_id) VALUES (?, ?, ?)";
             PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             st.setString(1, state.getCurrentMap());
-            st.setDate(2, state.getSavedAt());
+            st.setString(2, state.getSavedAt());
             st.setInt(3, state.getPlayer().getId());
             st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
@@ -42,7 +42,7 @@ public class GameStateDaoJdbc implements GameStateDao {
                 String sql = "UPDATE game_state SET current_map = ?, saved_at = ?, player_id = ? WHERE id = ?";
                 PreparedStatement st = conn.prepareStatement(sql);
                 st.setString(1, state.getCurrentMap());
-                st.setDate(2, state.getSavedAt());
+                st.setString(2, state.getSavedAt());
                 st.setInt(3, state.getPlayer().getId());
                 st.setInt(4, state.getId());
                 st.executeUpdate();
@@ -68,7 +68,7 @@ public class GameStateDaoJdbc implements GameStateDao {
                 PlayerModel playerModel = playerDao.get(playerId);
 
                 // FINISH - create and return new Book class instance
-                GameState gameState = new GameState(currentMap, savedAt, playerModel);
+                GameState gameState = new GameState(currentMap, savedAt.toString(), playerModel);
                 gameState.setId(id);
                 return gameState;
             } catch (SQLException e) {
@@ -92,7 +92,7 @@ public class GameStateDaoJdbc implements GameStateDao {
                     PlayerModel playerModel = playerDao.get(playerId);
 
 
-                    GameState gameState = new GameState(currentMap, savedAt, playerModel);
+                    GameState gameState = new GameState(currentMap, savedAt.toString(), playerModel);
                     gameState.setId(id);
                     result.add(gameState);
                 }
