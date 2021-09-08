@@ -8,6 +8,6 @@ import java.util.List;
 public interface PlayerInventoryDao {
     void add(PlayerInventory playerInventory);
     void update(PlayerInventory playerInventory);
-    PlayerInventory get(int id);
+    int get(String currentItemName);
     List<PlayerInventory> getAll(int player_id);
 }

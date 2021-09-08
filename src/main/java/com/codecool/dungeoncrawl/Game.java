@@ -129,12 +129,12 @@ public class Game extends Application {
                     }
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                     java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-                    System.out.println(map.toString());
-                    System.out.println(map);
+                    System.out.println(Arrays.toString(map.getMapAsCharArray())); // map string format need to be implemented
+
 
                     PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
                     dbManager.saveGameStat(map.toString(), formatter.format(date), currentPlayer);
-                    //dbManager.saveInventory(map);
+                    dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
                     modal.hide();
                 }
             };

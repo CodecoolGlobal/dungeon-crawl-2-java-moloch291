@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.dao;
 
+import com.codecool.dungeoncrawl.logic.items.Item;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerInventory;
 import com.codecool.dungeoncrawl.model.PlayerModel;
@@ -8,6 +9,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
 
@@ -22,15 +24,26 @@ public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
     @Override
     public void add(PlayerInventory playerInventory) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO players_inventory (player_id, item_id, amount) VALUES (?, ?, ?)";
-            PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            st.setInt(1, playerInventory.getPlayerId());
-            st.setInt(2, playerInventory.getItemId());
-            st.setInt(3, playerInventory.getAmount());
-            st.executeUpdate();
-            ResultSet rs = st.getGeneratedKeys();
-            rs.next();
-            playerInventory.setId(rs.getInt(1));
+            Map<Item, Integer> inventory = playerInventory.getInventory();
+            for (Item item: inventory.keySet()) {
+                String currentItem = item.getName();
+                int currentItemAmount = inventory.get(item);
+                int itemId = get(currentItem);
+                System.out.println(currentItem);
+                System.out.println(currentItemAmount);
+                System.out.println(itemId);
+
+                String sql = "INSERT INTO players_inventory (player_id, item_id, amount) VALUES (?, ?, ?)";
+                PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                st.setInt(1, playerInventory.getPlayerId());
+                st.setInt(2, itemId);
+                st.setInt(3, currentItemAmount);
+                st.executeUpdate();
+                ResultSet rs = st.getGeneratedKeys();
+                rs.next();
+                playerInventory.setId(rs.getInt(1));
+
+            }
         } catch (SQLException throwable) {
             throw new RuntimeException();
         }
@@ -52,32 +65,21 @@ public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
     }
 
     @Override
-    public PlayerInventory get(int player_id) {
-        /*
+    public int get(String currentItemName) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT id FROM players_inventory WHERE player_id = ?";
+            String sql = "SELECT id FROM inventory_handler WHERE item_name = ?";
             PreparedStatement st = conn.prepareStatement(sql);
-            st.setInt(1, player_id);
+            st.setString(1, currentItemName);
             ResultSet rs = st.executeQuery();
             if (!rs.next()) {
-                return null;
+                return 0;
             }
-            int id = rs.getInt(1);
+            return rs.getInt(1);
 
-            int playerId = rs.getInt(1);
-            PlayerModel playerModel = playerDao.get(id);
 
-            // FINISH - create and return new Book class instance
-            PlayerInventory playerInventory = new PlayerInventory(id);
-            playerInventory.setId(id);
-            return
-            gameState.setId(id);
-            return gameState;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-           */
-        return new PlayerInventory(1, 1, 1, "asd");
     }
 
 

@@ -46,7 +46,7 @@ ALTER TABLE ONLY public.players_inventory
     ADD CONSTRAINT fk_item_id FOREIGN KEY (item_id) REFERENCES public.inventory_handler(id);
 
 
-INSERT INTO inventory_handler VALUES (1, 'Alcohol');
+INSERT INTO inventory_handler VALUES (1, 'Beer');
 INSERT INTO inventory_handler VALUES (2, 'Shield');
 INSERT INTO inventory_handler VALUES (3, 'Helmet');
 INSERT INTO inventory_handler VALUES (4, 'Breastplate');
@@ -64,6 +64,6 @@ INSERT INTO inventory_handler VALUES (15, 'Might potion');
 INSERT INTO inventory_handler VALUES (16, 'Sword');
 INSERT INTO inventory_handler VALUES (17, 'Axe');
 INSERT INTO inventory_handler VALUES (18, 'Pike');
-INSERT INTO inventory_handler VALUES (19, 'Door key');
+INSERT INTO inventory_handler VALUES (19, 'Key');
 INSERT INTO inventory_handler VALUES (20, 'Bridge key');
 INSERT INTO inventory_handler VALUES (21, 'Lock pick');

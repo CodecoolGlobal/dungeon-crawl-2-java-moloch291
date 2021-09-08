@@ -30,6 +30,8 @@ public class GameMap implements Serializable {
         cells = defineCells(width, height, defaultCellType);
     }
 
+
+
     public ArrayList<Actor> getKraken() {
         return krakens;
     }
