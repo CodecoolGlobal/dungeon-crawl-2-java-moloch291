@@ -36,20 +36,6 @@ class ItemTest {
         assertEquals("Key", testKey.getName());
     }
 
-
-
-    @Test
-    void setName() {
-        Alcohol testBeer = new Alcohol(
-                gameMap.getCell(0, 1)
-        );
-        String newName = "This is a beer!";
-
-        testBeer.setName(newName);
-
-        assertEquals(newName, testBeer.getName());
-    }
-
     @Test
     void constructorSetNameWithNullVariable() {
         assertThrows(
@@ -109,17 +95,6 @@ class ItemTest {
         );
 
         assertEquals(ItemType.WEAPON, testWeapon.getItemType());
-    }
-
-    @Test
-    void setItemType() {
-        Boat testBoat = new Boat(
-                StringFactory.BOAT_CAP.message,
-                gameMap.getCell(0, 1)
-        );
-        testBoat.setItemType(ItemType.FOOD);
-
-        assertEquals(ItemType.FOOD, testBoat.getItemType());
     }
 
     @Test

@@ -7,7 +7,7 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 import java.io.Serializable;
 
 public abstract class Item implements Drawable, Serializable {
-    private String name;
+    private final String name;
     private Cell cell;
     private ItemType itemType;
 
@@ -26,10 +26,6 @@ public abstract class Item implements Drawable, Serializable {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Cell getCell() {
         return cell;
     }
@@ -40,9 +36,5 @@ public abstract class Item implements Drawable, Serializable {
 
     public ItemType getItemType() {
         return itemType;
-    }
-
-    public void setItemType(ItemType itemType) {
-        this.itemType = itemType;
     }
 }

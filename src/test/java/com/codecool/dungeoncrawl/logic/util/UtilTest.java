@@ -18,13 +18,22 @@ class UtilTest {
     void exitGame() {
     }
 
-    @Test
-    void getRandomNumber() {
-        int[] testNumbers = new int[10];
-        for (int index = 0; index < testNumbers.length; index++) {
-            testNumbers[index] = Util.getRandomNumber(0, 100);
+        @Test
+        void getRandomNumberOnlyInRange() {
+            int[] randomNumbers = getRandomNumbers();
+        for ()
+        assertTrue(inRange());
+    }
 
-        }
+    private boolean inRange() {
+        return false;
+    }
+
+    private int[] getRandomNumbers() {
+        int[] testNumbers = new int[10];
+        for (int index = 0; index < testNumbers.length; index++)
+            testNumbers[index] = Util.getRandomNumber(0, 100);
+        return testNumbers;
     }
 
     @Test
