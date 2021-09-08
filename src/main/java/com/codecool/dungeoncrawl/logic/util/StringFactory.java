@@ -4,6 +4,7 @@ public enum StringFactory {
 
     // Item types:
     KEY("key"),
+    KEY_CAP("Key"),
     WEAPON("weapon"),
     ARMOR("armor"),
     FOOD("food"),
@@ -51,15 +52,23 @@ public enum StringFactory {
     GAUNTLETS("gauntlets"),
     GAUNTLETS_CAP("Gauntlets"),
     BREAD("bread"),
+    BREAD_CAP("Bread"),
     WATER("water"),
     CHEESE("cheese"),
+    CHEESE_CAP("Cheese"),
     APPLE("apple"),
+    APPLE_CAP("Apple"),
     FISH("fish"),
+    FISH_CAP("Fish"),
     BOAT("boat"),
     BOAT_CAP("Boat"),
     WATER_ITEM("water item"),
+    WATER_BOTTLE("Water bottle"),
     BEER("beer"),
-    BEER_CAP("Beer");
+    BEER_CAP("Beer"),
+
+    // Errors
+    IllegalArgumentError("None of the constructor variables shall be null!");
 
     public final String message;
 
