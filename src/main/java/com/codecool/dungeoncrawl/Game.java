@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl;
 
+import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
@@ -12,17 +13,24 @@ import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+//import java.awt.event.ActionEvent;
+//import java.beans.EventHandler;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +40,8 @@ public class Game extends Application {
     int mapCounter = 1;
 
     Scene scene;
+    Stage saveModal = new Stage();
+    Stage loadModal = new Stage();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -39,6 +49,8 @@ public class Game extends Application {
             NumberParameters.TILE_WIDTH_MULTIPLIER_V1.getValue() * Tiles.TILE_WIDTH
     );
     GraphicsContext context = canvas.getGraphicsContext2D();
+
+    GameDatabaseManager dbManager = new GameDatabaseManager();
 
     Actions actions = new Actions();
     GameConditions gameConditions = new GameConditions();
@@ -67,8 +79,62 @@ public class Game extends Application {
         BorderPane borderPane = new BorderPane();
         setUpBorderPane(ui, borderPane);
 
+        saveModal.initModality(Modality.WINDOW_MODAL);
+        saveModal.initOwner(primaryStage);
+        loadModal.initModality(Modality.WINDOW_MODAL);
+        loadModal.initOwner(primaryStage);
+        setUpModal(saveModal, "Save");
+        setUpModal(loadModal, "Load");
+
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
+    }
+
+    private void setUpModal (Stage modal, String buttonText) {
+        Label saveGame = new Label();
+        TextField saveName = new TextField();
+        Button actionButton = new Button();
+        actionButton.setText(buttonText);
+        Button cancelButton = new Button();
+        cancelButton.setText("Cancel");
+        EventHandler<ActionEvent> cancelEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        cancelButton.setOnAction(cancelEvent);
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(8);
+        if (buttonText.equals("Save")) {
+            EventHandler<ActionEvent> saveEvent = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    try {
+                        dbManager.setup();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    dbManager.savePlayer(map.getPlayer());
+                    modal.hide();
+                }
+            };
+            actionButton.setOnAction(saveEvent);
+            saveGame.setText("Save game as:");
+            vBox.getChildren().addAll(saveGame, saveName);
+        } else if (buttonText.equals("Load")) {
+            EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    modal.hide();
+                }
+            };
+            actionButton.setOnAction(loadEvent);
+        }
+        vBox.getChildren().addAll(actionButton, cancelButton);
+        Scene modalScene = new Scene(vBox);
+        modal.setScene(modalScene);
     }
 
     private void setUpBorderPane(GridPane ui, BorderPane borderPane) {
@@ -194,6 +260,12 @@ public class Game extends Application {
                 if (map.getPlayer().hasItem((ItemType.ALCOHOL))) {
                     itemActions.consumeAlcohol(map);
                 }
+                break;
+            case S:
+                saveModal.show();
+                break;
+            case L:
+                loadModal.show();
                 break;
         }
     }
