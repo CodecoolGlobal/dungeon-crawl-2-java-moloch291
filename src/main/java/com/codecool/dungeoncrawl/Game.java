@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.IO.InventorySaveTest;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
@@ -13,11 +12,11 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.model.PlayersInventory;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -27,12 +26,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-//import java.awt.event.ActionEvent;
-//import java.beans.EventHandler;
+import java.io.File;
 import java.io.IOException;
+import java.io.StreamCorruptedException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,9 @@ public class Game extends Application {
     Stage saveModal = new Stage();
     Stage loadModal = new Stage();
     Stage menuModal = new Stage();
-    Stage exportModal = new Stage();
+    Stage errorModal = new Stage();
+    FileChooser importWindow = new FileChooser();
+    FileChooser exportWindow = new FileChooser();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -57,7 +59,6 @@ public class Game extends Application {
 
     GameDatabaseManager dbManager = new GameDatabaseManager();
 
-    InventorySaveTest saveTest = new InventorySaveTest();
     GameMapIO gameMapIO = new GameMapIO();
 
     Actions actions = new Actions();
@@ -74,6 +75,7 @@ public class Game extends Application {
 
     Pane lineBreak = new Pane();
     Pane lineBreak2 = new Pane();
+    Pane lineBreak3 = new Pane();
 
     public static void main(String[] args) {
         launch(args);
@@ -89,15 +91,23 @@ public class Game extends Application {
 
         saveModal.initModality(Modality.WINDOW_MODAL);
         saveModal.initOwner(primaryStage);
+        saveModal.setTitle("Save Game");
         loadModal.initModality(Modality.WINDOW_MODAL);
         loadModal.initOwner(primaryStage);
+        loadModal.setTitle("Load Game");
         menuModal.initModality(Modality.WINDOW_MODAL);
         menuModal.initOwner(primaryStage);
-        exportModal.initModality(Modality.WINDOW_MODAL);
-        exportModal.initOwner(primaryStage);
+        menuModal.setTitle("Export/Import Game");
+        errorModal.initModality(Modality.WINDOW_MODAL);
+        errorModal.initOwner(menuModal);
+        errorModal.setTitle("File format error");
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
+        setUpModal(errorModal, "Ok");
         setupMenu(menuModal);
+        importWindow.setTitle("Select exported game");
+        exportWindow.setTitle("Export game as");
+
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -105,6 +115,7 @@ public class Game extends Application {
 
     private void setUpModal (Stage modal, String buttonText) {
         Label saveGame = new Label();
+        Label error = new Label();
         TextField saveName = new TextField();
         Button actionButton = new Button();
         actionButton.setText(buttonText);
@@ -114,12 +125,16 @@ public class Game extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 modal.hide();
+                if (buttonText.equals("Ok")) {
+                    menuModal.hide();
+                }
             }
         };
         cancelButton.setOnAction(cancelEvent);
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10));
+        vBox.setPadding(new Insets(30));
         vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
         if (buttonText.equals("Save")) {
             EventHandler<ActionEvent> saveEvent = new EventHandler<ActionEvent>() {
                 @Override
@@ -132,13 +147,6 @@ public class Game extends Application {
                     //dbManager.saveGameState(map);
                     dbManager.savePlayer(map.getPlayer());
                     //dbManager.saveInventory(map);
-                    try {
-                        saveTest.saveInventory(map);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
                     modal.hide();
                 }
             };
@@ -149,19 +157,20 @@ public class Game extends Application {
             EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    try {
-                        PlayersInventory loadedInventory = saveTest.loadInventory();
-                        System.out.println(loadedInventory);
-                        loadedInventory.printInventory();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
                     modal.hide();
                 }
             };
             actionButton.setOnAction(loadEvent);
+        } else if (buttonText.equals("Ok")) {
+            EventHandler<ActionEvent> errorEvent = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    modal.hide();
+                }
+            };
+            actionButton.setOnAction(errorEvent);
+            error.setText("IMPORT ERROR! Unfortunately the given file is in wrong format. Please try another one!");
+            vBox.getChildren().add(error);
         }
         vBox.getChildren().addAll(actionButton, cancelButton);
         Scene modalScene = new Scene(vBox);
@@ -176,26 +185,35 @@ public class Game extends Application {
         exportButton.setText("Export game");
         cancelButton.setText("Cancel");
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10));
+        vBox.setPadding(new Insets(40));
         vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
         EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try {
-                    GameMap loadedMap = gameMapIO.loadGameMap();
-                    System.out.println(loadedMap);
-                    System.out.println(loadedMap.getPlayer().getInventory().keySet());
-                    System.out.println(loadedMap.getSkeletons());
-                    //String mapName = loadedMap.getMapName().toString();
-                    //setUpSecondScene(mapName, loadedMap);
-                    map = loadedMap;
-                    refresh(map.getPlayer().getX(), map.getPlayer().getY());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                File file = importWindow.showOpenDialog(modal);
+                String path = "";
+                if (file != null) {
+                    path = file.getPath();
+                    if (!path.contains(".json")) {
+                        errorModal.show();
+                    } else {
+                        try {
+                            GameMap loadedMap = gameMapIO.loadGameMap(path);
+                            map = loadedMap;
+                            refresh(map.getPlayer().getX(), map.getPlayer().getY());
+                            actionLabel.setText("");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        modal.hide();
+                    }
+                } else {
+                    modal.hide();
                 }
-                modal.hide();
+
 
             }
         };
@@ -203,14 +221,21 @@ public class Game extends Application {
         EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try {
-                    gameMapIO.saveGameMap(map);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                File file = exportWindow.showSaveDialog(modal);
+                String path = "";
+                if (file != null) {
+                    path = file.getPath();
+                    try {
+                        gameMapIO.saveGameMap(map, path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    modal.hide();
+                } else {
+                    modal.hide();
                 }
-                modal.hide();
             }
         };
         exportButton.setOnAction(exportEvent);
@@ -253,6 +278,7 @@ public class Game extends Application {
         ui.setPadding(new Insets(10));
         lineBreak.minHeightProperty().bind(inventoryLabel.heightProperty());
         lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
+        lineBreak3.minHeightProperty().bind(inventoryLabel.heightProperty());
         setLabels(ui);
         pickUpInfo.setText(StringFactory.PICK_UP_ITEMS.message);
         pickUpInfo.setWrapText(true);
@@ -267,13 +293,14 @@ public class Game extends Application {
         ui.add(new Label(StringFactory.ATTACK_LABEL.message), 0, 2);
         ui.add(attackLabel, 1, 2);
         ui.add(new Label(StringFactory.ACTION_LABEL.message), 0, 3);
-        ui.add(actionLabel, 1, 3);
-        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 4);
-        ui.add(inventoryLabel, 1, 4);
-        ui.add(quitLabel, 0, 8, 2, 1);
-        ui.add(lineBreak, 0, 5);
-        ui.add(pickUpInfo, 0, 6, 2, 1);
-        ui.add(lineBreak2, 0, 7);
+        ui.add(actionLabel, 0, 4, 2, 1);
+        ui.add(lineBreak3, 0, 5);
+        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 6);
+        ui.add(inventoryLabel, 0, 7, 2, 1);
+        ui.add(lineBreak, 0, 8);
+        ui.add(pickUpInfo, 0, 9, 2, 1);
+        ui.add(lineBreak2, 0, 10);
+        ui.add(quitLabel, 0, 11, 2, 1);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
