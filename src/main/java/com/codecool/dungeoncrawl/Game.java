@@ -44,6 +44,7 @@ public class Game extends Application {
     Scene scene;
     Stage saveModal = new Stage();
     Stage loadModal = new Stage();
+    Stage menuModal = new Stage();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -87,8 +88,11 @@ public class Game extends Application {
         saveModal.initOwner(primaryStage);
         loadModal.initModality(Modality.WINDOW_MODAL);
         loadModal.initOwner(primaryStage);
+        menuModal.initModality(Modality.WINDOW_MODAL);
+        menuModal.initOwner(primaryStage);
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
+        setupMenu(menuModal);
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -155,6 +159,42 @@ public class Game extends Application {
             actionButton.setOnAction(loadEvent);
         }
         vBox.getChildren().addAll(actionButton, cancelButton);
+        Scene modalScene = new Scene(vBox);
+        modal.setScene(modalScene);
+    }
+
+    private void setupMenu(Stage modal) {
+        Button importButton = new Button();
+        Button exportButton = new Button();
+        Button cancelButton = new Button();
+        importButton.setText("Import game");
+        exportButton.setText("Export game");
+        cancelButton.setText("Cancel");
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(10));
+        vBox.setSpacing(8);
+        EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        importButton.setOnAction(importEvent);
+        EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        exportButton.setOnAction(exportEvent);
+        EventHandler<ActionEvent> cancelEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        cancelButton.setOnAction(cancelEvent);
+        vBox.getChildren().addAll(importButton, exportButton, cancelButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }
@@ -283,6 +323,9 @@ public class Game extends Application {
                 break;
             case L:
                 loadModal.show();
+                break;
+            case M:
+                menuModal.show();
                 break;
         }
     }
