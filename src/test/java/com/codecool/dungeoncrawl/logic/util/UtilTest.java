@@ -15,16 +15,10 @@ class UtilTest {
     }
 
     @Test
-    void exitGame() {
-    }
-
-    @Test
     void getRandomNumberOnlyInRange() {
         int[] randomNumbers = getRandomNumbers();
-        for (int randomNumber : randomNumbers) {
-            System.out.println("Testing " + randomNumber + "...");
+        for (int randomNumber : randomNumbers)
             assertTrue(inRange(randomNumber));
-        }
     }
 
     @Test
@@ -35,8 +29,6 @@ class UtilTest {
     static void tearDown() {
         System.out.println("Util tests finished:");
     }
-
-
 
     private boolean inRange(int randomNumber) {
         return randomNumber >= 0 && randomNumber <= 100;
