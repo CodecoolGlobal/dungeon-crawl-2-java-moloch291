@@ -1,10 +1,5 @@
 package com.codecool.dungeoncrawl.logic.util;
 
-import com.codecool.dungeoncrawl.logic.actors.Player;
-import com.codecool.dungeoncrawl.logic.items.ItemActions;
-import com.codecool.dungeoncrawl.logic.map.Cell;
-import com.codecool.dungeoncrawl.logic.map.CellType;
-import com.codecool.dungeoncrawl.logic.map.GameMap;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
