@@ -11,9 +11,9 @@
     -fx-font-size: 15;
 }
 
-.label {
+/*.label {
     -fx-font-family: 'Tillana', cursive;
-}
+}*/
 
 .modal {
     -fx-background-color: rgba(0,0,0,3);

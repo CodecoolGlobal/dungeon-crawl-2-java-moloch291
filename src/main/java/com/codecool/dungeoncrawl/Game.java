@@ -117,7 +117,6 @@ public class Game extends Application {
         setupGameManual(manualModal);
         importWindow.setTitle("Select exported game");
         exportWindow.setTitle("Export game as");
-        System.out.println(Font.getFamilies());
 
 
         scene = new Scene(borderPane);
@@ -229,7 +228,6 @@ public class Game extends Application {
         Label controls = new Label();
         controls.setText(util.getGameManual());
         controls.setTextAlignment(TextAlignment.JUSTIFY);
-        controls.getStyleClass().add("status-labels");
         Button closeButton = new Button();
         closeButton.setText("Close");
         VBox vBox = new VBox();
@@ -250,6 +248,7 @@ public class Game extends Application {
         vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
         //vBox.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
         modal.setScene(modalScene);
+        controls.getStyleClass().add("status-labels");
     }
 
     private void setupMenu(Stage modal) {
