@@ -108,13 +108,13 @@ public class Player extends Actor {
             Item item = map.getCell(playerX, playerY).getItem();
             int addedQuantity = 1;
             if (!inventory.containsKey(item)) {
-                equipArmorsAndWeapons(item, addedQuantity);
+                equipGear(item, addedQuantity);
             } else map.getPlayer().addToInventory(item, inventory.get(item) + addedQuantity);
             map.getCell(playerX, playerY).setItem(null);
         }
     }
 
-    private void equipArmorsAndWeapons(Item item, int addedQuantity) {
+    private void equipGear(Item item, int addedQuantity) {
         addToInventory(item, addedQuantity);
         if (gameConditions.checkIfArmor(item)) equipArmor(item.getName());
         if (gameConditions.checkIfWeapon(item)) equipWeapon(item.getName());
