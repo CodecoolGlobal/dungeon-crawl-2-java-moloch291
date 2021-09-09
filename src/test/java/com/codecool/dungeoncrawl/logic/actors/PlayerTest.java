@@ -4,11 +4,9 @@ import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.logic.map.CellType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.util.StringFactory;
-import javafx.scene.control.Label;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -308,6 +306,19 @@ class PlayerTest {
         player.interactions(gameMap, null);
 
         assertFalse(player.hasItem(ItemType.KEY));
+    }
+
+    @Test
+    void keyChangesClosedDoorToOpen() {
+        player.addToInventory(new Key(
+                StringFactory.KEY_CAP.message,
+                gameMap.getCell(1, 1),
+                KeyType.DOOR_KEY
+        ), 1);
+        gameMap.getCell(1, 2).setType(CellType.CLOSED_DOOR);
+        player.interactions(gameMap, null);
+
+        assertEquals(CellType.OPEN_DOOR, gameMap.getCell(1, 2).getType());
     }
 
     @AfterAll
