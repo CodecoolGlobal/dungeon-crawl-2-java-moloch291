@@ -24,12 +24,4 @@ class UndeadTest {
         String skeletonName = undead.getTileName();
         assertEquals(correctName,skeletonName);
     }
-
-    @Test
-    void undeadDoesNotMoving(){
-        Cell originalCell = undead.getCell();
-        undead.monsterMove(undead.getCell());
-        assertEquals(originalCell,undead.getCell());
-    }
-
 }

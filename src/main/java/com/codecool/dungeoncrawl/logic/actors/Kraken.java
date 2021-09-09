@@ -7,7 +7,7 @@ import com.codecool.dungeoncrawl.logic.util.Util;
 
 import java.util.ArrayList;
 
-public class Kraken extends Actor{
+public class Kraken extends Monster implements MonsterInteractions {
     private final GameMap map;
 
     public ArrayList<Cell> getWaterCells() {

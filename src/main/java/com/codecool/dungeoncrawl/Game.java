@@ -33,7 +33,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StreamCorruptedException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -336,28 +335,30 @@ public class Game extends Application {
         ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
-                actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
-                actions.monsterInteractions(map);
-                actions.moveMonsters(map.getGhosts(), map.getPlayer().getCell());
+                map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
+                map.getPlayer().interactions(map, actionLabel);
+                map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
-                actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
-                actions.monsterInteractions(map);
-                actions.moveMonsters(map.getGhosts(), map.getPlayer().getCell());
+                map.getPlayer().move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
+                map.getPlayer().interactions(map, actionLabel);
+                map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
-                actions.movePlayer(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
-                actions.monsterInteractions(map);
+                map.getPlayer().move(Direction.WEST.getX(), Direction.WEST.getY());
+                map.getPlayer().interactions(map, actionLabel);
+                map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
-                actions.movePlayer(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
-                actions.monsterInteractions(map);
+                map.getPlayer().move(Direction.EAST.getX(), Direction.EAST.getY());
+                map.getPlayer().interactions(map, actionLabel);
+                map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
@@ -366,7 +367,7 @@ public class Game extends Application {
                 confirmQuit = true;
                 break;
             case ENTER:
-                actions.pickUpItem(map);
+                map.getPlayer().pickUpItem(map);
                 break;
             case Y:
                 if (confirmQuit) {
@@ -479,26 +480,26 @@ public class Game extends Application {
 
     private void enterTheDoor(){
         if (doorIsOpen()) {
-            switch (mapCounter) {
-                case 1:
+            switch (map.getMapName()) {
+                case MAP1:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP2);
                     map.setMapName(MapName.MAP2);
                     mapCounter++;
                     break;
-                case 2:
+                case MAP2:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP3);
                     map.setMapName(MapName.MAP3);
                     mapCounter++;
                     break;
-                case 3:
+                case MAP3:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP4);
                     map.setMapName(MapName.MAP4);
                     mapCounter++;
                     break;
-                case 4:
+                case MAP4:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP5);
                     map.setMapName(MapName.MAP5);
