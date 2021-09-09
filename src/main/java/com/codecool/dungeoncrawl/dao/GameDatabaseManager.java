@@ -10,6 +10,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 import javax.sql.DataSource;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 public class GameDatabaseManager {
@@ -54,6 +55,10 @@ public class GameDatabaseManager {
     public void updatePlayerInventory(int playerId, Map<Item, Integer> inventory) {
         PlayerInventory model = new PlayerInventory(playerId, inventory);
         playerInventoryDao.update(model);
+    }
+
+    public List<PlayerModel> listAllPlayers() {
+        return playerDao.getAll();
     }
 
     private DataSource connect() throws SQLException {

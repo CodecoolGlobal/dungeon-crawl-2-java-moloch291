@@ -15,6 +15,7 @@ import com.codecool.dungeoncrawl.logic.items.Item;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.codecool.dungeoncrawl.model.PlayerInventory;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -131,16 +132,29 @@ public class Game extends Application {
                     java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
                     System.out.println(Arrays.toString(map.getMapAsCharArray())); // map string format need to be implemented
 
-                    //Player update
-                    PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
-                    dbManager.updateGameState(map.toString(), formatter.format(date), currentPlayer);
-                    dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
+
                     // Player save
                     /*
                     PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
                     dbManager.saveGameState(map.toString(), formatter.format(date), currentPlayer);
                     dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
-                     */
+
+                    //Player update
+
+                    PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
+                    dbManager.updateGameState(map.toString(), formatter.format(date), currentPlayer);
+                    dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
+
+                    //List all players
+                    List<PlayerModel> allPlayers = dbManager.listAllPlayers();
+                    for (PlayerModel model : allPlayers) {
+                        System.out.println(model);
+                    }
+                    */
+                    //Load game
+
+
+
                     modal.hide();
                 }
             };
