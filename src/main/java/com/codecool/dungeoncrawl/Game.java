@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
@@ -12,6 +13,7 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
@@ -152,28 +154,17 @@ public class Game extends Application {
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                     java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
                     System.out.println(map); // map string format need to be implemented
-
-
-                    // Player save
-                    /*
-                    PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
-                    dbManager.saveGameState(map.toString(), formatter.format(date), currentPlayer);
-                    dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
-                    //Player update
-                    PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
-                    dbManager.updateGameState(map.toString(), formatter.format(date), currentPlayer);
-                    dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
-                    //List all players
-                    List<PlayerModel> allPlayers = dbManager.listAllPlayers();
-                    for (PlayerModel model : allPlayers) {
-                        System.out.println(model);
+                    if (dbManager.checkExistingSave(saveName.getText())) {
+                        //Player update
+                        PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
+                        dbManager.updateGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
+                        dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
+                    } else {
+                        // Player save
+                        PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
+                        dbManager.saveGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
+                        dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
                     }
-                    //Load game
-                    PlayerModel selectedPlayer = dbManager.loadPlayerData(1);
-                    System.out.println(dbManager.loadGameState(1));
-                    System.out.println(selectedPlayer);
-                    System.out.println(dbManager.loadPlayersInventory(1));
-                    */
                     modal.hide();
                 }
             };
@@ -181,13 +172,34 @@ public class Game extends Application {
             saveGame.setText("Save game as:");
             vBox.getChildren().addAll(saveGame, saveName);
         } else if (buttonText.equals("Load")) {
-            EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    modal.hide();
-                }
-            };
-            actionButton.setOnAction(loadEvent);
+            try {
+                dbManager.setup();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            List<String> savedGames = dbManager.displayAllSaves();
+            for (int i = 0; i < savedGames.size(); i++) {
+                Button loadButton = new Button();
+                loadButton.setText(savedGames.get(i));
+                EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        String saveName = loadButton.getText();
+                        int playerId = dbManager.getPlayerId(saveName);
+                        //Load game
+                        PlayerModel selectedPlayer = dbManager.loadPlayerData(playerId);
+                        System.out.println(dbManager.loadGameState(playerId));
+                        System.out.println(selectedPlayer);
+                        System.out.println(dbManager.loadPlayersInventory(playerId));
+                        map.getPlayer().setHealth(selectedPlayer.getHp());
+                        map.getPlayer().setDrunk(selectedPlayer.getDrunk());
+
+                        modal.hide();
+                    }
+                };
+                vBox.getChildren().add(loadButton);
+                loadButton.setOnAction(loadEvent);
+            }
         } else if (buttonText.equals("Ok")) {
             EventHandler<ActionEvent> errorEvent = new EventHandler<ActionEvent>() {
                 @Override
@@ -199,7 +211,11 @@ public class Game extends Application {
             error.setText("IMPORT ERROR! Unfortunately the given file is in wrong format. Please try another one!");
             vBox.getChildren().add(error);
         }
-        vBox.getChildren().addAll(actionButton, cancelButton);
+        if (!buttonText.equals("Load")) {
+            vBox.getChildren().addAll(actionButton, cancelButton);
+        } else {
+            vBox.getChildren().add(cancelButton);
+        }
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }

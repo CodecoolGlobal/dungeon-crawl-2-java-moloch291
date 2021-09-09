@@ -31,9 +31,9 @@ public class GameDatabaseManager {
         return model;
     }
 
-    public void saveGameState(String currentMap, String savedAt, PlayerModel player) {
+    public void saveGameState(String currentMap, String savedAt, PlayerModel player, String saveName) {
         GameState model = new GameState(currentMap, savedAt, player);
-        gameStateDao.add(model);
+        gameStateDao.add(model, saveName);
     }
 
     public void savePlayerInventory(int playerId, Map<Item, Integer> inventory) {
@@ -47,9 +47,9 @@ public class GameDatabaseManager {
         return model;
     }
 
-    public void updateGameState(String currentMap, String savedAt, PlayerModel player) {
+    public void updateGameState(String currentMap, String savedAt, PlayerModel player, String saveName) {
         GameState model = new GameState(currentMap, savedAt, player);
-        gameStateDao.update(model);
+        gameStateDao.update(model, saveName);
     }
 
     public void updatePlayerInventory(int playerId, Map<Item, Integer> inventory) {
@@ -69,9 +69,15 @@ public class GameDatabaseManager {
         return gameStateDao.get(playerId);
     }
 
+    public List<String> displayAllSaves() { return gameStateDao.getAll(); }
+
     public List<PlayerInventory> loadPlayersInventory(int playerId) {
         return playerInventoryDao.getAll(playerId);
     }
+
+    public boolean checkExistingSave(String saveName) { return gameStateDao.checkSaveName(saveName); }
+
+    public int getPlayerId(String saveName) { return gameStateDao.getPlayerId(saveName); }
 
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
