@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Tillana:wght@400;700');
+@import url('https://fonts.googleapis.com/css2?family=Berkshire+Swash&display=swap');
+
+.main-labels {
+    -fx-font-family: 'Berkshire Swash', cursive;
+    -fx-font-size: 15;
+}
+
+.status-labels {
+    -fx-font-family: 'Tillana', cursive;
+    -fx-font-size: 15;
+}
+
+.label {
+    -fx-font-family: 'Tillana', cursive;
+}
+
+.modal {
+    -fx-background-color: rgba(0,0,0,3);
+}
