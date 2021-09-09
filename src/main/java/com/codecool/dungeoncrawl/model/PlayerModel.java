@@ -62,10 +62,12 @@ public class PlayerModel extends BaseModel {
 
     public void setDrunk() { this.drunk = drunk;}
 
+    /*
     @Override
     public String toString() {
         return String.format("Player %d -> Name: %s, HP: %d, Position: %d:%d, Is he drunk: %s",
                              id, playerName, hp, x, y, drunk);
     }
+     */
 
 }

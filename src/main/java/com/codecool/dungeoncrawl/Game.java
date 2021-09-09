@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
@@ -12,6 +13,7 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
@@ -26,17 +28,19 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Game extends Application {
 
@@ -117,6 +121,7 @@ public class Game extends Application {
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
+        scene.getStylesheets().add("style.css");
     }
 
     private void setUpModal (Stage modal, String buttonText) {
@@ -150,9 +155,20 @@ public class Game extends Application {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-                    //dbManager.saveGameState(map);
-                    dbManager.savePlayer(map.getPlayer());
-                    //dbManager.saveInventory(map);
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+                    System.out.println(map); // map string format need to be implemented
+                    if (dbManager.checkExistingSave(saveName.getText())) {
+                        //Player update
+                        PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
+                        dbManager.updateGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
+                        dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
+                    } else {
+                        // Player save
+                        PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
+                        dbManager.saveGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
+                        dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
+                    }
                     modal.hide();
                 }
             };
@@ -160,13 +176,34 @@ public class Game extends Application {
             saveGame.setText("Save game as:");
             vBox.getChildren().addAll(saveGame, saveName);
         } else if (buttonText.equals("Load")) {
-            EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    modal.hide();
-                }
-            };
-            actionButton.setOnAction(loadEvent);
+            try {
+                dbManager.setup();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            List<String> savedGames = dbManager.displayAllSaves();
+            for (int i = 0; i < savedGames.size(); i++) {
+                Button loadButton = new Button();
+                loadButton.setText(savedGames.get(i));
+                EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        String saveName = loadButton.getText();
+                        int playerId = dbManager.getPlayerId(saveName);
+                        //Load game
+                        PlayerModel selectedPlayer = dbManager.loadPlayerData(playerId);
+                        System.out.println(dbManager.loadGameState(playerId));
+                        System.out.println(selectedPlayer);
+                        System.out.println(dbManager.loadPlayersInventory(playerId));
+                        map.getPlayer().setHealth(selectedPlayer.getHp());
+                        map.getPlayer().setDrunk(selectedPlayer.getDrunk());
+
+                        modal.hide();
+                    }
+                };
+                vBox.getChildren().add(loadButton);
+                loadButton.setOnAction(loadEvent);
+            }
         } else if (buttonText.equals("Ok")) {
             EventHandler<ActionEvent> errorEvent = new EventHandler<ActionEvent>() {
                 @Override
@@ -178,7 +215,11 @@ public class Game extends Application {
             error.setText("IMPORT ERROR! Unfortunately the given file is in wrong format. Please try another one!");
             vBox.getChildren().add(error);
         }
-        vBox.getChildren().addAll(actionButton, cancelButton);
+        if (!buttonText.equals("Load")) {
+            vBox.getChildren().addAll(actionButton, cancelButton);
+        } else {
+            vBox.getChildren().add(cancelButton);
+        }
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }
@@ -202,7 +243,12 @@ public class Game extends Application {
         closeButton.setOnAction(closeEvent);
         vBox.getChildren().addAll(controls, closeButton);
         Scene modalScene = new Scene(vBox);
+        modalScene.setFill(Color.TRANSPARENT);
+        modal.initStyle(StageStyle.TRANSPARENT);
+        vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
+        //vBox.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
         modal.setScene(modalScene);
+        controls.getStyleClass().add("status-labels");
     }
 
     private void setupMenu(Stage modal) {
@@ -300,9 +346,9 @@ public class Game extends Application {
     private void setUpUi(GridPane ui) {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-        lineBreak.minHeightProperty().bind(inventoryLabel.heightProperty());
-        lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
-        lineBreak3.minHeightProperty().bind(inventoryLabel.heightProperty());
+        lineBreak.minHeightProperty().bind(quitLabel.heightProperty());
+        lineBreak2.minHeightProperty().bind(quitLabel.heightProperty());
+        lineBreak3.minHeightProperty().bind(quitLabel.heightProperty());
         setLabels(ui);
         pickUpInfo.setText(StringFactory.MANUAL.message);
         pickUpInfo.setWrapText(true);
@@ -311,20 +357,32 @@ public class Game extends Application {
 
     private void setLabels(GridPane ui) {
         ui.add(new Label(StringFactory.HEALTH_LABEL.message), 0, 0);
+        ui.getChildren().get(0).getStyleClass().add("main-labels");
         ui.add(healthLabel, 1, 0);
         ui.add(new Label(StringFactory.DEFENSE_LABEL.message), 0, 1);
+        ui.getChildren().get(2).getStyleClass().add("main-labels");
         ui.add(defenseLabel, 1, 1);
         ui.add(new Label(StringFactory.ATTACK_LABEL.message), 0, 2);
+        ui.getChildren().get(4).getStyleClass().add("main-labels");
         ui.add(attackLabel, 1, 2);
         ui.add(new Label(StringFactory.ACTION_LABEL.message), 0, 3);
+        ui.getChildren().get(6).getStyleClass().add("main-labels");
         ui.add(actionLabel, 0, 4, 2, 1);
         ui.add(lineBreak3, 0, 5);
         ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 6);
+        ui.getChildren().get(9).getStyleClass().add("main-labels");
         ui.add(inventoryLabel, 0, 7, 2, 1);
         ui.add(lineBreak, 0, 8);
         ui.add(pickUpInfo, 0, 9, 2, 1);
         ui.add(lineBreak2, 0, 10);
         ui.add(quitLabel, 0, 11, 2, 1);
+        healthLabel.getStyleClass().add("status-labels");
+        defenseLabel.getStyleClass().add("status-labels");
+        attackLabel.getStyleClass().add("status-labels");
+        actionLabel.getStyleClass().add("status-labels");
+        inventoryLabel.getStyleClass().add("status-labels");
+        pickUpInfo.getStyleClass().add("status-labels");
+        quitLabel.getStyleClass().add("main-labels");
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
