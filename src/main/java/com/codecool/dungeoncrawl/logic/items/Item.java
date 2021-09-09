@@ -7,14 +7,14 @@ import com.codecool.dungeoncrawl.logic.util.StringFactory;
 import java.io.Serializable;
 
 public abstract class Item implements Drawable, Serializable {
-    private String name;
+    private final String name;
     private Cell cell;
-    private ItemType itemType;
+    private final ItemType itemType;
 
 
 
     public Item(String name, Cell cell, ItemType itemType) {
-        if (name == null || cell == null || itemType == null)
+        if ((name == null || cell == null || itemType == null))
             throw new IllegalArgumentException(StringFactory.IllegalArgumentError.message);
         this.name = name;
         this.cell = cell;
@@ -24,10 +24,6 @@ public abstract class Item implements Drawable, Serializable {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Cell getCell() {
@@ -40,9 +36,5 @@ public abstract class Item implements Drawable, Serializable {
 
     public ItemType getItemType() {
         return itemType;
-    }
-
-    public void setItemType(ItemType itemType) {
-        this.itemType = itemType;
     }
 }

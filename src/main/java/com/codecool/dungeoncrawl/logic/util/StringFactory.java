@@ -18,8 +18,8 @@ public enum StringFactory {
 
     // IN Game class:
     TITLE("Dungeon Crawl"),
-    PICK_UP_ITEMS(
-            "Pick up items by pressing Enter while standing on the item."
+    MANUAL(
+            "Press Esc to see the game manual for controls."
     ),
     WANT_TO_QUIT("Are you sure you want to quit? Y/N"),
     // Item names:

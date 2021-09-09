@@ -12,15 +12,11 @@ import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.map.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Item;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import com.codecool.dungeoncrawl.model.PlayerInventory;
-import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -30,13 +26,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-//import java.awt.event.ActionEvent;
-//import java.beans.EventHandler;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Game extends Application {
 
@@ -46,7 +46,10 @@ public class Game extends Application {
     Stage saveModal = new Stage();
     Stage loadModal = new Stage();
     Stage menuModal = new Stage();
-    Stage exportModal = new Stage();
+    Stage errorModal = new Stage();
+    Stage manualModal = new Stage();
+    FileChooser importWindow = new FileChooser();
+    FileChooser exportWindow = new FileChooser();
 
     GameMap map;
     Canvas canvas = new Canvas(
@@ -58,6 +61,7 @@ public class Game extends Application {
     GameDatabaseManager dbManager = new GameDatabaseManager();
 
     GameMapIO gameMapIO = new GameMapIO();
+    Util util = new Util();
 
     Actions actions = new Actions();
     GameConditions gameConditions = new GameConditions();
@@ -73,6 +77,7 @@ public class Game extends Application {
 
     Pane lineBreak = new Pane();
     Pane lineBreak2 = new Pane();
+    Pane lineBreak3 = new Pane();
 
     public static void main(String[] args) {
         launch(args);
@@ -88,15 +93,27 @@ public class Game extends Application {
 
         saveModal.initModality(Modality.WINDOW_MODAL);
         saveModal.initOwner(primaryStage);
+        saveModal.setTitle("Save Game");
         loadModal.initModality(Modality.WINDOW_MODAL);
         loadModal.initOwner(primaryStage);
+        loadModal.setTitle("Load Game");
         menuModal.initModality(Modality.WINDOW_MODAL);
         menuModal.initOwner(primaryStage);
-        exportModal.initModality(Modality.WINDOW_MODAL);
-        exportModal.initOwner(primaryStage);
+        menuModal.setTitle("Export/Import Game");
+        errorModal.initModality(Modality.WINDOW_MODAL);
+        errorModal.initOwner(menuModal);
+        errorModal.setTitle("File format error");
+        manualModal.initModality(Modality.WINDOW_MODAL);
+        manualModal.initOwner(primaryStage);
+        manualModal.setTitle("Game manual");
         setUpModal(saveModal, "Save");
         setUpModal(loadModal, "Load");
+        setUpModal(errorModal, "Ok");
         setupMenu(menuModal);
+        setupGameManual(manualModal);
+        importWindow.setTitle("Select exported game");
+        exportWindow.setTitle("Export game as");
+
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
@@ -104,6 +121,7 @@ public class Game extends Application {
 
     private void setUpModal (Stage modal, String buttonText) {
         Label saveGame = new Label();
+        Label error = new Label();
         TextField saveName = new TextField();
         Button actionButton = new Button();
         actionButton.setText(buttonText);
@@ -113,12 +131,16 @@ public class Game extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 modal.hide();
+                if (buttonText.equals("Ok")) {
+                    menuModal.hide();
+                }
             }
         };
         cancelButton.setOnAction(cancelEvent);
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10));
+        vBox.setPadding(new Insets(30));
         vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
         if (buttonText.equals("Save")) {
             EventHandler<ActionEvent> saveEvent = new EventHandler<ActionEvent>() {
                 @Override
@@ -128,37 +150,10 @@ public class Game extends Application {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                    java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-                    System.out.println(Arrays.toString(map.getMapAsCharArray())); // map string format need to be implemented
-
-
-                    // Player save
-                    /*
-                    PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
-                    dbManager.saveGameState(map.toString(), formatter.format(date), currentPlayer);
-                    dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
-
-                    //Player update
-
-                    PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
-                    dbManager.updateGameState(map.toString(), formatter.format(date), currentPlayer);
-                    dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
-
-                    //List all players
-                    List<PlayerModel> allPlayers = dbManager.listAllPlayers();
-                    for (PlayerModel model : allPlayers) {
-                        System.out.println(model);
-                    }
-
-                    //Load game
-                    PlayerModel selectedPlayer = dbManager.loadPlayerData(1);
-                    System.out.println(dbManager.loadGameState(1));
-                    System.out.println(selectedPlayer);
-                    System.out.println(dbManager.loadPlayersInventory(1));
-                    */
+                    //dbManager.saveGameState(map);
+                    dbManager.savePlayer(map.getPlayer());
+                    //dbManager.saveInventory(map);
                     modal.hide();
-
                 }
             };
             actionButton.setOnAction(saveEvent);
@@ -172,8 +167,40 @@ public class Game extends Application {
                 }
             };
             actionButton.setOnAction(loadEvent);
+        } else if (buttonText.equals("Ok")) {
+            EventHandler<ActionEvent> errorEvent = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    modal.hide();
+                }
+            };
+            actionButton.setOnAction(errorEvent);
+            error.setText("IMPORT ERROR! Unfortunately the given file is in wrong format. Please try another one!");
+            vBox.getChildren().add(error);
         }
         vBox.getChildren().addAll(actionButton, cancelButton);
+        Scene modalScene = new Scene(vBox);
+        modal.setScene(modalScene);
+    }
+
+    private void setupGameManual(Stage modal) {
+        Label controls = new Label();
+        controls.setText(util.getGameManual());
+        controls.setTextAlignment(TextAlignment.JUSTIFY);
+        Button closeButton = new Button();
+        closeButton.setText("Close");
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(40));
+        vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
+        EventHandler<ActionEvent> closeEvent = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                modal.hide();
+            }
+        };
+        closeButton.setOnAction(closeEvent);
+        vBox.getChildren().addAll(controls, closeButton);
         Scene modalScene = new Scene(vBox);
         modal.setScene(modalScene);
     }
@@ -186,25 +213,35 @@ public class Game extends Application {
         exportButton.setText("Export game");
         cancelButton.setText("Cancel");
         VBox vBox = new VBox();
-        vBox.setPadding(new Insets(10));
+        vBox.setPadding(new Insets(40));
         vBox.setSpacing(8);
+        vBox.setAlignment(Pos.CENTER);
         EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try {
-                    GameMap loadedMap = gameMapIO.loadGameMap();
-                    System.out.println(loadedMap);
-                    System.out.println(loadedMap.getPlayer().getInventory().keySet());
-                    System.out.println(loadedMap.getSkeletons());
-
-                    map = loadedMap;
-                    refresh(map.getPlayer().getX(), map.getPlayer().getY());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                File file = importWindow.showOpenDialog(modal);
+                String path = "";
+                if (file != null) {
+                    path = file.getPath();
+                    if (!path.contains(".json")) {
+                        errorModal.show();
+                    } else {
+                        try {
+                            GameMap loadedMap = gameMapIO.loadGameMap(path);
+                            map = loadedMap;
+                            refresh(map.getPlayer().getX(), map.getPlayer().getY());
+                            actionLabel.setText("");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+                        modal.hide();
+                    }
+                } else {
+                    modal.hide();
                 }
-                modal.hide();
+
 
             }
         };
@@ -212,14 +249,21 @@ public class Game extends Application {
         EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                try {
-                    gameMapIO.saveGameMap(map);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                File file = exportWindow.showSaveDialog(modal);
+                String path = "";
+                if (file != null) {
+                    path = file.getPath();
+                    try {
+                        gameMapIO.saveGameMap(map, path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    modal.hide();
+                } else {
+                    modal.hide();
                 }
-                modal.hide();
             }
         };
         exportButton.setOnAction(exportEvent);
@@ -262,8 +306,9 @@ public class Game extends Application {
         ui.setPadding(new Insets(10));
         lineBreak.minHeightProperty().bind(inventoryLabel.heightProperty());
         lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
+        lineBreak3.minHeightProperty().bind(inventoryLabel.heightProperty());
         setLabels(ui);
-        pickUpInfo.setText(StringFactory.PICK_UP_ITEMS.message);
+        pickUpInfo.setText(StringFactory.MANUAL.message);
         pickUpInfo.setWrapText(true);
         quitLabel.setWrapText(true);
     }
@@ -276,41 +321,44 @@ public class Game extends Application {
         ui.add(new Label(StringFactory.ATTACK_LABEL.message), 0, 2);
         ui.add(attackLabel, 1, 2);
         ui.add(new Label(StringFactory.ACTION_LABEL.message), 0, 3);
-        ui.add(actionLabel, 1, 3);
-        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 4);
-        ui.add(inventoryLabel, 1, 4);
-        ui.add(quitLabel, 0, 8, 2, 1);
-        ui.add(lineBreak, 0, 5);
-        ui.add(pickUpInfo, 0, 6, 2, 1);
-        ui.add(lineBreak2, 0, 7);
+        ui.add(actionLabel, 0, 4, 2, 1);
+        ui.add(lineBreak3, 0, 5);
+        ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 6);
+        ui.add(inventoryLabel, 0, 7, 2, 1);
+        ui.add(lineBreak, 0, 8);
+        ui.add(pickUpInfo, 0, 9, 2, 1);
+        ui.add(lineBreak2, 0, 10);
+        ui.add(quitLabel, 0, 11, 2, 1);
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
         ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
-                actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
-                actions.monsterInteractions(map);
-                actions.moveMonsters(map.getGhosts(), map.getPlayer().getCell());
+                map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
+                map.getPlayer().interactions(map, actionLabel);
+                map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
-                actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
-                actions.monsterInteractions(map);
-                actions.moveMonsters(map.getGhosts(), map.getPlayer().getCell());
+                map.getPlayer().move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
+                map.getPlayer().interactions(map, actionLabel);
+                map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
-                actions.movePlayer(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
-                actions.monsterInteractions(map);
+                map.getPlayer().move(Direction.WEST.getX(), Direction.WEST.getY());
+                map.getPlayer().interactions(map, actionLabel);
+                map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
-                actions.movePlayer(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
-                actions.monsterInteractions(map);
+                map.getPlayer().move(Direction.EAST.getX(), Direction.EAST.getY());
+                map.getPlayer().interactions(map, actionLabel);
+                map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
@@ -319,7 +367,7 @@ public class Game extends Application {
                 confirmQuit = true;
                 break;
             case ENTER:
-                actions.pickUpItem(map);
+                map.getPlayer().pickUpItem(map);
                 break;
             case Y:
                 if (confirmQuit) {
@@ -368,6 +416,9 @@ public class Game extends Application {
                 break;
             case M:
                 menuModal.show();
+                break;
+            case ESCAPE:
+                manualModal.show();
                 break;
         }
     }
@@ -429,26 +480,26 @@ public class Game extends Application {
 
     private void enterTheDoor(){
         if (doorIsOpen()) {
-            switch (mapCounter) {
-                case 1:
+            switch (map.getMapName()) {
+                case MAP1:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP2);
                     map.setMapName(MapName.MAP2);
                     mapCounter++;
                     break;
-                case 2:
+                case MAP2:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP3);
                     map.setMapName(MapName.MAP3);
                     mapCounter++;
                     break;
-                case 3:
+                case MAP3:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP4);
                     map.setMapName(MapName.MAP4);
                     mapCounter++;
                     break;
-                case 4:
+                case MAP4:
                     map.getPlayer().setDrunk(false);
                     goToNextMap(MapName.MAP5);
                     map.setMapName(MapName.MAP5);

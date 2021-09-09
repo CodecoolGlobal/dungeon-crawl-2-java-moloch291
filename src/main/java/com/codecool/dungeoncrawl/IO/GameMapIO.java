@@ -9,11 +9,11 @@ public class GameMapIO {
     public GameMapIO() {
     }
 
-    public void saveGameMap(GameMap map)
+    public void saveGameMap(GameMap map, String saveName)
             throws IOException, ClassNotFoundException {
 
         FileOutputStream fileOutputStream
-                = new FileOutputStream("savegame.json");
+                = new FileOutputStream(saveName +".json");
         ObjectOutputStream objectOutputStream
                 = new ObjectOutputStream(fileOutputStream);
         objectOutputStream.writeObject(map);
@@ -21,11 +21,11 @@ public class GameMapIO {
         objectOutputStream.close();
     }
 
-    public GameMap loadGameMap()
+    public GameMap loadGameMap(String saveName)
             throws IOException, ClassNotFoundException {
 
         FileInputStream fileInputStream
-                = new FileInputStream("savegame.json");
+                = new FileInputStream(saveName);
         ObjectInputStream objectInputStream
                 = new ObjectInputStream(fileInputStream);
         GameMap loadedMap = (GameMap) objectInputStream.readObject();
