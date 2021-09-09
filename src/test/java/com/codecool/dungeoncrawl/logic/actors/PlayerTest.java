@@ -77,12 +77,4 @@ class PlayerTest {
     void moveThrowsWithBadInput(){
         assertThrows(IndexOutOfBoundsException.class,()->player.move(0,99));
     }
-
-
-    @Test
-    void playerDoesNotMoving(){
-        Cell originalCell = player.getCell();
-        player.monsterMove(player.getCell());
-        assertEquals(originalCell,player.getCell());
-    }
 }

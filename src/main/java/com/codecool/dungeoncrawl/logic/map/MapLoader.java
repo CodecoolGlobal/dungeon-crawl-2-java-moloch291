@@ -71,7 +71,7 @@ public class MapLoader {
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
-                            map.addSkeleton(new Skeleton(cell));
+                            map.addMonster(new Skeleton(cell));
                             break;
                         case '@':
                             cell.setType(CellType.FLOOR);
@@ -162,11 +162,11 @@ public class MapLoader {
                             break;
                         case 'o':
                             cell.setType(CellType.FLOOR);
-                            map.addOrc(new Orc(cell));
+                            map.addMonster(new Orc(cell));
                             break;
                         case 'u':
                             cell.setType(CellType.FLOOR);
-                            map.addUndead(new Undead(cell));
+                            map.addMonster(new Undead(cell));
                             break;
                         case '/':
                             cell.setType(CellType.BRICK_WALL);
@@ -234,11 +234,11 @@ public class MapLoader {
                             break;
                         case 'Q':
                             cell.setType(CellType.WATER);
-                            map.addKraken(new Kraken(cell,map));
+                            map.addMonster(new Kraken(cell,map));
                             break;
                         case 'Ű':
                             cell.setType(CellType.FLOOR);
-                            map.addGhost(new Ghost(cell));
+                            map.addMonster(new Ghost(cell));
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");
