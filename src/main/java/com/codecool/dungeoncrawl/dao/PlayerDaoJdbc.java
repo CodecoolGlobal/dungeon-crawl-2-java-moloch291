@@ -43,7 +43,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             st.setInt(3, player.getX());
             st.setInt(4, player.getY());
             st.setBoolean(5, player.getDrunk());
-            st.setInt(6, player.getId());
+            st.setInt(6, 1);
             st.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);

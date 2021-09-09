@@ -30,7 +30,7 @@ public class GameDatabaseManager {
         return model;
     }
 
-    public void saveGameStat(String currentMap, String savedAt, PlayerModel player) {
+    public void saveGameState(String currentMap, String savedAt, PlayerModel player) {
         GameState model = new GameState(currentMap, savedAt, player);
         gameStateDao.add(model);
     }
@@ -38,6 +38,22 @@ public class GameDatabaseManager {
     public void savePlayerInventory(int playerId, Map<Item, Integer> inventory) {
         PlayerInventory model = new PlayerInventory(playerId, inventory);
         playerInventoryDao.add(model);
+    }
+
+    public PlayerModel updatePlayer(Player player) {
+        PlayerModel model = new PlayerModel(player);
+        playerDao.update(model);
+        return model;
+    }
+
+    public void updateGameState(String currentMap, String savedAt, PlayerModel player) {
+        GameState model = new GameState(currentMap, savedAt, player);
+        gameStateDao.update(model);
+    }
+
+    public void updatePlayerInventory(int playerId, Map<Item, Integer> inventory) {
+        PlayerInventory model = new PlayerInventory(playerId, inventory);
+        playerInventoryDao.update(model);
     }
 
     private DataSource connect() throws SQLException {

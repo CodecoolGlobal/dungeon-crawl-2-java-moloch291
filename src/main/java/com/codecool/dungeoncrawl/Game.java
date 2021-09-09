@@ -131,10 +131,16 @@ public class Game extends Application {
                     java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
                     System.out.println(Arrays.toString(map.getMapAsCharArray())); // map string format need to be implemented
 
-
+                    //Player update
+                    PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
+                    dbManager.updateGameState(map.toString(), formatter.format(date), currentPlayer);
+                    dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
+                    // Player save
+                    /*
                     PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
-                    dbManager.saveGameStat(map.toString(), formatter.format(date), currentPlayer);
+                    dbManager.saveGameState(map.toString(), formatter.format(date), currentPlayer);
                     dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
+                     */
                     modal.hide();
                 }
             };
@@ -173,8 +179,7 @@ public class Game extends Application {
                     System.out.println(loadedMap);
                     System.out.println(loadedMap.getPlayer().getInventory().keySet());
                     System.out.println(loadedMap.getSkeletons());
-                    //String mapName = loadedMap.getMapName().toString();
-                    //setUpSecondScene(mapName, loadedMap);
+
                     map = loadedMap;
                     refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 } catch (IOException e) {

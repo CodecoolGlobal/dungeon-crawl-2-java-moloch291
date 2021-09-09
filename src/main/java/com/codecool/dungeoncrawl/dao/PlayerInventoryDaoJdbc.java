@@ -29,9 +29,6 @@ public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
                 String currentItem = item.getName();
                 int currentItemAmount = inventory.get(item);
                 int itemId = get(currentItem);
-                System.out.println(currentItem);
-                System.out.println(currentItemAmount);
-                System.out.println(itemId);
 
                 String sql = "INSERT INTO players_inventory (player_id, item_id, amount) VALUES (?, ?, ?)";
                 PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -52,13 +49,45 @@ public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
     @Override
     public void update(PlayerInventory playerInventory) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "UPDATE players_inventory SET player_id = ?, item_id = ?, amount = ? WHERE id = ?";
+            Map<Item, Integer> inventory = playerInventory.getInventory();
+            for (Item item : inventory.keySet()) {
+                int currentItemId = get(item.getName());
+                int currentItemAmount = inventory.get(item);
+                if (checkItemIfInventory(1, currentItemId) == 0) {
+                    String sql = "INSERT INTO players_inventory (player_id, item_id, amount) VALUES (?, ?, ?)";
+                    PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    st.setInt(1, playerInventory.getPlayerId());
+                    st.setInt(2, currentItemId);
+                    st.setInt(3, currentItemAmount);
+                    st.executeUpdate();
+                    ResultSet rs = st.getGeneratedKeys();
+                    rs.next();
+                    playerInventory.setId(rs.getInt(1));
+                } else {
+                    String sql = "UPDATE players_inventory SET amount = ? WHERE player_id = ? AND item_id = ?";
+                    PreparedStatement st = conn.prepareStatement(sql);
+                    st.setInt(1, currentItemAmount);
+                    st.setInt(2, 1);
+                    st.setInt(3, currentItemId);
+                    st.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public int checkItemIfInventory(int playerId, int itemId) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id FROM players_inventory WHERE item_id = ? AND player_id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
-            st.setInt(1, playerInventory.getPlayerId());
-            st.setInt(2, playerInventory.getItemId());
-            st.setInt(3, playerInventory.getAmount());
-            st.setInt(4, playerInventory.getId());
-            st.executeUpdate();
+            st.setInt(1, itemId);
+            st.setInt(2, playerId);
+            ResultSet rs = st.executeQuery();
+            if (!rs.next()) {
+                return 0;
+            }
+            return rs.getInt(1);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -75,8 +104,6 @@ public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
                 return 0;
             }
             return rs.getInt(1);
-
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
