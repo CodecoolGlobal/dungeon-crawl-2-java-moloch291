@@ -26,10 +26,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,10 +117,12 @@ public class Game extends Application {
         setupGameManual(manualModal);
         importWindow.setTitle("Select exported game");
         exportWindow.setTitle("Export game as");
+        System.out.println(Font.getFamilies());
 
 
         scene = new Scene(borderPane);
         setUpScene(primaryStage, scene, MapName.MAP1.getMapName(), null);
+        scene.getStylesheets().add("style.css");
     }
 
     private void setUpModal (Stage modal, String buttonText) {
@@ -188,6 +193,7 @@ public class Game extends Application {
         Label controls = new Label();
         controls.setText(util.getGameManual());
         controls.setTextAlignment(TextAlignment.JUSTIFY);
+        controls.getStyleClass().add("status-labels");
         Button closeButton = new Button();
         closeButton.setText("Close");
         VBox vBox = new VBox();
@@ -203,6 +209,10 @@ public class Game extends Application {
         closeButton.setOnAction(closeEvent);
         vBox.getChildren().addAll(controls, closeButton);
         Scene modalScene = new Scene(vBox);
+        modalScene.setFill(Color.TRANSPARENT);
+        modal.initStyle(StageStyle.TRANSPARENT);
+        vBox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.8);");
+        //vBox.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
         modal.setScene(modalScene);
     }
 
@@ -305,9 +315,9 @@ public class Game extends Application {
     private void setUpUi(GridPane ui) {
         ui.setPrefWidth(200);
         ui.setPadding(new Insets(10));
-        lineBreak.minHeightProperty().bind(inventoryLabel.heightProperty());
-        lineBreak2.minHeightProperty().bind(inventoryLabel.heightProperty());
-        lineBreak3.minHeightProperty().bind(inventoryLabel.heightProperty());
+        lineBreak.minHeightProperty().bind(quitLabel.heightProperty());
+        lineBreak2.minHeightProperty().bind(quitLabel.heightProperty());
+        lineBreak3.minHeightProperty().bind(quitLabel.heightProperty());
         setLabels(ui);
         pickUpInfo.setText(StringFactory.MANUAL.message);
         pickUpInfo.setWrapText(true);
@@ -316,20 +326,32 @@ public class Game extends Application {
 
     private void setLabels(GridPane ui) {
         ui.add(new Label(StringFactory.HEALTH_LABEL.message), 0, 0);
+        ui.getChildren().get(0).getStyleClass().add("main-labels");
         ui.add(healthLabel, 1, 0);
         ui.add(new Label(StringFactory.DEFENSE_LABEL.message), 0, 1);
+        ui.getChildren().get(2).getStyleClass().add("main-labels");
         ui.add(defenseLabel, 1, 1);
         ui.add(new Label(StringFactory.ATTACK_LABEL.message), 0, 2);
+        ui.getChildren().get(4).getStyleClass().add("main-labels");
         ui.add(attackLabel, 1, 2);
         ui.add(new Label(StringFactory.ACTION_LABEL.message), 0, 3);
+        ui.getChildren().get(6).getStyleClass().add("main-labels");
         ui.add(actionLabel, 0, 4, 2, 1);
         ui.add(lineBreak3, 0, 5);
         ui.add(new Label(StringFactory.INVENTORY_LABEL.message), 0, 6);
+        ui.getChildren().get(9).getStyleClass().add("main-labels");
         ui.add(inventoryLabel, 0, 7, 2, 1);
         ui.add(lineBreak, 0, 8);
         ui.add(pickUpInfo, 0, 9, 2, 1);
         ui.add(lineBreak2, 0, 10);
         ui.add(quitLabel, 0, 11, 2, 1);
+        healthLabel.getStyleClass().add("status-labels");
+        defenseLabel.getStyleClass().add("status-labels");
+        attackLabel.getStyleClass().add("status-labels");
+        actionLabel.getStyleClass().add("status-labels");
+        inventoryLabel.getStyleClass().add("status-labels");
+        pickUpInfo.getStyleClass().add("status-labels");
+        quitLabel.getStyleClass().add("main-labels");
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
