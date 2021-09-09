@@ -33,7 +33,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StreamCorruptedException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -336,25 +335,29 @@ public class Game extends Application {
         ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
-                actions.movePlayer(Direction.NORTH.getX(), Direction.NORTH.getY(), map, actionLabel);
+                map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
+                map.getPlayer().interactions(map, actionLabel);
                 map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case DOWN:
-                actions.movePlayer(Direction.SOUTH.getX(), Direction.SOUTH.getY(), map, actionLabel);
+                map.getPlayer().move(Direction.SOUTH.getX(), Direction.SOUTH.getY());
+                map.getPlayer().interactions(map, actionLabel);
                 map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case LEFT:
-                actions.movePlayer(Direction.WEST.getX(), Direction.WEST.getY(), map, actionLabel);
+                map.getPlayer().move(Direction.WEST.getX(), Direction.WEST.getY());
+                map.getPlayer().interactions(map, actionLabel);
                 map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());
                 break;
             case RIGHT:
-                actions.movePlayer(Direction.EAST.getX(), Direction.EAST.getY(), map, actionLabel);
+                map.getPlayer().move(Direction.EAST.getX(), Direction.EAST.getY());
+                map.getPlayer().interactions(map, actionLabel);
                 map.monsterInteractions();
                 enterTheDoor();
                 refresh(map.getPlayer().getX(), map.getPlayer().getY());

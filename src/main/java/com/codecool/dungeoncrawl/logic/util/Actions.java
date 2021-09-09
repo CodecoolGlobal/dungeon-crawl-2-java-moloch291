@@ -49,45 +49,10 @@ public class Actions {
         }
     }
 /*######################################################################################################################
-* Player methods:
-*#####################################################################################################################*/
-    // Move to player!
-    // Wrapper for player methods:
-    public void movePlayer(int moveInRow, int moveInColumn, GameMap map, Label actionLabel) {
-        map.getPlayer().move(moveInRow, moveInColumn);
-        lookForDoor(map);
-        checkNearbyMonsters(map.getPlayer(), actionLabel);
-    }
-
-    // Search for door on neighboring cells and open them if player has the key for it:
-    private void lookForDoor(GameMap map) {
-        int playerX = map.getPlayer().getCell().getX();
-        int playerY = map.getPlayer().getCell().getY();
-        if (gameConditions.doorNextToPlayer(playerX, playerY, map) && map.getPlayer().hasItem(ItemType.KEY))
-            map.openDoor();
-    }
-
-    // Check neighboring fields for monsters:
-    private void checkNearbyMonsters(Actor player, Label actionLabel) {
-        Cell cell = player.getCell();
-        checkForEnemies(player, cell, Direction.WEST, actionLabel);
-        checkForEnemies(player, cell, Direction.EAST, actionLabel);
-        checkForEnemies(player, cell, Direction.NORTH, actionLabel);
-        checkForEnemies(player, cell, Direction.SOUTH, actionLabel);
-    }
-
-    // Initiate fight if finding a monster near by:
-    private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection, Label actionLabel) {
-        Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
-        if (gameConditions.isCellOccupied(nearbyCell))
-            fight(nearbyCell, player, actionLabel);
-    }
-
-/*######################################################################################################################
 * Fighting:
 *#####################################################################################################################*/
 
-    private void fight(Cell nearbyCell, Actor player, Label actionLabel) {
+    public void fight(Cell nearbyCell, Actor player, Label actionLabel) {
         actionLabel.setText("");
         Actor enemy = nearbyCell.getActor();
         while (true) {
