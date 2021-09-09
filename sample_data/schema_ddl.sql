@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS public.game_state;
 CREATE TABLE public.game_state (
     id serial NOT NULL PRIMARY KEY,
+    save_name text NOT NULL,
     current_map text NOT NULL,
     saved_at text NOT NULL,
     player_id integer NOT NULL
