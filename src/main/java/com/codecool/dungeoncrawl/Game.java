@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
@@ -125,13 +124,10 @@ public class Game extends Application {
         actionButton.setText(buttonText);
         Button cancelButton = new Button();
         cancelButton.setText("Cancel");
-        EventHandler<ActionEvent> cancelEvent = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                modal.hide();
-                if (buttonText.equals("Ok")) {
-                    menuModal.hide();
-                }
+        EventHandler<ActionEvent> cancelEvent = actionEvent -> {
+            modal.hide();
+            if (buttonText.equals("Ok")) {
+                menuModal.hide();
             }
         };
         cancelButton.setOnAction(cancelEvent);
@@ -140,38 +136,25 @@ public class Game extends Application {
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.CENTER);
         if (buttonText.equals("Save")) {
-            EventHandler<ActionEvent> saveEvent = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    try {
-                        dbManager.setup();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    //dbManager.saveGameState(map);
-                    dbManager.savePlayer(map.getPlayer());
-                    //dbManager.saveInventory(map);
-                    modal.hide();
+            EventHandler<ActionEvent> saveEvent = actionEvent -> {
+                try {
+                    dbManager.setup();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
+                //dbManager.saveGameState(map);
+                dbManager.savePlayer(map.getPlayer());
+                //dbManager.saveInventory(map);
+                modal.hide();
             };
             actionButton.setOnAction(saveEvent);
             saveGame.setText("Save game as:");
             vBox.getChildren().addAll(saveGame, saveName);
         } else if (buttonText.equals("Load")) {
-            EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    modal.hide();
-                }
-            };
+            EventHandler<ActionEvent> loadEvent = actionEvent -> modal.hide();
             actionButton.setOnAction(loadEvent);
         } else if (buttonText.equals("Ok")) {
-            EventHandler<ActionEvent> errorEvent = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    modal.hide();
-                }
-            };
+            EventHandler<ActionEvent> errorEvent = actionEvent -> modal.hide();
             actionButton.setOnAction(errorEvent);
             error.setText("IMPORT ERROR! Unfortunately the given file is in wrong format. Please try another one!");
             vBox.getChildren().add(error);
@@ -191,12 +174,7 @@ public class Game extends Application {
         vBox.setPadding(new Insets(40));
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.CENTER);
-        EventHandler<ActionEvent> closeEvent = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                modal.hide();
-            }
-        };
+        EventHandler<ActionEvent> closeEvent = actionEvent -> modal.hide();
         closeButton.setOnAction(closeEvent);
         vBox.getChildren().addAll(controls, closeButton);
         Scene modalScene = new Scene(vBox);
@@ -214,59 +192,43 @@ public class Game extends Application {
         vBox.setPadding(new Insets(40));
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.CENTER);
-        EventHandler<ActionEvent> importEvent = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                File file = importWindow.showOpenDialog(modal);
-                String path = "";
-                if (file != null) {
-                    path = file.getPath();
-                    if (!path.contains(".json")) {
-                        errorModal.show();
-                    } else {
-                        try {
-                            GameMap loadedMap = gameMapIO.loadGameMap(path);
-                            map = loadedMap;
-                            refresh(map.getPlayer().getX(), map.getPlayer().getY());
-                            actionLabel.setText("");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (ClassNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                        modal.hide();
-                    }
+        EventHandler<ActionEvent> importEvent = actionEvent -> {
+            File file = importWindow.showOpenDialog(modal);
+            String path;
+            if (file != null) {
+                path = file.getPath();
+                if (!path.contains(".json")) {
+                    errorModal.show();
                 } else {
-                    modal.hide();
-                }
-
-
-            }
-        };
-        importButton.setOnAction(importEvent);
-        EventHandler<ActionEvent> exportEvent = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                File file = exportWindow.showSaveDialog(modal);
-                String path = "";
-                if (file != null) {
-                    path = file.getPath();
                     try {
-                        gameMapIO.saveGameMap(map, path);
+                        map = gameMapIO.loadGameMap(path);
+                        refresh(map.getPlayer().getX(), map.getPlayer().getY());
+                        actionLabel.setText("");
                     } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
+                    modal.hide();
                 }
+            } else {
                 modal.hide();
             }
+        };
+        importButton.setOnAction(importEvent);
+        EventHandler<ActionEvent> exportEvent = actionEvent -> {
+            File file = exportWindow.showSaveDialog(modal);
+            String path;
+            if (file != null) {
+                path = file.getPath();
+                try {
+                    gameMapIO.saveGameMap(map, path);
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            modal.hide();
         };
         exportButton.setOnAction(exportEvent);
-        EventHandler<ActionEvent> cancelEvent = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                modal.hide();
-            }
-        };
+        EventHandler<ActionEvent> cancelEvent = actionEvent -> modal.hide();
         cancelButton.setOnAction(cancelEvent);
         vBox.getChildren().addAll(importButton, exportButton, cancelButton);
         Scene modalScene = new Scene(vBox);
@@ -289,7 +251,7 @@ public class Game extends Application {
         primaryStage.show();
     }
 
-    private void setUpSecondScene(String mapToLoad, GameMap previousMap){
+    private void setUpNextScene(String mapToLoad, GameMap previousMap){
         int[] coordinates = MapLoader.getPlayerPosition(mapToLoad);
         map = MapLoader.loadMap(coordinates[2], mapToLoad, previousMap);
         refresh(coordinates[1], coordinates[0]);
@@ -326,7 +288,6 @@ public class Game extends Application {
     }
 
     private void onKeyPressed(KeyEvent keyEvent) {
-        ItemActions itemActions = new ItemActions();
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(Direction.NORTH.getX(), Direction.NORTH.getY());
@@ -373,33 +334,32 @@ public class Game extends Application {
                 quitLabel.setText("");
                 break;
             case F:
-                Item foodItem = itemActions.searchForItemByType(map, ItemType.FOOD);
-                if (foodItem != null)
-                    itemActions.consumeFood(map, foodItem.getName());
+                if (map.getPlayer().hasItem(ItemType.FOOD))
+                    map.getPlayer().consumeFood();
                 break;
             case H:
-                Item potionItem = itemActions.searchForPotion(map, PotionType.HEALING_POTION);
+                Item potionItem = map.getPlayer().searchForPotion(PotionType.HEALING_POTION);
                 if (potionItem != null)
-                    itemActions.consumePotion(map, StringFactory.HEALING_POTION.message);
+                    map.getPlayer().consumePotion(StringFactory.HEALING_POTION.message);
                 break;
             case G:
-                Item potionItem2 = itemActions.searchForPotion(map, PotionType.STONE_SKIN_POTION);
+                Item potionItem2 = map.getPlayer().searchForPotion(PotionType.STONE_SKIN_POTION);
                 if (potionItem2 != null)
-                    itemActions.consumePotion(map, StringFactory.STONE_SKIN_POTION.message);
+                    map.getPlayer().consumePotion(StringFactory.STONE_SKIN_POTION.message);
                 break;
             case J:
-                Item potionItem3 = itemActions.searchForPotion(map, PotionType.MIGHT_POTION);
+                Item potionItem3 = map.getPlayer().searchForPotion(PotionType.MIGHT_POTION);
                 if (potionItem3 != null)
-                    itemActions.consumePotion(map, StringFactory.MIGHT_POTION.message);
+                    map.getPlayer().consumePotion(StringFactory.MIGHT_POTION.message);
                 break;
             case B:
                 if (map.getPlayer().hasItem(ItemType.BOAT)) {
-                    itemActions.leaveBoat(map.getPlayer());
+                    map.getPlayer().leaveBoat();
                 }
                 break;
             case A:
                 if (map.getPlayer().hasItem((ItemType.ALCOHOL))) {
-                    itemActions.consumeAlcohol(map);
+                    map.getPlayer().consumeAlcohol();
                 }
                 break;
             case S:
@@ -507,7 +467,7 @@ public class Game extends Application {
         }
 
     private void goToNextMap(MapName mapName) {
-        setUpSecondScene( mapName.getMapName(), map);
+        setUpNextScene( mapName.getMapName(), map);
     }
 
 
