@@ -3,7 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.util.Direction;
 
-public class Skeleton extends Actor {
+public class Skeleton extends Monster implements MonsterInteractions {
     public Skeleton(Cell cell) {
         super(cell);
         super.setAttack(3);

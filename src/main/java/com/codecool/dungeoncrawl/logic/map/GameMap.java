@@ -12,11 +12,11 @@ public class GameMap implements Serializable {
     private final int height;
     public GameConditions gameConditions;
     private final Cell[][] cells;
-    private final ArrayList<Actor> skeletons = new ArrayList<>();
-    private final ArrayList<Actor> orcs = new ArrayList<>();
-    private final ArrayList<Actor> undeads = new ArrayList<>();
-    private final ArrayList<Actor> krakens = new ArrayList<>();
-    private final ArrayList<Actor> ghosts = new ArrayList<>();
+    private final ArrayList<Monster> skeletons = new ArrayList<>();
+    private final ArrayList<Monster> orcs = new ArrayList<>();
+    private final ArrayList<Monster> undeads = new ArrayList<>();
+    private final ArrayList<Monster> krakens = new ArrayList<>();
+    private final ArrayList<Monster> ghosts = new ArrayList<>();
     private Player player;
     private CellType exit;
     private char[] mapAsCharArray;
@@ -30,11 +30,11 @@ public class GameMap implements Serializable {
         cells = defineCells(width, height, defaultCellType);
     }
 
-    public ArrayList<Actor> getKraken() {
+    public ArrayList<Monster> getKraken() {
         return krakens;
     }
 
-    public ArrayList<Actor> getGhosts() {
+    public ArrayList<Monster> getGhosts() {
         return ghosts;
     }
 
@@ -50,15 +50,15 @@ public class GameMap implements Serializable {
         return height;
     }
 
-    public ArrayList<Actor> getSkeletons() {
+    public ArrayList<Monster> getSkeletons() {
         return skeletons;
     }
 
-    public ArrayList<Actor> getOrcs() {
+    public ArrayList<Monster> getOrcs() {
         return orcs;
     }
 
-    public ArrayList<Actor> getUndeads() {
+    public ArrayList<Monster> getUndeads() {
         return undeads;
     }
 

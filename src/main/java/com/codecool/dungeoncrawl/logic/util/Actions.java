@@ -19,7 +19,7 @@ public class Actions {
 /*######################################################################################################################
 * Inventory method:
 *#####################################################################################################################*/
-
+    //Move to player
     public void pickUpItem(GameMap map) {
         int playerX = map.getPlayer().getX();
         int playerY = map.getPlayer().getY();
@@ -52,7 +52,7 @@ public class Actions {
 /*######################################################################################################################
 * Monster methods:
 *#####################################################################################################################*/
-
+    // Move to GameMap !!!
     // Wrapper for smaller methods handling monsters:
     public void monsterInteractions(GameMap map) {
         removeDeadMonsters(map);
@@ -71,7 +71,7 @@ public class Actions {
     }
 
     // Finding dead monsters:
-    private void removeBodies(ArrayList<Actor> monsters, GameMap map) {
+    private void removeBodies(ArrayList<Monster> monsters, GameMap map) {
         for (int index = 0; index < monsters.size(); index++) {
             if (gameConditions.isDead(monsters.get(index).getHealth()))
                 removeBody(monsters.get(index), map, index);
@@ -79,21 +79,21 @@ public class Actions {
     }
 
     // Dump a dead monster from it's collection:
-    private void removeBody(Actor monster, GameMap map, int index) {
+    private void removeBody(Monster monster, GameMap map, int index) {
         if (monster instanceof Skeleton) map.removeSkeleton(index);
         else if (monster instanceof Orc) map.removeOrc(index);
         else if (monster instanceof Undead) map.removeUndead(index);
     }
 
     // Iterating through a collection of monsters and activate it's move method:
-    public void moveMonsters(ArrayList<Actor> monstersToMove, Cell playerCell) {
-        for (Actor monster : monstersToMove) monster.monsterMove(playerCell);
+    public void moveMonsters(ArrayList<MonsterInteractions> monstersToMove, Cell playerCell) {
+        for (MonsterInteractions monster : monstersToMove) monster.monsterMove(playerCell);
     }
 
 /*######################################################################################################################
 * Player methods:
 *#####################################################################################################################*/
-
+    // Move to player!
     // Wrapper for player methods:
     public void movePlayer(int moveInRow, int moveInColumn, GameMap map, Label actionLabel) {
         map.getPlayer().move(moveInRow, moveInColumn);

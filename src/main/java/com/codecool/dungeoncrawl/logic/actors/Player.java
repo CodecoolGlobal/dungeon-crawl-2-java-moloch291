@@ -68,8 +68,4 @@ public class Player extends Actor {
             super.setCell(nextCell);
         }
     }
-
-    @Override
-    public void monsterMove(Cell playerCell) {
-    }
 }
