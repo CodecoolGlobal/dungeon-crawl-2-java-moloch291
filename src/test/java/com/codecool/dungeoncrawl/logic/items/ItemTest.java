@@ -25,16 +25,7 @@ class ItemTest {
     public void setUp() {
         // Test map:
         gameMap = new GameMap(3, 3, CellType.FLOOR);
-        mockItem = Mockito.spy(new Item(
-                mockName,
-                new Cell(gameMap, 0, 0, CellType.FLOOR),
-                ItemType.FOOD
-        ) { // Override method implementation:
-            @Override
-            public String getTileName() {
-                return null;
-            }
-        });
+        mockItem = Mockito.mock(Item.class);
     }
 
     @Test

@@ -6,10 +6,10 @@ import com.codecool.dungeoncrawl.logic.map.GameMap;
 import java.io.Serializable;
 
 public class Util implements Serializable {
-    private final String[] redbrickRefs = {"redbrick", "redbrick alter"};
-    private final String[] houseRefs = {"house", "house alter", "house alter 2", "house alter 3"};
-    private final String[] lakeHouseRefs = {"lake house", "lake house alter"};
-    private final String gameManual = "Up/Down/Left/Right arrows - Movement\n" +
+    private static final String[] redbrickRefs = {"redbrick", "redbrick alter"};
+    private static final String[] houseRefs = {"house", "house alter", "house alter 2", "house alter 3"};
+    private static final String[] lakeHouseRefs = {"lake house", "lake house alter"};
+    private static final String gameManual = "Up/Down/Left/Right arrows - Movement\n" +
             "Enter - Pick up items while standing on them or embark ship\n" +
             "F - Use food (Replenishes 5 health points)\n" +
             "H - Use Healing potion (Replenishes 20 health points)\n" +
