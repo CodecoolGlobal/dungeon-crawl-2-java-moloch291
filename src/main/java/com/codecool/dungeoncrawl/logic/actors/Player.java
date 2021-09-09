@@ -3,9 +3,7 @@ package com.codecool.dungeoncrawl.logic.actors;
 import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.logic.map.Cell;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
-import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.util.Direction;
-import com.codecool.dungeoncrawl.logic.util.StringFactory;
 import javafx.scene.control.Label;
 
 import java.util.HashMap;
@@ -16,7 +14,6 @@ public class Player extends Actor {
     private final Map<Item, Integer> inventory = new HashMap<>();
     private boolean isDrunk = false;
     private String name;
-    private final Actions actions = new Actions();
 
     public Player(Cell cell) {
         super(cell);
@@ -68,7 +65,7 @@ public class Player extends Actor {
 
     public void interactions(GameMap map, Label actionLabel) {
         lookForDoor(map);
-        checkNearbyMonsters(actionLabel);
+        checkNearbyMonsters(actionLabel, map);
     }
 
     // Search for door on neighboring cells and open them if player has the key for it:
@@ -84,15 +81,15 @@ public class Player extends Actor {
     }
 
     // Check neighboring fields for monsters:
-    private void checkNearbyMonsters(Label actionLabel) {
-        for (Direction direction : Direction.values()) checkForEnemies(direction, actionLabel);
+    private void checkNearbyMonsters(Label actionLabel, GameMap map) {
+        for (Direction direction : Direction.values()) checkForEnemies(direction, actionLabel, map);
     }
 
     // Initiate fight if finding a monster near by:
-    private void checkForEnemies(Direction currentDirection, Label actionLabel) {
+    private void checkForEnemies(Direction currentDirection, Label actionLabel, GameMap map) {
         Cell nearbyCell = this.getCell().getNeighbor(currentDirection.getX(), currentDirection.getY());
         if (gameConditions.isCellOccupied(nearbyCell))
-            actions.fight(nearbyCell, this, actionLabel);
+            map.fight(nearbyCell, this, actionLabel);
     }
 
     public boolean hasItem(ItemType itemType) {
@@ -110,12 +107,16 @@ public class Player extends Actor {
             Item item = map.getCell(playerX, playerY).getItem();
             int addedQuantity = 1;
             if (!inventory.containsKey(item)) {
-                map.getPlayer().addToInventory(item, addedQuantity);
-                ItemActions itemActions = new ItemActions();
-                if (gameConditions.checkIfArmor(item)) itemActions.equipArmor(map, item.getName());
-                if (gameConditions.checkIfWeapon(item)) itemActions.equipWeapon(map, item.getName());
+                equipArmorsAndWeapons(map, item, addedQuantity);
             } else map.getPlayer().addToInventory(item, inventory.get(item) + addedQuantity);
             map.getCell(playerX, playerY).setItem(null);
         }
+    }
+
+    private void equipArmorsAndWeapons(GameMap map, Item item, int addedQuantity) {
+        map.getPlayer().addToInventory(item, addedQuantity);
+        ItemActions itemActions = new ItemActions();
+        if (gameConditions.checkIfArmor(item)) itemActions.equipArmor(map, item.getName());
+        if (gameConditions.checkIfWeapon(item)) itemActions.equipWeapon(map, item.getName());
     }
 }

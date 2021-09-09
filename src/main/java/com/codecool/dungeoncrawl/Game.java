@@ -62,8 +62,6 @@ public class Game extends Application {
 
     GameMapIO gameMapIO = new GameMapIO();
     Util util = new Util();
-
-    Actions actions = new Actions();
     GameConditions gameConditions = new GameConditions();
     boolean confirmQuit = false;
 
