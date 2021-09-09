@@ -60,7 +60,10 @@ class PlayerTest {
 
     @Test
     void  addItemToInventory(){
-        player.addToInventory(alcohol,1);
+        player.addToInventory(
+                new Alcohol(
+                        gameMap.getCell(1, 1)
+                ),1);
         assertTrue(player.hasItem(ItemType.ALCOHOL));
     }
 
