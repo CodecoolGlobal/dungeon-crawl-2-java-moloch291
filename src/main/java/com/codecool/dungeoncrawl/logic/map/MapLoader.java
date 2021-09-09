@@ -47,7 +47,6 @@ public class MapLoader {
         int y = -1;
         while (true) {
             y++;
-            line = "";
             try {
                 line = scanner.nextLine();
             } catch (NoSuchElementException e) {

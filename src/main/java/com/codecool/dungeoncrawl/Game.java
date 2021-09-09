@@ -2,7 +2,6 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
 import com.codecool.dungeoncrawl.logic.map.Tiles;
@@ -27,8 +26,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -141,30 +138,27 @@ public class Game extends Application {
         vBox.setSpacing(8);
         vBox.setAlignment(Pos.CENTER);
         if (buttonText.equals("Save")) {
-            EventHandler<ActionEvent> saveEvent = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    try {
-                        dbManager.setup();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                    java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-                    System.out.println(map); // map string format need to be implemented
-                    if (dbManager.checkExistingSave(saveName.getText())) {
-                        //Player update
-                        PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
-                        dbManager.updateGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
-                        dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
-                    } else {
-                        // Player save
-                        PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
-                        dbManager.saveGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
-                        dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
-                    }
-                    modal.hide();
+            EventHandler<ActionEvent> saveEvent = actionEvent -> {
+                try {
+                    dbManager.setup();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
                 }
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+                System.out.println(map); // map string format need to be implemented
+                if (dbManager.checkExistingSave(saveName.getText())) {
+                    //Player update
+                    PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
+                    dbManager.updateGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
+                    dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
+                } else {
+                    // Player save
+                    PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
+                    dbManager.saveGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
+                    dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
+                }
+                modal.hide();
             };
             actionButton.setOnAction(saveEvent);
             saveGame.setText("Save game as:");
@@ -179,21 +173,18 @@ public class Game extends Application {
             for (int i = 0; i < savedGames.size(); i++) {
                 Button loadButton = new Button();
                 loadButton.setText(savedGames.get(i));
-                EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        String saveName = loadButton.getText();
-                        int playerId = dbManager.getPlayerId(saveName);
-                        //Load game
-                        PlayerModel selectedPlayer = dbManager.loadPlayerData(playerId);
-                        System.out.println(dbManager.loadGameState(playerId));
-                        System.out.println(selectedPlayer);
-                        System.out.println(dbManager.loadPlayersInventory(playerId));
-                        map.getPlayer().setHealth(selectedPlayer.getHp());
-                        map.getPlayer().setDrunk(selectedPlayer.getDrunk());
+                EventHandler<ActionEvent> loadEvent = actionEvent -> {
+                    String saveName1 = loadButton.getText();
+                    int playerId = dbManager.getPlayerId(saveName1);
+                    //Load game
+                    PlayerModel selectedPlayer = dbManager.loadPlayerData(playerId);
+                    System.out.println(dbManager.loadGameState(playerId));
+                    System.out.println(selectedPlayer);
+                    System.out.println(dbManager.loadPlayersInventory(playerId));
+                    map.getPlayer().setHealth(selectedPlayer.getHp());
+                    map.getPlayer().setDrunk(selectedPlayer.getDrunk());
 
-                        modal.hide();
-                    }
+                    modal.hide();
                 };
                 vBox.getChildren().add(loadButton);
                 loadButton.setOnAction(loadEvent);

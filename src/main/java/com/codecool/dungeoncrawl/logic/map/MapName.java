@@ -8,7 +8,7 @@ public enum MapName {
     MAP5("/map5.txt"),
     DEAD("/dead.txt");
 
-    private String mapName;
+    private final String mapName;
 
     public String getMapName() {
         return mapName;

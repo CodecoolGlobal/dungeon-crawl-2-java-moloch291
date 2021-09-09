@@ -10,9 +10,7 @@ public enum NumberParameters {
     // Used in Util/getAttackerHit for calculating attack values:
     ATTACK_BONUS(2),
     ATTACK_NERF(1),
-    DEFENSE_DIVISOR(2),
-    // Used Kraken as Health setter:
-    KRAKEN_HEALTH(1000000);
+    DEFENSE_DIVISOR(2);
 
     private final int value;
 
