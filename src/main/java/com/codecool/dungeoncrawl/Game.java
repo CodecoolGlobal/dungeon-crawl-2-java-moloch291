@@ -152,8 +152,9 @@ public class Game extends Application {
                     }
                     */
                     //Load game
-
-
+                    PlayerModel selectedPlayer = dbManager.loadPlayerData(1);
+                    System.out.println(dbManager.loadGameState(1));
+                    System.out.println(selectedPlayer);
 
                     modal.hide();
                 }

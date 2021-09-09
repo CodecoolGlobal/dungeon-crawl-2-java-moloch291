@@ -61,6 +61,14 @@ public class GameDatabaseManager {
         return playerDao.getAll();
     }
 
+    public PlayerModel loadPlayerData(int playerId) {
+        return playerDao.get(playerId);
+    }
+
+    public GameState loadGameState(int playerId) {
+        return gameStateDao.get(playerId);
+    }
+
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         String dbName = System.getenv("PSQL_DB_NAME");

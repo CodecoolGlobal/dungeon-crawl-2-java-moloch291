@@ -51,24 +51,24 @@ public class GameStateDaoJdbc implements GameStateDao {
         }
 
         @Override
-        public GameState get(int id) {
+        public GameState get(int playerId) {
             try (Connection conn = dataSource.getConnection()) {
-                String sql = "SELECT current_map, saved_at, player_id FROM game_sate WHERE id = ?";
+                String sql = "SELECT id, current_map, saved_at FROM game_state WHERE player_id = ?";
                 PreparedStatement st = conn.prepareStatement(sql);
-                st.setInt(1, id);
+                st.setInt(1, playerId);
                 ResultSet rs = st.executeQuery();
                 if (!rs.next()) {
                     return null;
                 }
-                String currentMap = rs.getString(1);
-                java.sql.Date savedAt = rs.getDate(2);
+                String currentMap = rs.getString(2);
+                String savedAt = rs.getString(3);
 
-                int playerId = rs.getInt(3);
                 PlayerModel playerModel = playerDao.get(playerId);
 
                 // FINISH - create and return new Book class instance
-                GameState gameState = new GameState(currentMap, savedAt.toString(), playerModel);
-                gameState.setId(id);
+                GameState gameState = new GameState(currentMap, savedAt, playerModel);
+
+                gameState.setId(rs.getInt(1));
                 return gameState;
             } catch (SQLException e) {
                 throw new RuntimeException(e);
