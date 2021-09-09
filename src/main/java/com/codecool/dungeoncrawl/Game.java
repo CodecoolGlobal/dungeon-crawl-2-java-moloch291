@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.IO.GameMapIO;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.ItemActions;
 import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.items.PotionType;
@@ -156,12 +157,12 @@ public class Game extends Application {
                     if (dbManager.checkExistingSave(saveName.getText())) {
                         //Player update
                         PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
-                        dbManager.updateGameState(map.toString(), formatter.format(date), currentPlayer, saveName.getText());
+                        dbManager.updateGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
                         dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
                     } else {
                         // Player save
                         PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
-                        dbManager.saveGameState(map.toString(), formatter.format(date), currentPlayer, saveName.getText());
+                        dbManager.saveGameState(map.getMapName().toString(), formatter.format(date), currentPlayer, saveName.getText());
                         dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
                     }
                     modal.hide();
@@ -183,13 +184,16 @@ public class Game extends Application {
                 EventHandler<ActionEvent> loadEvent = new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
-                    /*
-                    //Load game
-                    PlayerModel selectedPlayer = dbManager.loadPlayerData(1);
-                    System.out.println(dbManager.loadGameState(1));
-                    System.out.println(selectedPlayer);
-                    System.out.println(dbManager.loadPlayersInventory(1));
-                    */
+                        String saveName = loadButton.getText();
+                        int playerId = dbManager.getPlayerId(saveName);
+                        //Load game
+                        PlayerModel selectedPlayer = dbManager.loadPlayerData(playerId);
+                        System.out.println(dbManager.loadGameState(playerId));
+                        System.out.println(selectedPlayer);
+                        System.out.println(dbManager.loadPlayersInventory(playerId));
+                        map.getPlayer().setHealth(selectedPlayer.getHp());
+                        map.getPlayer().setDrunk(selectedPlayer.getDrunk());
+
                         modal.hide();
                     }
                 };

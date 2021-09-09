@@ -77,6 +77,8 @@ public class GameDatabaseManager {
 
     public boolean checkExistingSave(String saveName) { return gameStateDao.checkSaveName(saveName); }
 
+    public int getPlayerId(String saveName) { return gameStateDao.getPlayerId(saveName); }
+
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         String dbName = System.getenv("PSQL_DB_NAME");

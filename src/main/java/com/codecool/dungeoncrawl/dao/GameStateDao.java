@@ -10,4 +10,5 @@ public interface GameStateDao {
     GameState get(int id);
     List<String> getAll();
     boolean checkSaveName(String saveName);
+    int getPlayerId(String saveName);
 }
