@@ -103,8 +103,8 @@ public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
     }
 
 
-
-    public List<PlayerInventory> getAll(int player_id) {
+    @Override
+    public List<PlayerInventory> getAll(int playerId) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT players_inventory.item_id, " +
                     "            players_inventory.amount," +
@@ -113,7 +113,7 @@ public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
                     "     ON players_inventory.item_id = inventory_handler.id" +
                     "     WHERE players_inventory.player_id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
-            st.setInt(1, player_id);
+            st.setInt(1, playerId);
             ResultSet rs = st.executeQuery();
 
             List<PlayerInventory> result = new ArrayList<>();
@@ -122,10 +122,10 @@ public class PlayerInventoryDaoJdbc implements PlayerInventoryDao{
                 int amount = rs.getInt(2);
                 String itemName = rs.getString(3);
 
-                PlayerModel playerModel = playerDao.get(player_id);
+                PlayerModel playerModel = playerDao.get(playerId);
 
-                PlayerInventory playerInventory = new PlayerInventory(player_id, itemId, amount, itemName);
-                playerInventory.setPlayerId(player_id);
+                PlayerInventory playerInventory = new PlayerInventory(playerId, itemId, amount, itemName);
+                playerInventory.setPlayerId(playerId);
                 result.add(playerInventory);
             }
             return result;

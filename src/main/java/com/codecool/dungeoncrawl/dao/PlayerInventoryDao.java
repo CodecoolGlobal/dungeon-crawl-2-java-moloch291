@@ -9,4 +9,5 @@ public interface PlayerInventoryDao {
     void add(PlayerInventory playerInventory);
     void update(PlayerInventory playerInventory);
     int get(String currentItemName);
+    List<PlayerInventory> getAll(int playerId);
 }

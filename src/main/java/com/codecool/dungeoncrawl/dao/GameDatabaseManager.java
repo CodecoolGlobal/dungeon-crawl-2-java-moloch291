@@ -69,6 +69,10 @@ public class GameDatabaseManager {
         return gameStateDao.get(playerId);
     }
 
+    public List<PlayerInventory> loadPlayersInventory(int playerId) {
+        return playerInventoryDao.getAll(playerId);
+    }
+
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
         String dbName = System.getenv("PSQL_DB_NAME");

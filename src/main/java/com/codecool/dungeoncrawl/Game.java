@@ -150,13 +150,15 @@ public class Game extends Application {
                     for (PlayerModel model : allPlayers) {
                         System.out.println(model);
                     }
-                    */
+
                     //Load game
                     PlayerModel selectedPlayer = dbManager.loadPlayerData(1);
                     System.out.println(dbManager.loadGameState(1));
                     System.out.println(selectedPlayer);
-
+                    System.out.println(dbManager.loadPlayersInventory(1));
+                    */
                     modal.hide();
+
                 }
             };
             actionButton.setOnAction(saveEvent);
