@@ -1,12 +1,11 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
-import com.codecool.dungeoncrawl.logic.items.ItemActions;
+import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.logic.map.Cell;
-import com.codecool.dungeoncrawl.logic.items.Item;
-import com.codecool.dungeoncrawl.logic.items.ItemType;
 import com.codecool.dungeoncrawl.logic.map.GameMap;
 import com.codecool.dungeoncrawl.logic.util.Actions;
 import com.codecool.dungeoncrawl.logic.util.Direction;
+import com.codecool.dungeoncrawl.logic.util.StringFactory;
 import javafx.scene.control.Label;
 
 import java.util.HashMap;
@@ -76,8 +75,12 @@ public class Player extends Actor {
     private void lookForDoor(GameMap map) {
         int playerX = this.getCell().getX();
         int playerY = this.getCell().getY();
-        if (gameConditions.doorNextToPlayer(playerX, playerY, map) && hasItem(ItemType.KEY))
+        if (gameConditions.doorNextToPlayer(playerX, playerY, map) && hasItem(ItemType.KEY)) {
             map.openDoor();
+            removeFromInventory(inventory.keySet().stream()
+                    .filter(item -> item.getItemType().equals(ItemType.KEY))
+                    .findFirst().orElse(null));
+        }
     }
 
     // Check neighboring fields for monsters:
@@ -101,31 +104,17 @@ public class Player extends Actor {
     }
 
     public void pickUpItem(GameMap map) {
-        int playerX = map.getPlayer().getX();
-        int playerY = map.getPlayer().getY();
+        int playerX = this.getCell().getX();
+        int playerY = this.getCell().getY();
         if (gameConditions.isItemOnPlayerPosition(playerX, playerY, map)) {
             Item item = map.getCell(playerX, playerY).getItem();
             int addedQuantity = 1;
-            boolean inInventory = false;
-            Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-            for (Item itemInLoop: playerInventory.keySet()) {
-                if (itemInLoop.getName().equals(item.getName())) {
-                    item = itemInLoop;
-                    inInventory = true;
-                }
-            }
-            if (!inInventory) {
+            if (!inventory.containsKey(item)) {
                 map.getPlayer().addToInventory(item, addedQuantity);
                 ItemActions itemActions = new ItemActions();
-                if (gameConditions.checkIfArmor(item)) {
-                    itemActions.equipArmor(map, item.getName());
-                }
-                if (gameConditions.checkIfWeapon(item)) {
-                    itemActions.equipWeapon(map, item.getName());
-                }
-            } else {
-                map.getPlayer().addToInventory(item, playerInventory.get(item) + addedQuantity);
-            }
+                if (gameConditions.checkIfArmor(item)) itemActions.equipArmor(map, item.getName());
+                if (gameConditions.checkIfWeapon(item)) itemActions.equipWeapon(map, item.getName());
+            } else map.getPlayer().addToInventory(item, inventory.get(item) + addedQuantity);
             map.getCell(playerX, playerY).setItem(null);
         }
     }

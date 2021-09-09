@@ -255,15 +255,11 @@ public class Game extends Application {
                     path = file.getPath();
                     try {
                         gameMapIO.saveGameMap(map, path);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
+                    } catch (IOException | ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                    modal.hide();
-                } else {
-                    modal.hide();
                 }
+                modal.hide();
             }
         };
         exportButton.setOnAction(exportEvent);
