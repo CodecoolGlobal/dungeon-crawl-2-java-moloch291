@@ -25,6 +25,7 @@ class ItemTest {
     public void setUp() {
         // Test map:
         gameMap = new GameMap(3, 3, CellType.FLOOR);
+        // Mock item:
         mockItem = Mockito.mock(Item.class);
     }
 
@@ -38,7 +39,7 @@ class ItemTest {
     void constructorSetNameWithNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> Mockito.spy(new Item(
+                () -> Mockito.doReturn(new Item(
                         null,
                         new Cell(gameMap, 0, 0, CellType.FLOOR),
                         ItemType.FOOD
@@ -61,7 +62,7 @@ class ItemTest {
     void constructorSetCellWithNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> Mockito.spy(new Item(
+                () -> Mockito.doReturn(new Item(
                         mockName,
                         null,
                         ItemType.FOOD
@@ -78,7 +79,7 @@ class ItemTest {
         Cell newCell = gameMap.getCell(1, 1);
 
         mockItem.setCell(newCell);
-        assertEquals(newCell, mockItem.getCell());
+        Mockito.when(mockItem.getCell()).thenReturn(newCell);
     }
 
     @Test
@@ -92,7 +93,7 @@ class ItemTest {
     void constructorSetSubclassTypeAsNullVariable() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> Mockito.spy(new Item(
+                () -> Mockito.doReturn(new Item(
                         mockName,
                         new Cell(gameMap, 0, 0, CellType.FLOOR),
                         null
