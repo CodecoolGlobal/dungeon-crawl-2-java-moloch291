@@ -19,117 +19,13 @@ public class Actions {
 /*######################################################################################################################
 * Inventory method:
 *#####################################################################################################################*/
-
-    public void pickUpItem(GameMap map) {
-        int playerX = map.getPlayer().getX();
-        int playerY = map.getPlayer().getY();
-        if (gameConditions.isItemOnPlayerPosition(playerX, playerY, map)) {
-            Item item = map.getCell(playerX, playerY).getItem();
-            int addedQuantity = 1;
-            boolean inInventory = false;
-            Map<Item, Integer> playerInventory = map.getPlayer().getInventory();
-            for (Item itemInLoop: playerInventory.keySet()) {
-                if (itemInLoop.getName().equals(item.getName())) {
-                    item = itemInLoop;
-                    inInventory = true;
-                }
-            }
-            if (!inInventory) {
-                map.getPlayer().addToInventory(item, addedQuantity);
-                if (gameConditions.checkIfArmor(item)) {
-                    itemActions.equipArmor(map, item.getName());
-                }
-                if (gameConditions.checkIfWeapon(item)) {
-                    itemActions.equipWeapon(map, item.getName());
-                }
-            } else {
-                map.getPlayer().addToInventory(item, playerInventory.get(item) + addedQuantity);
-            }
-            map.getCell(playerX, playerY).setItem(null);
-        }
-    }
-
-/*######################################################################################################################
-* Monster methods:
-*#####################################################################################################################*/
-
-    // Wrapper for smaller methods handling monsters:
-    public void monsterInteractions(GameMap map) {
-        removeDeadMonsters(map);
-        moveMonsters(map.getSkeletons(), map.getPlayer().getCell());
-        moveMonsters(map.getOrcs(), map.getPlayer().getCell());
-        moveMonsters(map.getKraken(), map.getPlayer().getCell());
-    }
-
-
-    // Wrapper of finding dead monsters:
-    private void removeDeadMonsters(GameMap map) {
-        removeBodies(map.getSkeletons(), map);
-        removeBodies(map.getOrcs(), map);
-        removeBodies(map.getUndeads(), map);
-        removeBodies(map.getGhosts(), map);
-    }
-
-    // Finding dead monsters:
-    private void removeBodies(ArrayList<Actor> monsters, GameMap map) {
-        for (int index = 0; index < monsters.size(); index++) {
-            if (gameConditions.isDead(monsters.get(index).getHealth()))
-                removeBody(monsters.get(index), map, index);
-        }
-    }
-
-    // Dump a dead monster from it's collection:
-    private void removeBody(Actor monster, GameMap map, int index) {
-        if (monster instanceof Skeleton) map.removeSkeleton(index);
-        else if (monster instanceof Orc) map.removeOrc(index);
-        else if (monster instanceof Undead) map.removeUndead(index);
-    }
-
-    // Iterating through a collection of monsters and activate it's move method:
-    public void moveMonsters(ArrayList<Actor> monstersToMove, Cell playerCell) {
-        for (Actor monster : monstersToMove) monster.monsterMove(playerCell);
-    }
-
-/*######################################################################################################################
-* Player methods:
-*#####################################################################################################################*/
-
-    // Wrapper for player methods:
-    public void movePlayer(int moveInRow, int moveInColumn, GameMap map, Label actionLabel) {
-        map.getPlayer().move(moveInRow, moveInColumn);
-        lookForDoor(map);
-        checkNearbyMonsters(map.getPlayer(), actionLabel);
-    }
-
-    // Search for door on neighboring cells and open them if player has the key for it:
-    private void lookForDoor(GameMap map) {
-        int playerX = map.getPlayer().getCell().getX();
-        int playerY = map.getPlayer().getCell().getY();
-        if (gameConditions.doorNextToPlayer(playerX, playerY, map) && map.getPlayer().hasItem(ItemType.KEY))
-            map.openDoor();
-    }
-
-    // Check neighboring fields for monsters:
-    private void checkNearbyMonsters(Actor player, Label actionLabel) {
-        Cell cell = player.getCell();
-        checkForEnemies(player, cell, Direction.WEST, actionLabel);
-        checkForEnemies(player, cell, Direction.EAST, actionLabel);
-        checkForEnemies(player, cell, Direction.NORTH, actionLabel);
-        checkForEnemies(player, cell, Direction.SOUTH, actionLabel);
-    }
-
-    // Initiate fight if finding a monster near by:
-    private void checkForEnemies(Actor player, Cell playerCell, Direction currentDirection, Label actionLabel) {
-        Cell nearbyCell = playerCell.getNeighbor(currentDirection.getX(), currentDirection.getY());
-        if (gameConditions.isCellOccupied(nearbyCell))
-            fight(nearbyCell, player, actionLabel);
-    }
+    //Move to player
 
 /*######################################################################################################################
 * Fighting:
 *#####################################################################################################################*/
 
-    private void fight(Cell nearbyCell, Actor player, Label actionLabel) {
+    public void fight(Cell nearbyCell, Actor player, Label actionLabel) {
         actionLabel.setText("");
         Actor enemy = nearbyCell.getActor();
         while (true) {

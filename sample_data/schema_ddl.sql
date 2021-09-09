@@ -1,8 +1,9 @@
 DROP TABLE IF EXISTS public.game_state;
 CREATE TABLE public.game_state (
     id serial NOT NULL PRIMARY KEY,
+    save_name text NOT NULL,
     current_map text NOT NULL,
-    saved_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    saved_at text NOT NULL,
     player_id integer NOT NULL
 );
 
@@ -46,7 +47,7 @@ ALTER TABLE ONLY public.players_inventory
     ADD CONSTRAINT fk_item_id FOREIGN KEY (item_id) REFERENCES public.inventory_handler(id);
 
 
-INSERT INTO inventory_handler VALUES (1, 'Alcohol');
+INSERT INTO inventory_handler VALUES (1, 'Beer');
 INSERT INTO inventory_handler VALUES (2, 'Shield');
 INSERT INTO inventory_handler VALUES (3, 'Helmet');
 INSERT INTO inventory_handler VALUES (4, 'Breastplate');
@@ -58,12 +59,12 @@ INSERT INTO inventory_handler VALUES (9, 'Water');
 INSERT INTO inventory_handler VALUES (10, 'Cheese');
 INSERT INTO inventory_handler VALUES (11, 'Apple');
 INSERT INTO inventory_handler VALUES (12, 'Fish');
-INSERT INTO inventory_handler VALUES (13, 'Healing Potion');
-INSERT INTO inventory_handler VALUES (14, 'Stone Skin Potion');
-INSERT INTO inventory_handler VALUES (15, 'Might Potion');
+INSERT INTO inventory_handler VALUES (13, 'Healing potion');
+INSERT INTO inventory_handler VALUES (14, 'Stone skin potion');
+INSERT INTO inventory_handler VALUES (15, 'Might potion');
 INSERT INTO inventory_handler VALUES (16, 'Sword');
 INSERT INTO inventory_handler VALUES (17, 'Axe');
 INSERT INTO inventory_handler VALUES (18, 'Pike');
-INSERT INTO inventory_handler VALUES (19, 'Door Key');
-INSERT INTO inventory_handler VALUES (20, 'Bridge Key');
-INSERT INTO inventory_handler VALUES (21, 'Lock Pick');
+INSERT INTO inventory_handler VALUES (19, 'Key');
+INSERT INTO inventory_handler VALUES (20, 'Bridge key');
+INSERT INTO inventory_handler VALUES (21, 'Lock pick');

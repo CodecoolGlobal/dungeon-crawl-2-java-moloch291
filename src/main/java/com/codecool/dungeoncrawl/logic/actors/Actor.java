@@ -60,8 +60,6 @@ public abstract class Actor implements Drawable, Serializable {
         this.defense = defense;
     }
 
-    public abstract void monsterMove(Cell playerCell);
-
     public void move(int dx, int dy) {
         Cell nextCell = cell.getNeighbor(dx, dy);
         if (gameConditions.checkNextCell(nextCell)) {

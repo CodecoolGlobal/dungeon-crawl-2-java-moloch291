@@ -11,24 +11,10 @@ class UtilTest {
     }
 
     @Test
-    void getAttackerHit() {
-    }
-
-    @Test
-    void exitGame() {
-    }
-
-    @Test
     void getRandomNumberOnlyInRange() {
-        int[] randomNumbers = getRandomNumbers();
-        for (int randomNumber : randomNumbers) {
-            System.out.println("Testing " + randomNumber + "...");
-            assertTrue(inRange(randomNumber));
-        }
-    }
-
-    @Test
-    void getRandomTile() {
+        int[] randomNumbers = get10RandomNumbers();
+        for (int randomNumber : randomNumbers)
+            assertTrue(isInAllowedRange(randomNumber));
     }
 
     @AfterAll
@@ -36,13 +22,12 @@ class UtilTest {
         System.out.println("Util tests finished:");
     }
 
-
-
-    private boolean inRange(int randomNumber) {
+    // Test support methods:
+    private boolean isInAllowedRange(int randomNumber) {
         return randomNumber >= 0 && randomNumber <= 100;
     }
 
-    private int[] getRandomNumbers() {
+    private int[] get10RandomNumbers() {
         int min = 0;
         int max = 100;
         int[] testNumbers = new int[10];
