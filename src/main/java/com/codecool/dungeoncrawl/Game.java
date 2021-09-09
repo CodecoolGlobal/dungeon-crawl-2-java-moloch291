@@ -34,9 +34,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Game extends Application {
 
@@ -150,9 +149,31 @@ public class Game extends Application {
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
-                    //dbManager.saveGameState(map);
-                    dbManager.savePlayer(map.getPlayer());
-                    //dbManager.saveInventory(map);
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+                    System.out.println(map); // map string format need to be implemented
+
+
+                    // Player save
+                    /*
+                    PlayerModel currentPlayer = dbManager.savePlayer(map.getPlayer());
+                    dbManager.saveGameState(map.toString(), formatter.format(date), currentPlayer);
+                    dbManager.savePlayerInventory(currentPlayer.getId(), map.getPlayer().getInventory());
+                    //Player update
+                    PlayerModel currentPlayer = dbManager.updatePlayer(map.getPlayer());
+                    dbManager.updateGameState(map.toString(), formatter.format(date), currentPlayer);
+                    dbManager.updatePlayerInventory(1 , map.getPlayer().getInventory());
+                    //List all players
+                    List<PlayerModel> allPlayers = dbManager.listAllPlayers();
+                    for (PlayerModel model : allPlayers) {
+                        System.out.println(model);
+                    }
+                    //Load game
+                    PlayerModel selectedPlayer = dbManager.loadPlayerData(1);
+                    System.out.println(dbManager.loadGameState(1));
+                    System.out.println(selectedPlayer);
+                    System.out.println(dbManager.loadPlayersInventory(1));
+                    */
                     modal.hide();
                 }
             };
