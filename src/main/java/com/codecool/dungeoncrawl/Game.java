@@ -367,7 +367,7 @@ public class Game extends Application {
                 confirmQuit = true;
                 break;
             case ENTER:
-                actions.pickUpItem(map);
+                map.getPlayer().pickUpItem(map);
                 break;
             case Y:
                 if (confirmQuit) {
